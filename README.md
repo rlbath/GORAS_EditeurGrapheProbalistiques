@@ -1,4 +1,4 @@
-# EditeurGrapheProbalistiques
+# EditeurGrapheProbalistes
 
 ## Description du projet
 Logiciel d’édition graphique de graphes et traite des graphes probabilistes.

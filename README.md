@@ -3,7 +3,7 @@
 ## Description du projet
 Logiciel d’édition graphique de graphes et traite des graphes probabilistes.
 
-## Membre de l'équipe
+## Membres de l'équipe
 M. Lbath, M. Wehrlé : Product Owner <br>
 Launay Simon : Scrum Master, développeur, concepteur <br>
 Morel Oskar : Développeur, concepteur<br>

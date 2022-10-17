@@ -12,7 +12,7 @@ Jalbaud Gauthier : Développeur, concepteur<br>
 Jauzion Rémi : Développeur, concepteur<br>
 
 ## Lien vers le board ZenHub
-[ZenHub](https://github.com/OskarMorel/GORAS_EditeurGrapheProbalistiques/new/main?readme=1#zenhub)
+[ZenHub](https://github.com/OskarMorel/GORAS_EditeurGrapheProbalistiques#workspaces/goras-editeurgrapheprobabiliste-6343d0243e228b0010ff6958/board)
 
 ## Lien vers le google drive
-[Google Drive](https://drive.google.com/drive/folders/1pf4cH6mJ5kkUspXcXCXeHE8o2trMbLqE?hl=fr)
+[Google Drive](https://drive.google.com/drive/folders/1hO4GXBkku_FnKwz0Gkt3o73TzzgoaO3G?hl=fr)

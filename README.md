@@ -4,10 +4,10 @@
 Logiciel d’édition graphique de graphes et traite des graphes probabilistes.
 
 ## Membres de l'équipe
-M. Lbath, M. Wehrlé : Product Owner <br>
+M. Lbath, M. Wehrlé : Client <br>
 Launay Simon : Scrum Master, développeur, concepteur <br>
 Morel Oskar : Développeur, concepteur<br>
-Gouzy Antoine : Développeur, concepteur<br>
+Gouzy Antoine : Product Owner, Développeur, concepteur<br>
 Jalbaud Gauthier : Développeur, concepteur<br>
 Jauzion Rémi : Développeur, concepteur<br>
 

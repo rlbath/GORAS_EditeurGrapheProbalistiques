@@ -16,3 +16,6 @@ Jauzion Rémi : Développeur, concepteur<br>
 
 ## Lien vers le google drive
 [Google Drive](https://drive.google.com/drive/folders/1hO4GXBkku_FnKwz0Gkt3o73TzzgoaO3G?hl=fr)
+
+## Lien pour télécharger le Gantt (Il faut Gantt Project)
+[GORAS_GANTT](https://drive.google.com/file/d/1WABgjYscKmtX_rEjYUWp-ElfIObY8NxL/view?usp=share_link)

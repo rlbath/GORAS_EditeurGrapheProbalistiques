@@ -14,9 +14,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+N"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\line-chart.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Nouveau graphe"/>
               </Properties>
               <Events>
@@ -27,9 +24,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+S"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\disquette.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Enregistrer"/>
               </Properties>
@@ -42,9 +36,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\disquette.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="Enregistrer sous"/>
               </Properties>
               <Events>
@@ -55,9 +46,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+O"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\folder.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ouvrir"/>
               </Properties>
@@ -77,9 +65,6 @@
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Z"/>
                 </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\undo.png"/>
-                </Property>
                 <Property name="text" type="java.lang.String" value="UnDo"/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
@@ -91,9 +76,6 @@
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Y"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Gouzy\Documents\BUT Info\Semestre 3\SAE\Graphe\GORAS_EditeurGrapheProbalistiques\src\main\java\img\redo.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="ReDo"/>
               </Properties>
@@ -160,13 +142,54 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="210" height="250"/>
+          <AbsoluteConstraints x="0" y="0" width="210" height="160"/>
         </Constraint>
       </Constraints>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
         <Property name="useNullLayout" type="boolean" value="true"/>
       </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JToggleButton" name="selectBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Selection"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectBtnActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="40" y="20" width="110" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="noeudBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Noeud"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="noeudBtnActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="40" y="60" width="111" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="areteBtn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Arete"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="areteBtnActionPerformed"/>
+          </Events>
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
+              <AbsoluteConstraints x="40" y="100" width="110" height="-1"/>
+            </Constraint>
+          </Constraints>
+        </Component>
+      </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="panelPropri&#xe9;t&#xe9;s">
       <Properties>
@@ -181,7 +204,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="250" width="210" height="250"/>
+          <AbsoluteConstraints x="0" y="160" width="210" height="340"/>
         </Constraint>
       </Constraints>
 
@@ -193,7 +216,7 @@
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="248" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="338" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -206,6 +229,9 @@
         <Property name="horizontalScrollBarPolicy" type="int" value="32"/>
         <Property name="verticalScrollBarPolicy" type="int" value="22"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="zoneDessinMouseClicked"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="210" y="0" width="680" height="500"/>

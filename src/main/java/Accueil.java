@@ -1,3 +1,10 @@
+import java.awt.Graphics;
+import java.awt.Point;
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.filechooser.FileSystemView;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -5,15 +12,30 @@
 
 /**
  *
- * @author oskar
+ * @author GORAS
  */
 public class Accueil extends javax.swing.JFrame {
+    
+    /**
+     * Nombre indiquant l'option selectionnée :
+     *      - 0 si mode de selection
+     *      - 1 si mode de dessin de noeud
+     *      - 2 si mode de dessin d'arete
+     */
+    private int option;
+    
+    /**
+     * dessin du graphe 
+     */
+    private final Graphics grapheDessin = new Graphics();
 
     /**
      * Creates new form Accueil
      */
     public Accueil() {
         initComponents();
+        this.setTitle("Graphio");
+        this.setSize(1000, 600);
     }
 
     /**
@@ -26,14 +48,17 @@ public class Accueil extends javax.swing.JFrame {
     private void initComponents() {
 
         panelPalette = new javax.swing.JPanel();
+        selectBtn = new javax.swing.JToggleButton();
+        noeudBtn = new javax.swing.JToggleButton();
+        areteBtn = new javax.swing.JToggleButton();
         panelPropriétés = new javax.swing.JPanel();
         zoneDessin = new javax.swing.JScrollPane();
         menuBarre = new javax.swing.JMenuBar();
         menuGraphe = new javax.swing.JMenu();
         nouveauGraphe = new javax.swing.JMenuItem();
+        enregistrer = new javax.swing.JMenuItem();
         enregistrerSous = new javax.swing.JMenuItem();
         ouvrir = new javax.swing.JMenuItem();
-        enregistrer = new javax.swing.JMenuItem();
         menuEdition = new javax.swing.JMenu();
         undo = new javax.swing.JMenuItem();
         redo = new javax.swing.JMenuItem();
@@ -42,15 +67,42 @@ public class Accueil extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1280, 720));
         getContentPane().setLayout(null);
 
         panelPalette.setBackground(new java.awt.Color(204, 204, 204));
         panelPalette.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         panelPalette.setForeground(new java.awt.Color(204, 204, 204));
         panelPalette.setLayout(null);
+
+        selectBtn.setText("Selection");
+        selectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectBtnActionPerformed(evt);
+            }
+        });
+        panelPalette.add(selectBtn);
+        selectBtn.setBounds(40, 20, 110, 23);
+
+        noeudBtn.setText("Noeud");
+        noeudBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                noeudBtnActionPerformed(evt);
+            }
+        });
+        panelPalette.add(noeudBtn);
+        noeudBtn.setBounds(40, 60, 111, 23);
+
+        areteBtn.setText("Arete");
+        areteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                areteBtnActionPerformed(evt);
+            }
+        });
+        panelPalette.add(areteBtn);
+        areteBtn.setBounds(40, 100, 110, 23);
+
         getContentPane().add(panelPalette);
-        panelPalette.setBounds(0, 0, 210, 250);
+        panelPalette.setBounds(0, 0, 210, 160);
 
         panelPropriétés.setBackground(new java.awt.Color(204, 204, 204));
         panelPropriétés.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -63,20 +115,26 @@ public class Accueil extends javax.swing.JFrame {
         );
         panelPropriétésLayout.setVerticalGroup(
             panelPropriétésLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 248, Short.MAX_VALUE)
+            .addGap(0, 338, Short.MAX_VALUE)
         );
 
         getContentPane().add(panelPropriétés);
-        panelPropriétés.setBounds(0, 250, 210, 250);
+        panelPropriétés.setBounds(0, 160, 210, 340);
 
         zoneDessin.setBackground(new java.awt.Color(255, 255, 255));
         zoneDessin.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         zoneDessin.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        zoneDessin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                zoneDessinMouseClicked(evt);
+            }
+        });
         getContentPane().add(zoneDessin);
-        zoneDessin.setBounds(206, 0, 680, 500);
+        zoneDessin.setBounds(210, 0, 680, 500);
 
         menuGraphe.setText("Graphes");
 
+        nouveauGraphe.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         nouveauGraphe.setText("Nouveau graphe");
         nouveauGraphe.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,20 +143,38 @@ public class Accueil extends javax.swing.JFrame {
         });
         menuGraphe.add(nouveauGraphe);
 
+        enregistrer.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        enregistrer.setText("Enregistrer");
+        enregistrer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enregistrerActionPerformed(evt);
+            }
+        });
+        menuGraphe.add(enregistrer);
+
+        enregistrerSous.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         enregistrerSous.setText("Enregistrer sous");
+        enregistrerSous.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enregistrerSousActionPerformed(evt);
+            }
+        });
         menuGraphe.add(enregistrerSous);
 
+        ouvrir.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         ouvrir.setText("Ouvrir");
+        ouvrir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ouvrirActionPerformed(evt);
+            }
+        });
         menuGraphe.add(ouvrir);
-
-        enregistrer.setText("Enregistrer");
-        menuGraphe.add(enregistrer);
 
         menuBarre.add(menuGraphe);
 
         menuEdition.setText("Edition");
 
-        undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        undo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         undo.setText("UnDo");
         undo.setToolTipText("");
         undo.addActionListener(new java.awt.event.ActionListener() {
@@ -108,7 +184,7 @@ public class Accueil extends javax.swing.JFrame {
         });
         menuEdition.add(undo);
 
-        redo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_MASK));
+        redo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         redo.setText("ReDo");
         redo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,9 +215,72 @@ public class Accueil extends javax.swing.JFrame {
     }//GEN-LAST:event_redoActionPerformed
 
     private void nouveauGrapheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nouveauGrapheActionPerformed
-        // TODO add your handling code here:
+        new NouveauGraphe().setVisible(true);
     }//GEN-LAST:event_nouveauGrapheActionPerformed
 
+    private void enregistrerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enregistrerActionPerformed
+        //TODO
+    }//GEN-LAST:event_enregistrerActionPerformed
+
+    private void enregistrerSousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enregistrerSousActionPerformed
+        JFileChooser explorateurFichier = new JFileChooser(
+                FileSystemView.getFileSystemView().getHomeDirectory());
+        explorateurFichier.setDialogTitle("Enregistrer");
+        
+        int res = explorateurFichier.showSaveDialog(null);
+        if(res == JFileChooser.APPROVE_OPTION) {
+            File file = explorateurFichier.getSelectedFile();
+            System.out.println(file.getAbsolutePath());
+        }
+        
+    }//GEN-LAST:event_enregistrerSousActionPerformed
+
+    private void ouvrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ouvrirActionPerformed
+        JFileChooser explorateurFichier = new JFileChooser(
+                FileSystemView.getFileSystemView().getHomeDirectory());
+        explorateurFichier.setDialogTitle("Ouvrir un graphe: ");
+        
+        /* Gestion des extensions */
+        explorateurFichier.setAcceptAllFileFilterUsed(false);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Graphe ext1 et ext2", "A COMPLETER"); //TODO Extension OK
+        explorateurFichier.addChoosableFileFilter(filter);
+        
+        int res = explorateurFichier.showOpenDialog(null);
+        if(res == JFileChooser.APPROVE_OPTION) {
+            File file = explorateurFichier.getSelectedFile();
+            System.out.println(file.getAbsolutePath());
+        }
+    }//GEN-LAST:event_ouvrirActionPerformed
+
+    private void zoneDessinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zoneDessinMouseClicked
+        Point positionSouris = zoneDessin.getMousePosition();
+        switch (option) {
+            case 1:
+                grapheDessin.drawOval((int) positionSouris.getX(), (int) positionSouris.getY(), 20, 20);
+                zoneDessin.add(grapheDessin);
+                break;
+            case 2:
+                
+                break;
+            default:
+                throw new AssertionError();
+        }
+    }//GEN-LAST:event_zoneDessinMouseClicked
+
+    private void selectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectBtnActionPerformed
+        option = 0;
+    }//GEN-LAST:event_selectBtnActionPerformed
+
+    private void noeudBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noeudBtnActionPerformed
+        option = 1;
+    }//GEN-LAST:event_noeudBtnActionPerformed
+
+    private void areteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_areteBtnActionPerformed
+        option = 2;
+    }//GEN-LAST:event_areteBtnActionPerformed
+
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -172,12 +311,13 @@ public class Accueil extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Accueil().setVisible(true);
+                new Accueil().setVisible(true);            
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton areteBtn;
     private javax.swing.JMenuItem enregistrer;
     private javax.swing.JMenuItem enregistrerSous;
     private javax.swing.JMenu menuAide;
@@ -185,11 +325,13 @@ public class Accueil extends javax.swing.JFrame {
     private javax.swing.JMenu menuEdition;
     private javax.swing.JMenu menuGraphe;
     private javax.swing.JMenu menuTraitements;
+    private javax.swing.JToggleButton noeudBtn;
     private javax.swing.JMenuItem nouveauGraphe;
     private javax.swing.JMenuItem ouvrir;
     private javax.swing.JPanel panelPalette;
     private javax.swing.JPanel panelPropriétés;
     private javax.swing.JMenuItem redo;
+    private javax.swing.JToggleButton selectBtn;
     private javax.swing.JMenuItem undo;
     private javax.swing.JScrollPane zoneDessin;
     // End of variables declaration//GEN-END:variables

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # EditeurGrapheProbalistes
 
 ## Description du projet

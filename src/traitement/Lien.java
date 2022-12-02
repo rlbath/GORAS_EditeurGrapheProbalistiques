@@ -16,4 +16,8 @@ public abstract class Lien {
         this.cible = cible;
     }
 
+    public String toString() {
+        String lien = "Source :" + source + " Cible: " + cible;
+        return lien;
+    }
 }

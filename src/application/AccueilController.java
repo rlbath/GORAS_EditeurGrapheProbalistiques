@@ -3,7 +3,6 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,14 +10,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
@@ -57,13 +53,11 @@ public class AccueilController implements Initializable {
     @FXML
     private MenuItem newGrapheBtn;
     @FXML
-    private Label nomGraphe;
-    @FXML
     private ComboBox typesGraphe;
     
-    private final double RADIUS = 20.0;
-    
-    
+    private static final double RADIUS = 20.0;
+
+    private TextField nomGraphe;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,7 +72,7 @@ public class AccueilController implements Initializable {
         }
         
         try{
-            typesGraphe.getItems().addAll(factoryManager.factories.keySet());
+            typesGraphe.getItems().addAll(factoryManager.getFactories().keySet());
         } catch (Exception e) {
             //TODO
         }
@@ -86,40 +80,21 @@ public class AccueilController implements Initializable {
     }  
     
     //TODO delacer methode dessin dans les noeuds et lien
-    @FXML
+
     private void dessin(javafx.scene.input.MouseEvent evt) {        
         try {
             if (selectionBtn.isSelected()) {
             //TODO
             } else if(noeudBtn.isSelected()) {
 
-                Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY());
+                Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
                 graphe.ajouterNoeud(noeud);
                 
-                /* cercle */
-                Circle cercle = new Circle(evt.getX(), evt.getY(), RADIUS);
-                cercle.setFill(Color.TRANSPARENT);
-                cercle.setStroke(Color.BLACK);
-                cercle.setOnMouseClicked((new EventHandler<MouseEvent>() {
- 
-                    @Override
-                    public void handle(MouseEvent evt) {
-                        if (source == null) {
-                            source = noeud;
-                        } else {
-                            cible = noeud;
-                        }
-                    }
-                }));
-                
-                /* label */
-                Label libelle = new Label(noeud.getLibelle());
-                libelle.setLayoutX(evt.getX());
-                libelle.setLayoutY(evt.getY());
-                zoneDessin.getChildren().addAll(cercle, libelle);
-
             } else if(lienBtn.isSelected()){
-                Lien lien = factory.creerLien(source, cible);
+                
+                //TODO Verif lien pas deja existant
+                if (source != null && cible != null) {
+                    Lien lien = factory.creerLien(source, cible);
                 graphe.ajouterLien(lien);
                 Line ligne;
                 
@@ -137,6 +112,7 @@ public class AccueilController implements Initializable {
                 cible = null;
                 source = null;
                 zoneDessin.getChildren().addAll(ligne);
+                }
             }
         } catch (Exception  e) {
             //Si graphe inexistant
@@ -173,7 +149,11 @@ public class AccueilController implements Initializable {
         } catch (Exception e) {
             
         }
+        //TODO Empecher validation si nom vide ou type vide
     }
     
     
+    public static double getRadius() {
+        return RADIUS;
+    }
 }    

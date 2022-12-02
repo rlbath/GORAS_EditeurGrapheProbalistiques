@@ -32,4 +32,11 @@ public abstract class Noeud {
     public double getY() {
         return coordY;
     }
+    
+    public String toString() {
+        String noeud = libelle + " X: " + coordX + " Y :" + coordY;
+        return noeud;
+        
+    }
+
 }

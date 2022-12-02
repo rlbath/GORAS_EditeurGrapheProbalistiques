@@ -1,5 +1,7 @@
 package traitement;
 
+import javafx.scene.layout.AnchorPane;
+
 public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
 
     @Override
@@ -8,8 +10,8 @@ public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
     }
 
     @Override
-    public Noeud creerNoeud(double coordX, double coordY) {
-        return new NoeudSimple(coordX, coordY);
+    public Noeud creerNoeud(double coordX, double coordY, AnchorPane zoneDessin) {
+        return new NoeudSimple(coordX, coordY, zoneDessin);
     }
 
     @Override

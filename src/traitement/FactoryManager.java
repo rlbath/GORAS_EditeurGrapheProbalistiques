@@ -4,16 +4,15 @@ import java.util.HashMap;
 import exceptions.*;
 
 public class FactoryManager {
-    
-    
-    public HashMap<String, FactoryGraphe> factories;
+
+    private HashMap<String, FactoryGraphe> factories;
     
     private static FactoryManager instance = new FactoryManager();
     
     public FactoryManager() {
         factories = new HashMap<> ();
         factories.put("Graphe simple", new FactoryGrapheSimpleNonOriente() );
-        factories.put("TODO Graphe oriente", new FactoryGrapheSimpleNonOriente() );
+        factories.put("Graphe oriente", new FactoryGrapheOriente() );
     }
 
     public static FactoryManager getInstance() {
@@ -27,7 +26,9 @@ public class FactoryManager {
             throw new TypeGrapheFactoryException();
         }
     }
-    
-    //TODO getter hashmap + hashmap private
+
+    public HashMap<String, FactoryGraphe> getFactories() {
+        return factories;
+    }
 
 }

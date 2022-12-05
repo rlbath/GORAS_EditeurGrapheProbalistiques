@@ -30,7 +30,7 @@ public class NoeudSimple extends Noeud {
         
         /* cercle */
         Circle cercle = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius());
-        cercle.setFill(Color.TRANSPARENT);
+        cercle.setFill(Color.TRANSPARENT);  
         cercle.setStroke(Color.BLACK);
         cercle.setOnMouseDragged((new EventHandler<MouseEvent>() {
 

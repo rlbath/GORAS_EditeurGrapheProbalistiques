@@ -22,11 +22,17 @@ public class NoeudSimple extends Noeud {
     }
     
     private void dessinerNoeud(AnchorPane zoneDessin, NoeudSimple noeud) {
-
+        
+        /* Cercle extérieur */
+        Circle cercleExterieur = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius() * 2.5);
+        cercleExterieur.setFill(Color.TRANSPARENT);
+        cercleExterieur.setStroke(Color.TRANSPARENT);
+        
         /* cercle */
         Circle cercle = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius());
-        cercle.setFill(Color.TRANSPARENT);
+        cercle.setFill(Color.TRANSPARENT);  
         cercle.setStroke(Color.BLACK);
+
 
         /* label */
         Label libelle = new Label(this.getLibelle());
@@ -35,8 +41,7 @@ public class NoeudSimple extends Noeud {
         
         /* Groupe cercle + label */
         Group groupe = new Group();
-        groupe.getChildren().addAll(cercle, libelle);
-        
+        groupe.getChildren().addAll(cercle, libelle, cercleExterieur);
         groupe.setOnMouseClicked((new EventHandler<MouseEvent>() {
 
             @Override
@@ -47,7 +52,19 @@ public class NoeudSimple extends Noeud {
                     cible = noeud;
                 }
             }
-        }));        
+        }));
+        
+        groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent evt) {
+                //TODO trouver une méthode pour renvoyer un boolean
+                System.out.println("Impossible de créer un noeud !");
+                AccueilController.isDrawable = false;
+            }
+        }));
+        
+        
         //groupe.setOnMouseDragged();
         
         zoneDessin.getChildren().addAll(groupe);

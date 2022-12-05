@@ -17,8 +17,10 @@ public class Accueil extends Application {
         Parent root;
         root = FXMLLoader.load(getClass().getResource("FXMLAccueil.fxml"));
         primaryStage.setTitle("Editeur de graphes (Graphio)");
-        primaryStage.setScene(new Scene(root));
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
 
     public static void main(String[] args) {

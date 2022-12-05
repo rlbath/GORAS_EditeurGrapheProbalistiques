@@ -15,7 +15,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
 import traitement.FactoryGraphe;
@@ -57,6 +56,7 @@ public class AccueilController implements Initializable {
     
     private static final double RADIUS = 20.0;
 
+    @FXML
     private TextField nomGraphe;
     
     @Override
@@ -78,9 +78,8 @@ public class AccueilController implements Initializable {
         }
         
     }  
-    
-    //TODO delacer methode dessin dans les noeuds et lien
 
+    @FXML
     private void dessin(javafx.scene.input.MouseEvent evt) {        
         try {
             if (selectionBtn.isSelected()) {
@@ -92,30 +91,31 @@ public class AccueilController implements Initializable {
                 
             } else if(lienBtn.isSelected()){
                 
-                //TODO Verif lien pas deja existant
-                if (source != null && cible != null) {
-                    Lien lien = factory.creerLien(source, cible);
-                graphe.ajouterLien(lien);
-                Line ligne;
-                
-                double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
-                
-                double xSource = source.getX() + (cible.getX() - source.getX()) / l * RADIUS;
-                double ySource = source.getY() + (cible.getY() - source.getY()) / l * RADIUS;
-                
-                double xCible = cible.getX() + (source.getX() - cible.getX()) / l * RADIUS;
-                double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * RADIUS;
-                
-                
-                ligne = new Line( xCible, yCible, xSource, ySource);
-                
-                cible = null;
-                source = null;
-                zoneDessin.getChildren().addAll(ligne);
+                if (graphe.liens.isEmpty() ) {
+                    for (Lien lienATester : graphe.liens) {
+                        Noeud sourceATester = lienATester.getSource();
+                        Noeud cibleATester = lienATester.getCible();
+
+                        if (source != null && cible != null) {
+
+                            if (source != null && cible != null 
+                                && (source == sourceATester && cible == cibleATester 
+                                    || source == cibleATester && cible == sourceATester)) {
+                                
+                                System.out.println("Impossible de dessiner un lien deja existant");
+                            } else {
+                                Lien lien = factory.creerLien(source, cible, zoneDessin);
+                                graphe.ajouterLien(lien);
+                            }
+                        }
+                    }
+                } else {
+                    Lien lien = factory.creerLien(source, cible, zoneDessin);
+                    graphe.ajouterLien(lien);
                 }
             }
         } catch (Exception  e) {
-            //Si graphe inexistant
+            //TODO indique l'erreur
         }
         
     }

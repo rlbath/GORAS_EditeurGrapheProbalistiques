@@ -27,25 +27,6 @@ public class NoeudSimple extends Noeud {
         Circle cercle = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius());
         cercle.setFill(Color.TRANSPARENT);
         cercle.setStroke(Color.BLACK);
-        cercle.setOnMouseDragged((new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent evt) {
-                System.out.println(".handle()");
-            }
-        }));
-        
-        cercle.setOnMouseClicked((new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent evt) {
-                if (source == null) {
-                    source = noeud;
-                } else {
-                    cible = noeud;
-                }
-            }
-        }));
 
         /* label */
         Label libelle = new Label(this.getLibelle());
@@ -55,6 +36,18 @@ public class NoeudSimple extends Noeud {
         /* Groupe cercle + label */
         Group groupe = new Group();
         groupe.getChildren().addAll(cercle, libelle);
+        
+        groupe.setOnMouseClicked((new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent evt) {
+                if (source == null) {
+                    source = noeud;
+                } else {
+                    cible = noeud;
+                }
+            }
+        }));        
         //groupe.setOnMouseDragged();
         
         zoneDessin.getChildren().addAll(groupe);

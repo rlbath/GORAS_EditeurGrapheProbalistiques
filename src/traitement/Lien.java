@@ -15,6 +15,14 @@ public abstract class Lien {
         this.source = source;
         this.cible = cible;
     }
+    
+    public Noeud getSource() {
+        return source;
+    }
+    
+    public Noeud getCible() {
+        return cible;
+    }
 
     public String toString() {
         String lien = "Source :" + source + " Cible: " + cible;

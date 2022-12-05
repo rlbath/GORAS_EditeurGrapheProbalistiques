@@ -10,5 +10,5 @@ public abstract interface FactoryGraphe {
     public Noeud creerNoeud(double coordX, double coordY, AnchorPane zoneDessin);
 
     
-    public Lien creerLien(Noeud source, Noeud cible);
+    public Lien creerLien(Noeud source, Noeud cible, AnchorPane zoneDessin);
 }

@@ -12,7 +12,7 @@ public class FactoryManager {
     public FactoryManager() {
         factories = new HashMap<> ();
         factories.put("Graphe simple", new FactoryGrapheSimpleNonOriente() );
-        factories.put("Graphe oriente", new FactoryGrapheOriente() );
+        factories.put("Graphe oriente", new FactoryGrapheSimpleOriente() );
     }
 
     public static FactoryManager getInstance() {

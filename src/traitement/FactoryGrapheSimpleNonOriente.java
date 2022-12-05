@@ -15,8 +15,8 @@ public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
     }
 
     @Override
-    public Lien creerLien(Noeud source, Noeud cible) {
-        return new Arete(source, cible);
+    public Lien creerLien(Noeud source, Noeud cible, AnchorPane zoneDessin) {
+        return new Arete(source, cible, zoneDessin);
     }
     
     public FactoryGrapheSimpleNonOriente getInstance() {

@@ -38,6 +38,7 @@ public class AccueilController implements Initializable {
     /* pour le dessin d'un lien */
     public static Noeud cible;
     public static Noeud source;
+    public static boolean isDrawable = true;
     
     @FXML
     private ToggleButton selectionBtn;
@@ -54,7 +55,7 @@ public class AccueilController implements Initializable {
     @FXML
     private ComboBox typesGraphe;
     
-    private static final double RADIUS = 20.0;
+    private static final double RADIUS = 30.0;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -82,10 +83,15 @@ public class AccueilController implements Initializable {
             if (selectionBtn.isSelected()) {
             //TODO
             } else if(noeudBtn.isSelected()) {
-
-                Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
-                graphe.ajouterNoeud(noeud);
                 
+            //TODO vérifier dans tous les noeud (arrayList) si il y en a un qui est trop proche
+                if (isDrawable == true) {
+                    Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
+                    graphe.ajouterNoeud(noeud);
+                }
+                isDrawable = true;
+                
+            
             } else if(lienBtn.isSelected()){
                 
                 //TODO Verif lien pas deja existant

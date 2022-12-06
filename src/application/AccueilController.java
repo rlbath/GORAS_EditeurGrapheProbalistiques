@@ -15,6 +15,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import traitement.FactoryGraphe;
@@ -54,8 +55,8 @@ public class AccueilController implements Initializable {
     private MenuItem newGrapheBtn;
     @FXML
     private ComboBox typesGraphe;
-    
-
+    @FXML
+    private MenuItem AideManipGraphe;
     @FXML
     private TextField nomGraphe;
 
@@ -132,10 +133,21 @@ public class AccueilController implements Initializable {
     @FXML
     private void nouveauGraphe() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLNouveauGraphe.fxml"));
-        Stage stage = new Stage();
-        stage.setTitle("Nouveau graphe");
-        stage.setScene(new Scene(root));  
-        stage.show();
+        Stage nouveauGrapheStage = new Stage();
+        nouveauGrapheStage.initModality(Modality.APPLICATION_MODAL);
+        nouveauGrapheStage.setTitle("Nouveau graphe");
+        nouveauGrapheStage.setScene(new Scene(root));  
+        nouveauGrapheStage.show();
+    }
+    
+    @FXML
+    private void afficheAideManipGraphe() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideManipGraphe.fxml"));
+        Stage afficheAideManipGraphe = new Stage();
+        afficheAideManipGraphe.initModality(Modality.APPLICATION_MODAL);
+        afficheAideManipGraphe.setTitle("Aide Manipulation d'un Graphe");
+        afficheAideManipGraphe.setScene(new Scene(root));  
+        afficheAideManipGraphe.show();
     }
     
     @FXML
@@ -143,6 +155,9 @@ public class AccueilController implements Initializable {
         Stage stage = (Stage) annulerBtn.getScene().getWindow();
         stage.close();
     }
+    
+    
+    
     
     @FXML
     private void confirmeNouveauGraphe() {

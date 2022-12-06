@@ -33,7 +33,7 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Aide">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Traitements" />
+                  <MenuItem fx:id="AideManipGraphe" mnemonicParsing="false" onAction="#afficheAideManipGraphe" text="Manipulation d'un graphe" />
                   <MenuItem mnemonicParsing="false" text="Créer un graphe" />
                   <MenuItem mnemonicParsing="false" text="TODO" />
                </items>

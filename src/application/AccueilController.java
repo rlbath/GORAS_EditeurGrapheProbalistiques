@@ -151,6 +151,16 @@ public class AccueilController implements Initializable {
     }
     
     @FXML
+    private void aficheAideCreaGraphe() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideCreaGraphe.fxml"));
+        Stage aficheAideCreaGraphe = new Stage();
+        aficheAideCreaGraphe.initModality(Modality.APPLICATION_MODAL);
+        aficheAideCreaGraphe.setTitle("Aide Création d'un Graphe");
+        aficheAideCreaGraphe.setScene(new Scene(root));  
+        aficheAideCreaGraphe.show();
+    }
+    
+    @FXML
     private void fermeFenetre() {
         Stage stage = (Stage) annulerBtn.getScene().getWindow();
         stage.close();

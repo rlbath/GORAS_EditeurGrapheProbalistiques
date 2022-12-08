@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import static traitement.Arete.dessinerLien;
 
@@ -57,6 +58,8 @@ public class AccueilController implements Initializable {
     @FXML
     private ComboBox typesGraphe;
     @FXML
+    private MenuItem AideManipGraphe;
+    @FXML
     private TextField nomGraphe;
     
     private Line ligneEnCours = null;
@@ -96,7 +99,7 @@ public class AccueilController implements Initializable {
                 isDrawable = true;
                 
             } else if(lienBtn.isSelected()){ //Cas si on selectione l'option lien
-                
+
                 /*
                 if (!graphe.liens.isEmpty() ) {
                     for (Lien lienATester : graphe.liens) {
@@ -135,10 +138,41 @@ public class AccueilController implements Initializable {
     @FXML
     private void nouveauGraphe() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLNouveauGraphe.fxml"));
-        Stage stage = new Stage();
-        stage.setTitle("Nouveau graphe");
-        stage.setScene(new Scene(root));  
-        stage.show();
+        Stage nouveauGrapheStage = new Stage();
+        nouveauGrapheStage.initModality(Modality.APPLICATION_MODAL);
+        nouveauGrapheStage.setTitle("Nouveau graphe");
+        nouveauGrapheStage.setScene(new Scene(root));  
+        nouveauGrapheStage.show();
+    }
+    
+    @FXML
+    private void afficheAideManipGraphe() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideManipGraphe.fxml"));
+        Stage afficheAideManipGraphe = new Stage();
+        afficheAideManipGraphe.initModality(Modality.APPLICATION_MODAL);
+        afficheAideManipGraphe.setTitle("Aide Manipulation d'un Graphe");
+        afficheAideManipGraphe.setScene(new Scene(root));  
+        afficheAideManipGraphe.show();
+    }
+    
+    @FXML
+    private void aficheAideCreaGraphe() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideCreaGraphe.fxml"));
+        Stage aficheAideCreaGraphe = new Stage();
+        aficheAideCreaGraphe.initModality(Modality.APPLICATION_MODAL);
+        aficheAideCreaGraphe.setTitle("Aide Création d'un Graphe");
+        aficheAideCreaGraphe.setScene(new Scene(root));  
+        aficheAideCreaGraphe.show();
+    }
+    
+    @FXML
+    private void aficheAideMenu() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideMenus.fxml"));
+        Stage aficheAideCreaGraphe = new Stage();
+        aficheAideCreaGraphe.initModality(Modality.APPLICATION_MODAL);
+        aficheAideCreaGraphe.setTitle("Aide navigation dans les menus");
+        aficheAideCreaGraphe.setScene(new Scene(root));  
+        aficheAideCreaGraphe.show();
     }
     
     @FXML
@@ -146,7 +180,6 @@ public class AccueilController implements Initializable {
         Stage stage = (Stage) annulerBtn.getScene().getWindow();
         stage.close();
     }
-    
     /* 
      * Verification des infos saisi
      * Creation d'un objet graphe correspondant au type selectionne   

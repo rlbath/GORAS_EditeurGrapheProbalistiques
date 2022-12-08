@@ -37,9 +37,10 @@ public class NoeudSimple extends Noeud {
 
         /* label */
         Label libelle = new Label(this.getLibelle());
-        libelle.setLayoutX(noeud.getX());
-        libelle.setLayoutY(noeud.getY());
-                
+
+        libelle.setLayoutX(noeud.getX() - 3);
+        libelle.setLayoutY(noeud.getY() - 8);
+
         /* Groupe cercle + label */
         Group groupe = new Group();
         groupe.getChildren().addAll(cercle, libelle, cercleExterieur);

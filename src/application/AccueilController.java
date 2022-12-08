@@ -100,7 +100,7 @@ public class AccueilController implements Initializable {
             
             } else if(lienBtn.isSelected()){
                 
-                if (graphe.liens.isEmpty() ) {
+                if (!graphe.liens.isEmpty() ) {
                     for (Lien lienATester : graphe.liens) {
                         Noeud sourceATester = lienATester.getSource();
                         Noeud cibleATester = lienATester.getCible();
@@ -156,6 +156,16 @@ public class AccueilController implements Initializable {
         Stage aficheAideCreaGraphe = new Stage();
         aficheAideCreaGraphe.initModality(Modality.APPLICATION_MODAL);
         aficheAideCreaGraphe.setTitle("Aide Création d'un Graphe");
+        aficheAideCreaGraphe.setScene(new Scene(root));  
+        aficheAideCreaGraphe.show();
+    }
+    
+    @FXML
+    private void aficheAideMenu() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLAideMenus.fxml"));
+        Stage aficheAideCreaGraphe = new Stage();
+        aficheAideCreaGraphe.initModality(Modality.APPLICATION_MODAL);
+        aficheAideCreaGraphe.setTitle("Aide navigation dans les menus");
         aficheAideCreaGraphe.setScene(new Scene(root));  
         aficheAideCreaGraphe.show();
     }

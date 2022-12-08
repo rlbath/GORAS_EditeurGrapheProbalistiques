@@ -33,9 +33,9 @@
           </Menu>
             <Menu mnemonicParsing="false" text="Aide">
                <items>
+                  <MenuItem mnemonicParsing="false" onAction="#aficheAideMenu" text="Aide sur les menus" />
                   <MenuItem fx:id="AideManipGraphe" mnemonicParsing="false" onAction="#afficheAideManipGraphe" text="Manipulation d'un graphe" />
                   <MenuItem mnemonicParsing="false" onAction="#aficheAideCreaGraphe" text="Créer un graphe" />
-                  <MenuItem mnemonicParsing="false" text="TODO" />
                </items>
             </Menu>
         </menus>

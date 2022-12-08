@@ -19,8 +19,8 @@ public class FactoryGrapheSimpleOriente implements FactoryGraphe {
     }
 
     @Override
-    public Lien creerLien(Noeud source, Noeud cible, AnchorPane zoneDessin) {
-        return new Arc(source, cible, zoneDessin);
+    public Lien creerLien(Noeud source, Noeud cible) {
+        return new Arc(source, cible);
     }
 
     @Override

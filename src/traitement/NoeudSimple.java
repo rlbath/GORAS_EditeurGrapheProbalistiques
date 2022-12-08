@@ -1,8 +1,9 @@
 package traitement;
 
 import application.AccueilController;
-import static application.AccueilController.cible;
-import static application.AccueilController.source;
+import static application.AccueilController.noeudCible;
+import static application.AccueilController.noeudSource;
+
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -38,7 +39,7 @@ public class NoeudSimple extends Noeud {
         Label libelle = new Label(this.getLibelle());
         libelle.setLayoutX(noeud.getX());
         libelle.setLayoutY(noeud.getY());
-        
+                
         /* Groupe cercle + label */
         Group groupe = new Group();
         groupe.getChildren().addAll(cercle, libelle, cercleExterieur);
@@ -46,13 +47,17 @@ public class NoeudSimple extends Noeud {
 
             @Override
             public void handle(MouseEvent evt) {
-                if (source == null) {
-                    source = noeud;
+                
+                if (noeudSource == null) {
+                    noeudSource = noeud;
+                    System.out.println("source set");
                 } else {
-                    cible = noeud;
+                    noeudCible = noeud;
+                    System.out.println("cible set");
                 }
             }
         }));
+        
         
         groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
 

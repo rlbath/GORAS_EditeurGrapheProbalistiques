@@ -6,7 +6,6 @@
 package traitement;
 
 import application.AccueilController;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
 /**
@@ -15,12 +14,12 @@ import javafx.scene.shape.Line;
  */
 public class Arc extends Lien {
 
-    public Arc(Noeud source, Noeud cible, AnchorPane zoneDessin) {
+    public Arc(Noeud source, Noeud cible) {
         super(source, cible);
-        dessinerLien(zoneDessin, source, cible);
+        dessinerLien(source, cible);
     }
     
-    private void dessinerLien(AnchorPane zoneDessin, Noeud source, Noeud cible) {
+    private void dessinerLien(Noeud source, Noeud cible) {
         Line ligne;
                 
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
@@ -34,9 +33,9 @@ public class Arc extends Lien {
 
         ligne = new Line( xCible, yCible, xSource, ySource);
 
-        AccueilController.cible = null;
-        AccueilController.source = null;
-        zoneDessin.getChildren().addAll(ligne);
+        AccueilController.noeudCible = null;
+        AccueilController.noeudSource = null;
+        //zoneDessin.getChildren().addAll(ligne);
     }
     
 }

@@ -10,12 +10,14 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 import javafx.stage.Stage;
+import static traitement.Arete.dessinerLien;
 
 import traitement.FactoryGraphe;
 import traitement.FactoryManager;
@@ -35,9 +37,11 @@ public class AccueilController implements Initializable {
     
     public static Graphe graphe;
     
+    private static final double RADIUS = 30.0;
+    
     /* pour le dessin d'un lien */
-    public static Noeud cible;
-    public static Noeud source;
+    public static Noeud noeudCible;
+    public static Noeud noeudSource = null;
     public static boolean isDrawable = true;
     
     @FXML
@@ -51,16 +55,12 @@ public class AccueilController implements Initializable {
     @FXML
     private Button annulerBtn;
     @FXML
-    private MenuItem newGrapheBtn;
-    @FXML
     private ComboBox typesGraphe;
-    
-
     @FXML
     private TextField nomGraphe;
-
-    private static final double RADIUS = 30.0;
-
+    
+    private Line ligneEnCours = null;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -85,42 +85,42 @@ public class AccueilController implements Initializable {
     @FXML
     private void dessin(javafx.scene.input.MouseEvent evt) {        
         try {
-            if (selectionBtn.isSelected()) {
+            if (selectionBtn.isSelected()) { //Cas si on selectione l'option selection
             //TODO
-            } else if(noeudBtn.isSelected()) {
+            } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
                 
-            //TODO vérifier dans tous les noeud (arrayList) si il y en a un qui est trop proche
                 if (isDrawable == true) {
                     Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
                     graphe.ajouterNoeud(noeud);
                 }
                 isDrawable = true;
                 
-            
-            } else if(lienBtn.isSelected()){
+            } else if(lienBtn.isSelected()){ //Cas si on selectione l'option lien
                 
-                if (graphe.liens.isEmpty() ) {
+                /*
+                if (!graphe.liens.isEmpty() ) {
                     for (Lien lienATester : graphe.liens) {
                         Noeud sourceATester = lienATester.getSource();
                         Noeud cibleATester = lienATester.getCible();
 
-                        if (source != null && cible != null) {
-
-                            if (source != null && cible != null 
-                                && (source == sourceATester && cible == cibleATester 
-                                    || source == cibleATester && cible == sourceATester)) {
-                                
-                                System.out.println("Impossible de dessiner un lien deja existant");
-                            } else {
-                                Lien lien = factory.creerLien(source, cible, zoneDessin);
-                                graphe.ajouterLien(lien);
-                            }
+                        if (noeudSource != null && noeudCible != null 
+                            && (noeudSource == sourceATester && noeudCible == cibleATester 
+                            || noeudSource == cibleATester && noeudCible == sourceATester)) {
+                            
+                            System.out.println("Impossible de dessiner un lien deja existant");
+                        } else {
+                            Lien lien = factory.creerLien(noeudSource, noeudCible);
+                            graphe.ajouterLien(lien);
+                            dessinerLien(zoneDessin, noeudSource, noeudCible);
                         }
+                 
                     }
                 } else {
-                    Lien lien = factory.creerLien(source, cible, zoneDessin);
+                    Lien lien = factory.creerLien(noeudSource, noeudCible);
                     graphe.ajouterLien(lien);
+                    dessinerLien(zoneDessin, noeudSource, noeudCible);
                 }
+                */
             }
         } catch (Exception  e) {
             //TODO indique l'erreur
@@ -128,7 +128,10 @@ public class AccueilController implements Initializable {
         
     }
     
-    /* Création d'un nouveau graphe */
+    /* 
+     * Création d'un nouveau graphe 
+     * Ouverture de la fenetre de selection de type
+     */
     @FXML
     private void nouveauGraphe() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLNouveauGraphe.fxml"));
@@ -144,6 +147,10 @@ public class AccueilController implements Initializable {
         stage.close();
     }
     
+    /* 
+     * Verification des infos saisi
+     * Creation d'un objet graphe correspondant au type selectionne   
+     */
     @FXML
     private void confirmeNouveauGraphe() {
         
@@ -163,5 +170,51 @@ public class AccueilController implements Initializable {
     
     public static double getRadius() {
         return RADIUS;
+    }
+
+     @FXML
+    private void zoneDessinMouseDragged(MouseEvent event) {
+        
+        if (lienBtn.isSelected()) {
+
+            double x = event.getX();
+            double y = event.getY();
+            System.out.println("Drag Enter ok");
+            System.out.println(graphe.estNoeudGraphe(x, y));
+            System.out.print(ligneEnCours);
+            System.out.println(noeudSource);
+
+            if (ligneEnCours == null && graphe.estNoeudGraphe(x, y) != null) {
+                
+                noeudSource = graphe.estNoeudGraphe(x, y);
+                System.out.println("Drag noeudSource ok");
+                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);
+                
+                
+            } else if (ligneEnCours != null && noeudSource != null) {    
+                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);                
+            }
+            
+        }
+    }
+
+    @FXML
+    private void zoneDessinMouseReleased(MouseEvent event){
+        
+        if (lienBtn.isSelected() && ligneEnCours != null) {
+            Noeud noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
+
+            if (noeudCible != null) {
+                try{
+                    graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
+                    dessinerLien(zoneDessin,noeudSource,noeudCible);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
+                
+            }
+            zoneDessin.getChildren().remove(ligneEnCours);
+            ligneEnCours = null;
+        }
     }
 }    

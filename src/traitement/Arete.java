@@ -6,14 +6,12 @@ import javafx.scene.shape.Line;
 
 public class Arete extends Lien {
     
-    public Arete(Noeud source, Noeud cible, AnchorPane zoneDessin) {
+    public Arete(Noeud source, Noeud cible) {
         super(source, cible);
-        dessinerLien(zoneDessin, source, cible);
     }
     
     
-    private void dessinerLien(AnchorPane zoneDessin, Noeud source, Noeud cible) {
-        Line ligne;
+    public static Line dessinerLien(AnchorPane zoneDessin, Noeud source, Noeud cible) {
         
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
 
@@ -24,10 +22,12 @@ public class Arete extends Lien {
         double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * AccueilController.getRadius();
 
 
-        ligne = new Line( xCible, yCible, xSource, ySource);
+        Line ligne = new Line(xCible, yCible, xSource, ySource);
 
-        AccueilController.cible = null;
-        AccueilController.source = null;
+        AccueilController.noeudCible = null;
+        AccueilController.noeudSource = null;
         zoneDessin.getChildren().addAll(ligne);
+        
+        return ligne;
     }
 }

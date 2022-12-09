@@ -12,6 +12,11 @@ public abstract class Graphe {
     public List<Lien> liens;
 
     public List<Traitement> traitements;
+    // Sert pour le REDO pour récupérer le dernier noeud supprimé
+    public List<Noeud> archiveNoeud;
+    // Sert pour le REDO pour récupérer le dernier lien supprimé
+    public List<Lien> archiveLien;
+    
 
     public Graphe(String libelle) {
         //TODO tester le libellé
@@ -30,6 +35,30 @@ public abstract class Graphe {
             noeuds.clear();
         } catch (Exception e) {
             System.out.println("Suppression impossible !");
+        }
+    }
+    
+    // Supprime le dernier noeuds crée puis l'ajoute dans l'arrayList archiveNoeud
+    public void undoNoeud() {
+        try {
+                System.out.println(noeuds);
+                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
+                noeuds.remove(noeuds.get(noeuds.size() - 1));
+                System.out.println(noeuds);
+        } catch (Exception e) {
+            System.err.println("UnDo sur un noeud impossible"); 
+        }
+    }
+    
+    // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
+    public void undoLien() {
+        try {
+                System.out.println(liens);
+                //archiveLien.add(liens.get(liens.size() - 1));
+                liens.remove(liens.get(liens.size() - 1));
+                System.out.println(liens);
+        } catch (Exception e) {
+            System.err.println("UnDo sur un noeud impossible"); 
         }
     }
     

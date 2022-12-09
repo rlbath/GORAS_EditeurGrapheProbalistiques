@@ -200,6 +200,7 @@ public class AccueilController implements Initializable {
             System.out.println("Creation du nouveau graphe : " + nom);
             graphe.supprimerNoeudsLiens();
             
+            //TODO supprimer le contenu de l'anchor pane
         } catch (Exception e) {
             
         }
@@ -255,5 +256,10 @@ public class AccueilController implements Initializable {
             zoneDessin.getChildren().remove(ligneEnCours);
             ligneEnCours = null;
         }
+    }
+    
+    @FXML
+    private void unDo() {
+        graphe.undoNoeud();
     }
 }    

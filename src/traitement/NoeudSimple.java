@@ -1,7 +1,7 @@
 package traitement;
 
 import application.AccueilController;
-import static application.AccueilController.noeudCible;
+//import static application.AccueilController.noeudCible;
 import static application.AccueilController.noeudSource;
 
 import javafx.event.EventHandler;
@@ -44,28 +44,11 @@ public class NoeudSimple extends Noeud {
         /* Groupe cercle + label */
         Group groupe = new Group();
         groupe.getChildren().addAll(cercle, libelle, cercleExterieur);
-        groupe.setOnMouseClicked((new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent evt) {
-                
-                if (noeudSource == null) {
-                    noeudSource = noeud;
-                    System.out.println("source set");
-                } else {
-                    noeudCible = noeud;
-                    System.out.println("cible set");
-                }
-            }
-        }));
-        
-        
         groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent evt) {
-                //TODO trouver une méthode pour renvoyer un boolean
-                System.out.println("Impossible de créer un noeud !");
                 AccueilController.isDrawable = false;
             }
         }));

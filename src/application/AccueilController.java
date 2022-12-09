@@ -42,7 +42,6 @@ public class AccueilController implements Initializable {
     private static final double RADIUS = 30.0;
     
     /* pour le dessin d'un lien */
-    public static Noeud noeudCible = null;
     public static Noeud noeudSource = null;
     public static boolean isDrawable = true;
     
@@ -63,7 +62,7 @@ public class AccueilController implements Initializable {
     @FXML
     private TextField nomGraphe;
     
-    private Line ligneEnCours;
+    private Line ligneEnCours = null;
     
     
     @Override
@@ -212,11 +211,9 @@ public class AccueilController implements Initializable {
         if (lienBtn.isSelected()) {
 
             double x = evt.getX();
-            double y = evt.getY();
-            System.out.println("Drag Enter ok");
-            
+            double y = evt.getY();            
 
-            if (graphe.estNoeudGraphe(x, y) != null) {
+            if (graphe.estNoeudGraphe(x, y) != null && ligneEnCours == null) {
                 
                 noeudSource = graphe.estNoeudGraphe(x, y);
                 System.out.println("Drag noeudSource ok");
@@ -226,7 +223,8 @@ public class AccueilController implements Initializable {
                 System.out.println(noeudSource);
                 
                 
-            } else if (ligneEnCours != null && noeudSource != null) {
+            } else if (noeudSource != null) {
+                System.out.println("noeudSource set");
                 Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
                 ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);                
             }
@@ -237,9 +235,9 @@ public class AccueilController implements Initializable {
     @FXML
     private void zoneDessinMouseReleased(MouseEvent event){
         
-        if (lienBtn.isSelected() && ligneEnCours != null) {
-            noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
-
+        if (lienBtn.isSelected()) {
+            Noeud noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
+            System.out.println(noeudCible);
             if (noeudCible != null) {
                 try{
                     graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));

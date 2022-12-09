@@ -24,7 +24,7 @@ public class Arete extends Lien {
 
         Line ligne = new Line(xCible, yCible, xSource, ySource);
 
-        AccueilController.noeudCible = null;
+        //AccueilController.noeudCible = null;
         AccueilController.noeudSource = null;
         zoneDessin.getChildren().addAll(ligne);
         

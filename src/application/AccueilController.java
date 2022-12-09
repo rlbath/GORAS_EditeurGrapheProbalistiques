@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
@@ -62,6 +63,8 @@ public class AccueilController implements Initializable {
     private MenuItem AideManipGraphe;
     @FXML
     private TextField nomGraphe;
+    @FXML
+    private ScrollPane zoneDessinContainer;
     
     private Line ligneEnCours = null;
     
@@ -195,6 +198,8 @@ public class AccueilController implements Initializable {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);
+            graphe.supprimerNoeudsLiens();
+            
         } catch (Exception e) {
             
         }

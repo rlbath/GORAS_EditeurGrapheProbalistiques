@@ -24,6 +24,15 @@ public abstract class Graphe {
         noeuds.add(noeud);
     }
     
+    public void supprimerNoeudsLiens() {
+        try {
+            liens.clear();
+            noeuds.clear();
+        } catch (Exception e) {
+            System.out.println("Suppression impossible !");
+        }
+    }
+    
     public void ajouterLien(Lien lien) {
         liens.add(lien);
     }

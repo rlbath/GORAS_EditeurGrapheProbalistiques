@@ -1,6 +1,10 @@
 package traitement;
 
 //import java.util.ArrayList;
+
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.shape.Line;
+
 //import java.util.List;
 
 public abstract class Lien {
@@ -24,8 +28,14 @@ public abstract class Lien {
         return cible;
     }
 
+    @Override
     public String toString() {
         String lien = "Source :" + source + " Cible: " + cible;
         return lien;
+    }
+    
+    
+    public static Line dessinerLien(AnchorPane zondeDessin,Noeud source, Noeud cible) {
+        return null;
     }
 }

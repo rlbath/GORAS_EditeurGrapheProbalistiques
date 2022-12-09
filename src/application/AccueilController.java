@@ -63,7 +63,7 @@ public class AccueilController implements Initializable {
     @FXML
     private TextField nomGraphe;
     
-    private Line ligneEnCours = null;
+    private Line ligneEnCours;
     
     
     @Override
@@ -206,27 +206,29 @@ public class AccueilController implements Initializable {
         return RADIUS;
     }
 
-     @FXML
-    private void zoneDessinMouseDragged(MouseEvent event) {
+    @FXML
+    private void zoneDessinMouseDragged(MouseEvent evt) {
         
         if (lienBtn.isSelected()) {
 
-            double x = event.getX();
-            double y = event.getY();
+            double x = evt.getX();
+            double y = evt.getY();
             System.out.println("Drag Enter ok");
-            System.out.println(graphe.estNoeudGraphe(x, y));
-            System.out.print(ligneEnCours);
-            System.out.println(noeudSource);
+            
 
-            if (ligneEnCours == null && graphe.estNoeudGraphe(x, y) != null) {
+            if (graphe.estNoeudGraphe(x, y) != null) {
                 
                 noeudSource = graphe.estNoeudGraphe(x, y);
                 System.out.println("Drag noeudSource ok");
                 ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);
+                System.out.println(graphe.estNoeudGraphe(x, y));
+                System.out.print(ligneEnCours);
+                System.out.println(noeudSource);
                 
                 
-            } else if (ligneEnCours != null && noeudSource != null) {    
-                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);                
+            } else if (ligneEnCours != null && noeudSource != null) {
+                Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
+                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);                
             }
             
         }
@@ -236,7 +238,7 @@ public class AccueilController implements Initializable {
     private void zoneDessinMouseReleased(MouseEvent event){
         
         if (lienBtn.isSelected() && ligneEnCours != null) {
-            Noeud noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
+            noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
 
             if (noeudCible != null) {
                 try{

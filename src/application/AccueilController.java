@@ -10,6 +10,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
@@ -41,7 +42,7 @@ public class AccueilController implements Initializable {
     private static final double RADIUS = 30.0;
     
     /* pour le dessin d'un lien */
-    public static Noeud noeudCible;
+    public static Noeud noeudCible = null;
     public static Noeud noeudSource = null;
     public static boolean isDrawable = true;
     

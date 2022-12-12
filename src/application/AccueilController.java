@@ -64,6 +64,8 @@ public class AccueilController implements Initializable {
     private TextField nomGraphe;
     @FXML
     private ScrollPane zoneDessinContainer;
+    @FXML
+    private AnchorPane mainContainer;
     
     private Line ligneEnCours = null;
     
@@ -98,6 +100,7 @@ public class AccueilController implements Initializable {
                 if (isDrawable == true) {
                     Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
                     graphe.ajouterNoeud(noeud);
+                    System.out.println(graphe);
                 }
                 isDrawable = true;
                 
@@ -197,8 +200,14 @@ public class AccueilController implements Initializable {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);
-            graphe.supprimerNoeudsLiens();
             
+            // re affiche la page de graphe
+            Parent root = FXMLLoader.load(getClass().getResource("FXMLAccueil.fxml"));
+            Stage afficheAccueil = new Stage();
+            afficheAccueil.setTitle("Editeur de graphe (Graphio) " + nom);
+            afficheAccueil.setScene(new Scene(root));  
+            afficheAccueil.show();
+            Accueil.mainStage.close();
             //TODO supprimer le contenu de l'anchor pane
         } catch (Exception e) {
             

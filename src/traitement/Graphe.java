@@ -28,15 +28,7 @@ public abstract class Graphe {
     public void ajouterNoeud(Noeud noeud) {
         noeuds.add(noeud);
     }
-    
-    public void supprimerNoeudsLiens() {
-        try {
-            liens.clear();
-            noeuds.clear();
-        } catch (Exception e) {
-            System.out.println("Suppression impossible !");
-        }
-    }
+
     
     // Supprime le dernier noeuds crée puis l'ajoute dans l'arrayList archiveNoeud
     public void undoNoeud() {

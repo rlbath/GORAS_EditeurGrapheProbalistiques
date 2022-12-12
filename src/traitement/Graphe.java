@@ -3,6 +3,7 @@ package traitement;
 import application.AccueilController;
 import java.util.ArrayList;
 import java.util.List;
+import traitement.NoeudSimple;
 
 public abstract class Graphe {
     public String libelle;
@@ -30,29 +31,7 @@ public abstract class Graphe {
     }
 
     
-    // Supprime le dernier noeuds crée puis l'ajoute dans l'arrayList archiveNoeud
-    public void undoNoeud() {
-        try {
-                System.out.println(noeuds);
-                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-                noeuds.remove(noeuds.get(noeuds.size() - 1));
-                System.out.println(noeuds);
-        } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
-        }
-    }
     
-    // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
-    public void undoLien() {
-        try {
-                System.out.println(liens);
-                //archiveLien.add(liens.get(liens.size() - 1));
-                liens.remove(liens.get(liens.size() - 1));
-                System.out.println(liens);
-        } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
-        }
-    }
     
     public void ajouterLien(Lien lien) {
         liens.add(lien);

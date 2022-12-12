@@ -1,6 +1,7 @@
 package traitement;
 
 import application.AccueilController;
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -11,7 +12,7 @@ import javafx.scene.shape.Circle;
 
 
 public class NoeudSimple extends Noeud {
-
+    
     public static int cpt = 0;
 
     public NoeudSimple(double coordX, double coordY, AnchorPane zoneDessin) {

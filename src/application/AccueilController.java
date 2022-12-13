@@ -26,6 +26,7 @@ import traitement.FactoryGraphe;
 import traitement.FactoryManager;
 import traitement.Graphe;
 import traitement.Noeud;
+import traitement.NoeudSimple;
 import static traitement.NoeudSimple.dessinerNoeud;
 
 /**
@@ -211,6 +212,8 @@ public class AccueilController implements Initializable {
     private void zoneDessinMouseDragged(MouseEvent evt) {
         
         if (lienBtn.isSelected()) {
+            
+            int compteurNoeud = NoeudSimple.cpt;
 
             double x = evt.getX();
             double y = evt.getY();            
@@ -220,20 +223,21 @@ public class AccueilController implements Initializable {
                 ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);
                 
             } else if (noeudSource != null && ligneEnCours != null) {
+                zoneDessin.getChildren().remove(ligneEnCours);
                 Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
                 ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
-
+                NoeudSimple.cpt = compteurNoeud;
             }
             
         }
     }
 
     @FXML
-    private void zoneDessinMouseReleased(MouseEvent event){
+    private void zoneDessinMouseReleased(MouseEvent evt){
         
         if (lienBtn.isSelected() && ligneEnCours != null) {
-            Noeud noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
-            System.out.println(noeudCible);
+            Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());
+            System.out.println("noeud cible : " + noeudCible + " x : " + ligneEnCours.getEndX() + " y : " + ligneEnCours.getEndY());
             if (noeudCible != null) {
                 try{
                     graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));

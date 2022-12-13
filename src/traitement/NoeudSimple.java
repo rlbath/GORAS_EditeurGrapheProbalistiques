@@ -48,7 +48,7 @@ public class NoeudSimple extends Noeud {
                 AccueilController.isDrawable = false;
             }
         }));
-        
         zoneDessin.getChildren().addAll(groupe);
+        
     }
 }

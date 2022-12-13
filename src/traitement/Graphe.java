@@ -13,12 +13,11 @@ public abstract class Graphe {
     public List<Lien> liens;
 
     public List<Traitement> traitements;
-    // Sert pour le REDO pour récupérer le dernier noeud supprimé
-    public List<Object> archiveReDo = new ArrayList<>();
+    // Sert pour le REDO pour récupérer le dernier noeud / lien supprimé
+    public List<Noeud> archiveNoeud = new ArrayList<>();
+    public List<Lien> archiveLien = new ArrayList<>();
     
     
-    // Sert pour le REDO pour récupérer le dernier lien supprimé
-    public List<Lien> archiveLien;
     
 
     public Graphe(String libelle) {

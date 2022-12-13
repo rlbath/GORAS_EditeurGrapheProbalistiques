@@ -2,6 +2,7 @@ package traitement;
 
 //import java.util.ArrayList;
 
+import application.AccueilController;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
@@ -32,10 +33,5 @@ public abstract class Lien {
     public String toString() {
         String lien = "Source :" + source + " Cible: " + cible;
         return lien;
-    }
-    
-    
-    public static Line dessinerLien(AnchorPane zondeDessin,Noeud source, Noeud cible) {
-        return null;
     }
 }

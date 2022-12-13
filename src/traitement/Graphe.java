@@ -24,8 +24,8 @@ public abstract class Graphe {
     public Graphe(String libelle) {
         //TODO tester le libellé
         this.libelle = libelle;
-        noeuds = new ArrayList<Noeud> ();
-        liens = new ArrayList<Lien> ();
+        noeuds = new ArrayList<> ();
+        liens = new ArrayList<> ();
     }
    
     public void ajouterNoeud(Noeud noeud) {
@@ -59,7 +59,7 @@ public abstract class Graphe {
             double maxY = noeud.getY() + AccueilController.getRadius();
             
             if (minX < xATester && xATester < maxX && minY < yATester && yATester < maxY) {
-                return noeud;
+                return noeud;   
             }
         }
         

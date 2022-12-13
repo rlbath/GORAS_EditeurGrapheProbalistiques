@@ -24,8 +24,8 @@ public class FactoryGrapheSimpleOriente implements FactoryGraphe {
     }
 
     @Override
-    public Noeud creerNoeud(double coordX, double coordY, AnchorPane zoneDessin) {
-        return new NoeudSimple(coordX, coordY, zoneDessin);
+    public Noeud creerNoeud(double coordX, double coordY) {
+        return new NoeudSimple(coordX, coordY);
     }
     
     public FactoryGrapheSimpleOriente getInstance() {

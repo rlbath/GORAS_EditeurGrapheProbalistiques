@@ -1,7 +1,6 @@
 package traitement;
 
 import application.AccueilController;
-import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -15,12 +14,11 @@ public class NoeudSimple extends Noeud {
     
     public static int cpt = 0;
 
-    public NoeudSimple(double coordX, double coordY, AnchorPane zoneDessin) {
+    public NoeudSimple(double coordX, double coordY) {
         super(Integer.toString(cpt+=1), coordX, coordY);
-        dessinerNoeud(zoneDessin, this);
     }
     
-    private void dessinerNoeud(AnchorPane zoneDessin, NoeudSimple noeud) {
+    public static void dessinerNoeud(AnchorPane zoneDessin, Noeud noeud) {
         
         /* Cercle extérieur */
         Circle cercleExterieur = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius() * 2.5);
@@ -34,7 +32,7 @@ public class NoeudSimple extends Noeud {
 
 
         /* label */
-        Label libelle = new Label(this.getLibelle());
+        Label libelle = new Label(noeud.getLibelle());
 
         libelle.setLayoutX(noeud.getX() - 3);
         libelle.setLayoutY(noeud.getY() - 8);
@@ -50,9 +48,6 @@ public class NoeudSimple extends Noeud {
                 AccueilController.isDrawable = false;
             }
         }));
-        
-        
-        //groupe.setOnMouseDragged();
         
         zoneDessin.getChildren().addAll(groupe);
     }

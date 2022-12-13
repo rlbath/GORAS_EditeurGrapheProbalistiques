@@ -1,5 +1,6 @@
 package application;
 
+import exceptions.TypeGrapheFactoryException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -20,14 +21,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import static traitement.Arete.dessinerLien;
+
 
 import traitement.FactoryGraphe;
 import traitement.FactoryManager;
 import traitement.Graphe;
-import traitement.Lien;
 import traitement.Noeud;
 import traitement.NoeudSimple;
+
+import static traitement.NoeudSimple.dessinerNoeud;
+import static traitement.Arete.dessinerLien;
 
 /**
  *
@@ -99,9 +102,9 @@ public class AccueilController implements Initializable {
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
                 
                 if (isDrawable == true) {
-                    Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
+                    Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY());
                     graphe.ajouterNoeud(noeud);
-                    System.out.println(graphe);
+                    dessinerNoeud(zoneDessin, noeud);
                 }
                 isDrawable = true;
                 
@@ -201,16 +204,7 @@ public class AccueilController implements Initializable {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);
-            //NoeudSimple.groupeListe.clear();
-            
-            // re affiche la page de graphe
-            /* Parent root = FXMLLoader.load(getClass().getResource("FXMLAccueil.fxml"));
-            Stage afficheAccueil = new Stage();
-            afficheAccueil.setTitle("Editeur de graphe (Graphio) " + nom);
-            afficheAccueil.setScene(new Scene(root));  
-            afficheAccueil.show();
-            Accueil.mainStage.close(); */
-            //TODO supprimer le contenu de l'anchor pane
+
         } catch (Exception e) {
             
         }
@@ -226,35 +220,32 @@ public class AccueilController implements Initializable {
     private void zoneDessinMouseDragged(MouseEvent evt) {
         
         if (lienBtn.isSelected()) {
+            
+            int compteurNoeud = NoeudSimple.cpt;
 
             double x = evt.getX();
             double y = evt.getY();            
 
             if (graphe.estNoeudGraphe(x, y) != null && ligneEnCours == null) {
-                
                 noeudSource = graphe.estNoeudGraphe(x, y);
-                System.out.println("Drag noeudSource ok");
                 ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);
-                System.out.println(graphe.estNoeudGraphe(x, y));
-                System.out.print(ligneEnCours);
-                System.out.println(noeudSource);
                 
-                
-            } else if (noeudSource != null) {
-                System.out.println("noeudSource set");
-                Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY(), zoneDessin);
-                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);                
+            } else if (noeudSource != null && ligneEnCours != null) {
+                zoneDessin.getChildren().remove(ligneEnCours);
+                Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
+                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
+                NoeudSimple.cpt = compteurNoeud;
             }
             
         }
     }
 
     @FXML
-    private void zoneDessinMouseReleased(MouseEvent event){
+    private void zoneDessinMouseReleased(MouseEvent evt){
         
-        if (lienBtn.isSelected()) {
-            Noeud noeudCible = graphe.estNoeudGraphe(ligneEnCours.getEndX(), ligneEnCours.getEndY());
-            System.out.println(noeudCible);
+        if (lienBtn.isSelected() && ligneEnCours != null) {
+            Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());
+            System.out.println("noeud cible : " + noeudCible + " x : " + ligneEnCours.getEndX() + " y : " + ligneEnCours.getEndY());
             if (noeudCible != null) {
                 try{
                     graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
@@ -266,6 +257,7 @@ public class AccueilController implements Initializable {
             }
             zoneDessin.getChildren().remove(ligneEnCours);
             ligneEnCours = null;
+            noeudSource = null;
         }
     }
     

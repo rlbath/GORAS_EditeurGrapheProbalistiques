@@ -201,7 +201,7 @@ public class AccueilController implements Initializable {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);
-            NoeudSimple.groupeListe.clear();
+            //NoeudSimple.groupeListe.clear();
             
             // re affiche la page de graphe
             /* Parent root = FXMLLoader.load(getClass().getResource("FXMLAccueil.fxml"));
@@ -272,12 +272,8 @@ public class AccueilController implements Initializable {
     @FXML
     private void unDo() {
         try {
-                System.out.println(graphe.noeuds);
-                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-                // graphe.archiveNoeud.add(graphe.noeuds.size() - 1));
+                graphe.archiveReDo.add(graphe.noeuds.get(graphe.noeuds.size() - 1));
                 graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-                System.out.println(graphe.noeuds);
-                
                 zoneDessin.getChildren().remove(graphe.noeuds.size());
         } catch (Exception e) {
             System.err.println("UnDo sur un noeud impossible"); 
@@ -288,13 +284,10 @@ public class AccueilController implements Initializable {
     @FXML
     private void reDo() {
         try {
-                System.out.println(graphe.noeuds);
-                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-                graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-                System.out.println(graphe.noeuds);
-                zoneDessin.getChildren().remove(graphe.noeuds.size());
+                graphe.ajouterNoeud((Noeud)graphe.archiveReDo.get(0));
+                graphe.archiveReDo.remove(graphe.noeuds.get(0));
         } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
+            System.err.println("ReDo sur un noeud impossible"); 
         }
         
     }

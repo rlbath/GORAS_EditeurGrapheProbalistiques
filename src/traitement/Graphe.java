@@ -14,7 +14,9 @@ public abstract class Graphe {
 
     public List<Traitement> traitements;
     // Sert pour le REDO pour récupérer le dernier noeud supprimé
-    public List<Noeud> archiveNoeud;
+    public List<Object> archiveReDo = new ArrayList<>();
+    
+    
     // Sert pour le REDO pour récupérer le dernier lien supprimé
     public List<Lien> archiveLien;
     

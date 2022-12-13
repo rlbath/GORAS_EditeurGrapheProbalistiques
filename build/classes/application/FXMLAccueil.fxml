@@ -23,7 +23,7 @@
           <Menu mnemonicParsing="false" text="Edition">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#unDo" text="UnDo" />
-                  <MenuItem mnemonicParsing="false" text="ReDo" />
+                  <MenuItem mnemonicParsing="false" onAction="#reDo" text="ReDo" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Traitements">

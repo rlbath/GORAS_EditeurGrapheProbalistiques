@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Arc.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/NoeudSimple.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/application/AccueilController.java</file>
@@ -12,6 +13,15 @@
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Lien.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Arete.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/FactoryGrapheSimpleOriente.java</file>
+=======
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/traitement/Graphe.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/application/AccueilController.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/traitement/NoeudSimple.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/application/AideController.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/application/NouveauGrapheControler.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/application/Accueil.java</file>
+            <file>file:/Z:/GORAS_EditeurGrapheProbalistiques/src/application/FXMLAideManipGraphe.fxml</file>
+>>>>>>> afe5b15d21079889d76b1bbf81a5649a349115e3
         </group>
     </open-files>
 </project-private>

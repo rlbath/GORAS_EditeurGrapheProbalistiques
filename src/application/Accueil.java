@@ -11,7 +11,9 @@ import javafx.stage.Stage;
  * @author antoine.gouzy
  */
 public class Accueil extends Application {
-
+    
+    public static Stage mainStage;
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root;
@@ -20,8 +22,11 @@ public class Accueil extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+        mainStage = primaryStage;
         
     }
+    
+    
 
     public static void main(String[] args) {
         launch(args);

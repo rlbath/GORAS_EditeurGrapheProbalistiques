@@ -1,7 +1,6 @@
 package traitement;
 
 import application.AccueilController;
-
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -49,9 +48,6 @@ public class NoeudSimple extends Noeud {
                 AccueilController.isDrawable = false;
             }
         }));
-        
-        
-        //groupe.setOnMouseDragged();
         
         zoneDessin.getChildren().addAll(groupe);
     }

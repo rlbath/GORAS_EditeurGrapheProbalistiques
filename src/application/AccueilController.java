@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
@@ -20,14 +21,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import static traitement.Arete.dessinerLien;
+
 
 import traitement.FactoryGraphe;
 import traitement.FactoryManager;
 import traitement.Graphe;
 import traitement.Noeud;
 import traitement.NoeudSimple;
+
 import static traitement.NoeudSimple.dessinerNoeud;
+import static traitement.Arete.dessinerLien;
 
 /**
  *
@@ -63,6 +66,10 @@ public class AccueilController implements Initializable {
     private MenuItem AideManipGraphe;
     @FXML
     private TextField nomGraphe;
+    @FXML
+    private ScrollPane zoneDessinContainer;
+    @FXML
+    private AnchorPane mainContainer;
     
     private Line ligneEnCours = null;
     
@@ -196,8 +203,8 @@ public class AccueilController implements Initializable {
         try {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
-            System.out.println("Creation du nouveau graphe : " + nom);
-        } catch (TypeGrapheFactoryException e) {
+            System.out.println("Creation du nouveau graphe : " + nom);           
+        } catch (Exception e) {
             
         }
         //TODO Empecher validation si nom vide ou type vide
@@ -250,6 +257,49 @@ public class AccueilController implements Initializable {
             zoneDessin.getChildren().remove(ligneEnCours);
             ligneEnCours = null;
             noeudSource = null;
+        }
+    }
+    
+    @FXML
+    private void unDo() {
+        try {
+                System.out.println(graphe.noeuds);
+                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
+                // graphe.archiveNoeud.add(graphe.noeuds.size() - 1));
+                graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
+                System.out.println(graphe.noeuds);
+                
+                zoneDessin.getChildren().remove(graphe.noeuds.size());
+        } catch (Exception e) {
+            System.err.println("UnDo sur un noeud impossible"); 
+        }
+        
+    }
+    
+    @FXML
+    private void reDo() {
+        try {
+                System.out.println(graphe.noeuds);
+                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
+                graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
+                System.out.println(graphe.noeuds);
+                zoneDessin.getChildren().remove(graphe.noeuds.size());
+        } catch (Exception e) {
+            System.err.println("UnDo sur un noeud impossible"); 
+        }
+        
+    }
+
+    // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
+    public void undoLien() {
+        try {
+                System.out.println(graphe.liens);
+                //archiveLien.add(liens.get(liens.size() - 1));
+                graphe.liens.remove(graphe.liens.get(graphe.liens.size()));
+                System.out.println(graphe.liens);
+                zoneDessin.getChildren().remove(graphe.liens.size());
+        } catch (Exception e) {
+            System.err.println("UnDo sur un noeud impossible"); 
         }
     }
 }    

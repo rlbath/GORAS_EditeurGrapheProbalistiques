@@ -3,6 +3,7 @@ package traitement;
 import application.AccueilController;
 import java.util.ArrayList;
 import java.util.List;
+import traitement.NoeudSimple;
 
 public abstract class Graphe {
     public String libelle;
@@ -12,6 +13,11 @@ public abstract class Graphe {
     public List<Lien> liens;
 
     public List<Traitement> traitements;
+    // Sert pour le REDO pour récupérer le dernier noeud supprimé
+    public List<Noeud> archiveNoeud;
+    // Sert pour le REDO pour récupérer le dernier lien supprimé
+    public List<Lien> archiveLien;
+    
 
     public Graphe(String libelle) {
         //TODO tester le libellé
@@ -23,6 +29,9 @@ public abstract class Graphe {
     public void ajouterNoeud(Noeud noeud) {
         noeuds.add(noeud);
     }
+
+    
+    
     
     public void ajouterLien(Lien lien) {
         liens.add(lien);

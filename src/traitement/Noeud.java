@@ -6,8 +6,8 @@ package traitement;
 public abstract class Noeud {
     private String libelle;
     
-    private double coordX;
-    private double coordY;
+    private final double coordX;
+    private final double coordY;
 
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 

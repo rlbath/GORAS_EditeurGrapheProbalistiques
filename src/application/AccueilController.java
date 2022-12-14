@@ -70,7 +70,8 @@ public class AccueilController implements Initializable {
 
     
     private Line ligneEnCours = null;
-    private Group arcEnCours = null;
+    private Arc arcEnCours = null;
+    private Group arcEnCoursGroupe;
     
     
     @Override
@@ -218,22 +219,19 @@ public class AccueilController implements Initializable {
                 
                 if (graphe.estNoeudGraphe(x, y) != null && arcEnCours == null) {
                     noeudSource = graphe.estNoeudGraphe(x, y);
-                    arcEnCours = Arc.dessinerLien(zoneDessin, noeudSource, noeudSource);
+                    arcEnCours = (Arc) factory.creerLien(noeudSource, noeudSource);
+                    arcEnCoursGroupe = arcEnCours.dessinerLien(zoneDessin);
                     
                     
                 } else if (noeudSource != null && arcEnCours != null) {
                     // Supression de l'arc en cours
-                    zoneDessin.getChildren().remove(arcEnCours);
+                    zoneDessin.getChildren().remove(arcEnCoursGroupe);
                     Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
-                    arcEnCours = Arc.dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
+                    arcEnCours = (Arc) factory.creerLien(noeudSource, noeudProvisoire);
+                    arcEnCoursGroupe = arcEnCours.dessinerLien(zoneDessin);
                     NoeudSimple.cpt = compteurNoeud;
                 }
-            }
-            
-            
-            
-            
-            
+            } 
         }
     }
 
@@ -263,14 +261,15 @@ public class AccueilController implements Initializable {
                 if (noeudCible != null && !graphe.estArcDuGraphe(noeudSource, noeudCible)) {
                     try{
                         graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
-                        Arc.dessinerLien(zoneDessin,noeudSource,noeudCible);
+                        arcEnCours.dessinerLien(zoneDessin);
                     }catch(Exception e){
                         System.out.println(e.getMessage());
                     }
                 }
 
-                zoneDessin.getChildren().remove(arcEnCours);
+                zoneDessin.getChildren().remove(arcEnCoursGroupe);
                 arcEnCours = null;
+                arcEnCoursGroupe = null;
                 noeudSource = null;
                 
             }

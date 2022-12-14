@@ -2,17 +2,13 @@ package traitement;
 
 //import java.util.ArrayList;
 
-import application.AccueilController;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
-
 //import java.util.List;
 
 public abstract class Lien {
     
-    private final Noeud source;
+    public final Noeud source;
 
-    private final Noeud cible;
+    public final Noeud cible;
 
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 

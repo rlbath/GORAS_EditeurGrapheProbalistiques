@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package traitement;
 
 import application.AccueilController;
@@ -17,13 +12,15 @@ import javafx.scene.shape.QuadCurve;
  * @author antoine.gouzy
  */
 public class Arc extends Lien {
+    
+    private Group arc;
 
     public Arc(Noeud source, Noeud cible) {
         super(source, cible);
     }
     
     
-    public static Group dessinerLien(AnchorPane zoneDessin, Noeud source, Noeud cible) {
+    public Group dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
 
@@ -34,10 +31,10 @@ public class Arc extends Lien {
         double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * AccueilController.getRadius();
         
         
-         /* Creation de la ligne courbe  */
+        /* Creation de la ligne courbe  */
         double xDirDroite = xCible-xSource;
         double yDirDroite = yCible-ySource;
-        
+
         double xNorDroite = -yDirDroite * (1 / Math.sqrt(Math.pow(yDirDroite, 2) + Math.pow(xDirDroite, 2)));
         double yNorDroite = xDirDroite * (1 / Math.sqrt(Math.pow(yDirDroite, 2) + Math.pow(xDirDroite, 2)));
         
@@ -46,7 +43,7 @@ public class Arc extends Lien {
         
         double xControle = xNorDroite * 40 + xMilieuLien;
         double yControle = yNorDroite * 40 + yMilieuLien;
-
+        
         QuadCurve ligne = new QuadCurve(xSource, ySource, xControle, yControle, xCible, yCible);
         ligne.setFill(Color.TRANSPARENT);
         ligne.setStroke(Color.BLACK);
@@ -70,7 +67,7 @@ public class Arc extends Lien {
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
                 
-        Group arc = new Group();
+        arc = new Group();
         arc.getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         zoneDessin.getChildren().addAll(arc);

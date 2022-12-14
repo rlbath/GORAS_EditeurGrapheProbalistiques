@@ -30,7 +30,7 @@ import traitement.NoeudSimple;
 import traitement.Arc;
 import traitement.Arete;
 
-import static traitement.NoeudSimple.dessinerNoeud;
+import traitement.NoeudSimple;
 
 import traitement.FactoryGrapheSimpleNonOriente;
 import traitement.FactoryGrapheSimpleOriente;
@@ -67,6 +67,8 @@ public class AccueilController implements Initializable {
     private ComboBox typesGraphe;
     @FXML
     private TextField nomGraphe;
+    @FXML
+    private AnchorPane modificationContainer;
 
     
     private Line ligneEnCours = null;
@@ -94,16 +96,17 @@ public class AccueilController implements Initializable {
     }  
 
     @FXML
-    private void dessin(javafx.scene.input.MouseEvent evt) {        
+    private void dessin(javafx.scene.input.MouseEvent evt) {  
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectione l'option selection
-            //TODO
+                //TODO
+                NoeudSimple noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
+                noeudASelectionner.selectionGroupe(modificationContainer);
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
-                
                 if (isDrawable == true) {
-                    Noeud  noeud = factory.creerNoeud(evt.getX(), evt.getY());
+                    NoeudSimple noeud = (NoeudSimple)factory.creerNoeud(evt.getX(), evt.getY());
                     graphe.ajouterNoeud(noeud);
-                    dessinerNoeud(zoneDessin, noeud);
+                    noeud.dessinerNoeud(zoneDessin);
                 }
                 isDrawable = true;
             }
@@ -306,7 +309,9 @@ public class AccueilController implements Initializable {
         try {
             graphe.noeuds.add(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
             System.out.println("Noeud après ajout de l'archive" + graphe.noeuds);
-            dessinerNoeud(zoneDessin, graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
+            
+            //TODO faire ne sort que ça marche
+            //graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1).dessinerNoeud(zoneDessin);
             System.out.println("Archive noeud avant remove" + graphe.archiveNoeud);
             graphe.archiveNoeud.remove(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
             System.out.println("Archive noeud après remove" + graphe.archiveNoeud);

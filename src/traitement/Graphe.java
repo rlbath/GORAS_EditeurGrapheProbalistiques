@@ -80,6 +80,21 @@ public abstract class Graphe {
         return false;
     }
     
+    /**
+     * 
+     * @param noeudATester
+     * @param noeudATester2
+     * @return 
+     */
+    public boolean estArcDuGraphe(Noeud noeudATester, Noeud noeudATester2) {
+        for (Lien lien : liens) {
+            if (lien.getSource() == noeudATester && lien.getCible() == noeudATester2) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     
     @Override
     public String toString() {
@@ -87,5 +102,5 @@ public abstract class Graphe {
         String tout = "nom : " + libelle + "   noeuds : " + noeuds.toString() + "   liens : " + liens.toString();
         return tout;
     }
-    
+
 }

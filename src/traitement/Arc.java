@@ -8,6 +8,7 @@ package traitement;
 import application.AccueilController;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.QuadCurve;
 
@@ -31,28 +32,40 @@ public class Arc extends Lien {
 
         double xCible = cible.getX() + (source.getX() - cible.getX()) / l * AccueilController.getRadius();
         double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * AccueilController.getRadius();
-
-        Line ligne = new Line(xCible, yCible, xSource, ySource);
         
-        double angleRad = 0;
+        
+         /* Creation de la ligne courbe  */
+        double xDirDroite = xCible-xSource;
+        double yDirDroite = yCible-ySource;
+        
+        double xNorDroite = -yDirDroite * (1 / Math.sqrt(Math.pow(yDirDroite, 2) + Math.pow(xDirDroite, 2)));
+        double yNorDroite = xDirDroite * (1 / Math.sqrt(Math.pow(yDirDroite, 2) + Math.pow(xDirDroite, 2)));
+        
+        double xMilieuLien = (xCible + xSource)/2;
+        double yMilieuLien = (yCible + ySource)/2;
+        
+        double xControle = xNorDroite * 40 + xMilieuLien;
+        double yControle = yNorDroite * 40 + yMilieuLien;
+
+        QuadCurve ligne = new QuadCurve(xSource, ySource, xControle, yControle, xCible, yCible);
+        ligne.setFill(Color.TRANSPARENT);
+        ligne.setStroke(Color.BLACK);
+
+
+        /* Creation de la fleche */
+        double angleRad;
         
         if (xSource > xCible ) {
             angleRad = Math.PI / 4;
         } else {
             angleRad = 3 * Math.PI / 4;
         }
-        double distance = 30;
-        double xflecheH = xCible + distance * Math.cos(Math.atan((yCible - ySource) /(xCible - xSource)) - angleRad);
-        double yflecheH = yCible + distance * Math.sin(Math.atan((yCible - ySource) /(xCible - xSource)) - angleRad);
         
-        double xflecheB = xCible + distance * Math.cos(Math.atan((yCible - ySource) /(xCible - xSource)) + angleRad);
-        double yflecheB = yCible + distance * Math.sin(Math.atan((yCible - ySource) /(xCible - xSource)) + angleRad);
-        
-        
-        System.out.println("xflecheH : " + xflecheH);
-        System.out.println("yflecheH : " + yflecheH);
-        System.out.println("xflecheB : " + xflecheB);
-        System.out.println("yflecheB : " + yflecheB);
+        double distance = 15;
+        double xflecheH = xCible + distance * Math.cos(Math.atan((yCible - yControle) /(xCible - xControle)) - angleRad);
+        double yflecheH = yCible + distance * Math.sin(Math.atan((yCible - yControle) /(xCible - xControle)) - angleRad);
+        double xflecheB = xCible + distance * Math.cos(Math.atan((yCible - yControle) /(xCible - xControle)) + angleRad);
+        double yflecheB = yCible + distance * Math.sin(Math.atan((yCible - yControle) /(xCible - xControle)) + angleRad);
         
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
@@ -61,10 +74,7 @@ public class Arc extends Lien {
         arc.getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         zoneDessin.getChildren().addAll(arc);
-        
-        
-        QuadCurve ligne1 = new QuadCurve();
-        
+
         return arc;
     }
 }

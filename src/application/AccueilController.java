@@ -259,8 +259,8 @@ public class AccueilController implements Initializable {
                 noeudSource = null;
                 
             } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
-             
-                if (noeudCible != null) {
+                
+                if (noeudCible != null && !graphe.estArcDuGraphe(noeudSource, noeudCible)) {
                     try{
                         graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
                         Arc.dessinerLien(zoneDessin,noeudSource,noeudCible);
@@ -268,6 +268,7 @@ public class AccueilController implements Initializable {
                         System.out.println(e.getMessage());
                     }
                 }
+
                 zoneDessin.getChildren().remove(arcEnCours);
                 arcEnCours = null;
                 noeudSource = null;

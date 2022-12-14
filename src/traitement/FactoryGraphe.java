@@ -7,4 +7,6 @@ public abstract interface FactoryGraphe {
     public Noeud creerNoeud(double coordX, double coordY);
 
     public Lien creerLien(Noeud source, Noeud cible);
+    
+    public FactoryGraphe getInstance();
 }

@@ -17,6 +17,7 @@ public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
         return new Arete(source, cible);
     }
     
+    @Override
     public FactoryGrapheSimpleNonOriente getInstance() {
         return this;
     }

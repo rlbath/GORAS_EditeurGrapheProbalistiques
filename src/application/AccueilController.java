@@ -7,12 +7,11 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
@@ -28,9 +27,13 @@ import traitement.FactoryManager;
 import traitement.Graphe;
 import traitement.Noeud;
 import traitement.NoeudSimple;
+import traitement.Arc;
+import traitement.Arete;
 
 import static traitement.NoeudSimple.dessinerNoeud;
-import static traitement.Arete.dessinerLien;
+
+import traitement.FactoryGrapheSimpleNonOriente;
+import traitement.FactoryGrapheSimpleOriente;
 
 /**
  *
@@ -63,15 +66,11 @@ public class AccueilController implements Initializable {
     @FXML
     private ComboBox typesGraphe;
     @FXML
-    private MenuItem AideManipGraphe;
-    @FXML
     private TextField nomGraphe;
-    @FXML
-    private ScrollPane zoneDessinContainer;
-    @FXML
-    private AnchorPane mainContainer;
+
     
     private Line ligneEnCours = null;
+    private Group arcEnCours = null;
     
     
     @Override
@@ -108,32 +107,6 @@ public class AccueilController implements Initializable {
                 }
                 isDrawable = true;
                 
-            } else if(lienBtn.isSelected()){ //Cas si on selectione l'option lien
-
-                /*
-                if (!graphe.liens.isEmpty() ) {
-                    for (Lien lienATester : graphe.liens) {
-                        Noeud sourceATester = lienATester.getSource();
-                        Noeud cibleATester = lienATester.getCible();
-
-                        if (noeudSource != null && noeudCible != null 
-                            && (noeudSource == sourceATester && noeudCible == cibleATester 
-                            || noeudSource == cibleATester && noeudCible == sourceATester)) {
-                            
-                            System.out.println("Impossible de dessiner un lien deja existant");
-                        } else {
-                            Lien lien = factory.creerLien(noeudSource, noeudCible);
-                            graphe.ajouterLien(lien);
-                            dessinerLien(zoneDessin, noeudSource, noeudCible);
-                        }
-                 
-                    }
-                } else {
-                    Lien lien = factory.creerLien(noeudSource, noeudCible);
-                    graphe.ajouterLien(lien);
-                    dessinerLien(zoneDessin, noeudSource, noeudCible);
-                }
-                */
             }
         } catch (Exception  e) {
             //TODO indique l'erreur
@@ -204,7 +177,7 @@ public class AccueilController implements Initializable {
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);           
-        } catch (Exception e) {
+        } catch (TypeGrapheFactoryException e) {
             
         }
         //TODO Empecher validation si nom vide ou type vide
@@ -224,17 +197,40 @@ public class AccueilController implements Initializable {
 
             double x = evt.getX();
             double y = evt.getY();            
-
-            if (graphe.estNoeudGraphe(x, y) != null && ligneEnCours == null) {
-                noeudSource = graphe.estNoeudGraphe(x, y);
-                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudSource);
+            
+            // Si le graphe est une instance de graphe simple non oriente
+            if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
                 
-            } else if (noeudSource != null && ligneEnCours != null) {
-                zoneDessin.getChildren().remove(ligneEnCours);
-                Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
-                ligneEnCours = dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
-                NoeudSimple.cpt = compteurNoeud;
+                if (graphe.estNoeudGraphe(x, y) != null && ligneEnCours == null) {
+                    noeudSource = graphe.estNoeudGraphe(x, y);
+                    ligneEnCours = Arete.dessinerLien(zoneDessin, noeudSource, noeudSource);
+                
+                } else if (noeudSource != null && ligneEnCours != null) {
+                    zoneDessin.getChildren().remove(ligneEnCours);
+                    Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
+                    ligneEnCours = Arete.dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
+                    NoeudSimple.cpt = compteurNoeud;
+                }
+                
+            } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
+                
+                if (graphe.estNoeudGraphe(x, y) != null && arcEnCours == null) {
+                    noeudSource = graphe.estNoeudGraphe(x, y);
+                    arcEnCours = Arc.dessinerLien(zoneDessin, noeudSource, noeudSource);
+                    
+                    
+                } else if (noeudSource != null && arcEnCours != null) {
+                    // Supression de l'arc en cours
+                    zoneDessin.getChildren().remove(arcEnCours);
+                    Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
+                    arcEnCours = Arc.dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
+                    NoeudSimple.cpt = compteurNoeud;
+                }
             }
+            
+            
+            
+            
             
         }
     }
@@ -242,34 +238,52 @@ public class AccueilController implements Initializable {
     @FXML
     private void zoneDessinMouseReleased(MouseEvent evt){
         
-        if (lienBtn.isSelected() && ligneEnCours != null) {
-            Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());
-            System.out.println("noeud cible : " + noeudCible + " x : " + ligneEnCours.getEndX() + " y : " + ligneEnCours.getEndY());
-            if (noeudCible != null) {
-                try{
-                    graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
-                    dessinerLien(zoneDessin,noeudSource,noeudCible);
-                }catch(Exception e){
-                    System.out.println(e.getMessage());
+        if (lienBtn.isSelected() && ligneEnCours != null || lienBtn.isSelected() && arcEnCours != null) {
+            Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());          
+            
+            // Si le graphe est une instance de graphe simple non oriente
+            if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
+                
+                if (noeudCible != null && !graphe.estAreteDuGraphe(noeudSource, noeudCible)) {
+                    try{
+                        graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
+                        Arete.dessinerLien(zoneDessin,noeudSource,noeudCible);
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
                 }
+                zoneDessin.getChildren().remove(ligneEnCours);
+                ligneEnCours = null;
+                noeudSource = null;
+                
+            } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
+             
+                if (noeudCible != null) {
+                    try{
+                        graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
+                        Arc.dessinerLien(zoneDessin,noeudSource,noeudCible);
+                    }catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }
+                zoneDessin.getChildren().remove(arcEnCours);
+                arcEnCours = null;
+                noeudSource = null;
                 
             }
-            zoneDessin.getChildren().remove(ligneEnCours);
-            ligneEnCours = null;
-            noeudSource = null;
         }
     }
     
     @FXML
     private void unDo() {
         try {
-                System.out.println(graphe.noeuds);
-                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-                // graphe.archiveNoeud.add(graphe.noeuds.size() - 1));
-                graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-                System.out.println(graphe.noeuds);
-                
-                zoneDessin.getChildren().remove(graphe.noeuds.size());
+            System.out.println(graphe.noeuds);
+            //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
+            // graphe.archiveNoeud.add(graphe.noeuds.size() - 1));
+            graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
+            System.out.println(graphe.noeuds);
+
+            zoneDessin.getChildren().remove(graphe.noeuds.size());
         } catch (Exception e) {
             System.err.println("UnDo sur un noeud impossible"); 
         }
@@ -279,11 +293,11 @@ public class AccueilController implements Initializable {
     @FXML
     private void reDo() {
         try {
-                System.out.println(graphe.noeuds);
-                //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-                graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-                System.out.println(graphe.noeuds);
-                zoneDessin.getChildren().remove(graphe.noeuds.size());
+            System.out.println(graphe.noeuds);
+            //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
+            graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
+            System.out.println(graphe.noeuds);
+            zoneDessin.getChildren().remove(graphe.noeuds.size());
         } catch (Exception e) {
             System.err.println("UnDo sur un noeud impossible"); 
         }
@@ -293,11 +307,11 @@ public class AccueilController implements Initializable {
     // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
     public void undoLien() {
         try {
-                System.out.println(graphe.liens);
-                //archiveLien.add(liens.get(liens.size() - 1));
-                graphe.liens.remove(graphe.liens.get(graphe.liens.size()));
-                System.out.println(graphe.liens);
-                zoneDessin.getChildren().remove(graphe.liens.size());
+            System.out.println(graphe.liens);
+            //archiveLien.add(liens.get(liens.size() - 1));
+            graphe.liens.remove(graphe.liens.get(graphe.liens.size()));
+            System.out.println(graphe.liens);
+            zoneDessin.getChildren().remove(graphe.liens.size());
         } catch (Exception e) {
             System.err.println("UnDo sur un noeud impossible"); 
         }

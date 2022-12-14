@@ -30,9 +30,6 @@ public abstract class Graphe {
         noeuds.add(noeud);
     }
 
-    
-    
-    
     public void ajouterLien(Lien lien) {
         liens.add(lien);
     }
@@ -62,6 +59,24 @@ public abstract class Graphe {
         }
         
         return null;
+    }
+    
+    
+        /**
+     * Determine si deux noeuds forment une arete du graphe
+     * @param noeudATester
+     * @param noeudATester2
+     * @return true si les deux noeuds forment une arete, false sinon
+     */
+    public boolean estAreteDuGraphe(Noeud noeudATester, Noeud noeudATester2) {
+        
+        for (Lien lien : liens) {
+            if (lien.getSource() == noeudATester && lien.getCible() == noeudATester2 
+                || lien.getSource() == noeudATester2 && lien.getCible() == noeudATester) {
+                return true;
+            }
+        }
+        return false;
     }
     
     

@@ -106,7 +106,6 @@ public class AccueilController implements Initializable {
                     dessinerNoeud(zoneDessin, noeud);
                 }
                 isDrawable = true;
-                
             }
         } catch (Exception  e) {
             //TODO indique l'erreur
@@ -173,11 +172,14 @@ public class AccueilController implements Initializable {
         String type = (String) typesGraphe.getValue();
         String nom = nomGraphe.getText();
         fermeFenetre();
+        
         try {
+            
             factory = factoryManager.getInstance().getFactoryGraphe(type);
             graphe = factory.creerGraphe(nom);
             System.out.println("Creation du nouveau graphe : " + nom);           
         } catch (TypeGrapheFactoryException e) {
+        
             
         }
         //TODO Empecher validation si nom vide ou type vide
@@ -277,15 +279,23 @@ public class AccueilController implements Initializable {
     @FXML
     private void unDo() {
         try {
-            System.out.println(graphe.noeuds);
-            //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-            // graphe.archiveNoeud.add(graphe.noeuds.size() - 1));
+            System.out.println("Noeuds : " + graphe.noeuds);
+            graphe.archiveNoeud.add(graphe.noeuds.get(graphe.noeuds.size() - 1));
             graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-            System.out.println(graphe.noeuds);
-
+            System.out.println("Noeuds après remove : " + graphe.noeuds);
             zoneDessin.getChildren().remove(graphe.noeuds.size());
+            System.out.println("archive noeud à la fin du undo" + graphe.archiveNoeud);
+
+            /* 
+            System.out.println("Liens : " + graphe.liens);
+            graphe.archiveReDo.add(graphe.liens.get(graphe.liens.size() - 1));
+            graphe.liens.remove(graphe.liens.get(graphe.liens.size() - 1));
+            zoneDessin.getChildren().remove(graphe.liens.size());
+            System.out.println("Liens après remove : " + graphe.liens);
+            */
+
         } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
+            System.err.println("UnDo impossible"); 
         }
         
     }
@@ -293,16 +303,17 @@ public class AccueilController implements Initializable {
     @FXML
     private void reDo() {
         try {
-            System.out.println(graphe.noeuds);
-            //archiveNoeud.add(noeuds.get(noeuds.size() - 1));
-            graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-            System.out.println(graphe.noeuds);
-            zoneDessin.getChildren().remove(graphe.noeuds.size());
+            graphe.noeuds.add(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
+            System.out.println("Noeud après ajout de l'archive" + graphe.noeuds);
+            dessinerNoeud(zoneDessin, graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
+            System.out.println("Archive noeud avant remove" + graphe.archiveNoeud);
+            graphe.archiveNoeud.remove(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
+            System.out.println("Archive noeud après remove" + graphe.archiveNoeud);
         } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
+            System.err.println("ReDo impossible"); 
         }
         
-    }
+    }  
 
     // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
     public void undoLien() {

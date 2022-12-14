@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="GrapheProba.jar" size="23512" download="eager" />
+=======
+    <jar href="GrapheProba.jar" size="22239" download="eager" />
+>>>>>>> bf1cd635f6ec03574d16b0736c2dc2ea5e9a5e04
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="GrapheProba" >
     <param name="requiredFXVersion" value="8.0+"/>

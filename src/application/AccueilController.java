@@ -73,7 +73,7 @@ public class AccueilController implements Initializable {
     
     private Line ligneEnCours = null;
     private Group arcEnCours = null;
-    
+    public static NoeudSimple noeudASelectionner;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,15 +98,15 @@ public class AccueilController implements Initializable {
     @FXML
     private void dessin(javafx.scene.input.MouseEvent evt) {  
         try {
-            if (selectionBtn.isSelected()) { //Cas si on selectione l'option selection
-                //TODO
-                NoeudSimple noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
+            if (selectionBtn.isSelected()) { //Cas si on selectionne l'option selections
+                noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
                 noeudASelectionner.selectionGroupe(modificationContainer);
-            } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
+            } else if(noeudBtn.isSelected()) { //Cas si on selectionne l'option noeud
                 if (isDrawable == true) {
                     NoeudSimple noeud = (NoeudSimple)factory.creerNoeud(evt.getX(), evt.getY());
                     graphe.ajouterNoeud(noeud);
                     noeud.dessinerNoeud(zoneDessin);
+                        
                 }
                 isDrawable = true;
             }

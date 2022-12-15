@@ -5,7 +5,6 @@ package traitement;
 
 public abstract class Noeud {
     private String libelle;
-    
     private double coordX;
     private double coordY;
 

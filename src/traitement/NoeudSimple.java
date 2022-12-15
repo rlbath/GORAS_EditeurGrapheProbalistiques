@@ -1,6 +1,7 @@
 package traitement;
 
 import application.AccueilController;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -64,8 +65,8 @@ public class NoeudSimple extends Noeud {
                 libelleModif.setLayoutY(50);
                 
                 // récupération du nom du noeud
-                Label getterLabel = (Label) groupe.getChildren().get(1);
-                libelleModif.setText(getterLabel.getText());
+                Label getterLabelNom = (Label) groupe.getChildren().get(1);
+                libelleModif.setText(getterLabelNom.getText());
                 
                 // label pour la modification du nom du noeud
                 Label labelLibelleModif = new Label();
@@ -77,11 +78,6 @@ public class NoeudSimple extends Noeud {
                 TextField coordX = new TextField();
                 coordX.setLayoutX(60);
                 coordX.setLayoutY(100);
-                
-                // récupération coord X du noeud*
-                // TODO Faire la récupération des coord X
-                // Label getterLabel = (Label) groupe.getChildren().get(0);
-                //libelleModif.setText(getterLabel.getText());
                 
                 // Label du changement coord X du noeud
                 Label labelCoordX = new Label();
@@ -100,14 +96,51 @@ public class NoeudSimple extends Noeud {
                 labelCoordY.setLayoutX(15);
                 labelCoordY.setLayoutY(153);
                 
+                // récupération coord X et Y du noeud
+                Circle getterCoordonnees = (Circle) groupe.getChildren().get(0);
+                coordX.setText(Double.toString(getterCoordonnees.getCenterX()));
+                coordY.setText(Double.toString(getterCoordonnees.getCenterY()));
+                
                 // Bouton de validation du nouveau nom
                 Button validationModifNom = new Button();
                 validationModifNom.setText("Valider");
                 validationModifNom.setLayoutX(60);
                 validationModifNom.setLayoutY(203);
                 
-                
-                
+                // Changement du nom
+                validationModifNom.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent evt) {
+                        String nouveauNom = libelleModif.getText();
+                        Double nouvelleCoordX = Double.parseDouble(coordX.getText());
+                        Double nouvelleCoordY = Double.parseDouble(coordY.getText());
+                        
+                        /* Cercle extérieur */
+                        Circle nvCercleExterieur = new Circle(nouvelleCoordX, nouvelleCoordY, AccueilController.getRadius() * 2.5);
+                        nvCercleExterieur.setFill(Color.TRANSPARENT);
+                        nvCercleExterieur.setStroke(Color.TRANSPARENT);
+
+                        /* cercle */
+                        Circle nvCercle = new Circle(nouvelleCoordX, nouvelleCoordY, AccueilController.getRadius());
+                        nvCercle.setFill(Color.TRANSPARENT);  
+                        nvCercle.setStroke(Color.BLACK);
+
+
+                        /* label */
+                        Label nvLibelle = new Label(nouveauNom);
+                        nvLibelle.setLayoutX(nouvelleCoordX - 3);
+                        nvLibelle.setLayoutY(nouvelleCoordY - 8);
+                        
+                        groupe.getChildren().clear();
+                        groupe.getChildren().addAll(nvCercle, nvLibelle, nvCercleExterieur);
+                        
+                        // TODO Récupérer l'objet noeud pour le modifier (j'y arrive pas)
+                        /* 
+                        AccueilController.noeudASelectionner.libelle = nouveauNom;
+                        AccueilController.noeudASelectionner.coordX = nouvelleCoordX;
+                        AccueilController.noeudASelectionner.coordY = nouvelleCoordY;
+                        */
+                    }
+                });
                 
                 main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModifNom);
             }

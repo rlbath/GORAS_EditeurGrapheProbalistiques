@@ -50,8 +50,16 @@ public class AccueilController implements Initializable {
     private static final double RADIUS = 30.0;
     
     /* pour le dessin d'un lien */
-    public static Noeud noeudSource = null;
+    public static Noeud noeudCible;
+    public static Noeud noeudSource;
+    
     public static boolean isDrawable = true;
+    public static boolean estLien = false;
+    
+    private Arete areteEnCours;
+    private Line areteEnCoursGroupe;
+    private Arc arcEnCours;
+    private Group arcEnCoursGroupe;
     
     @FXML
     private ToggleButton selectionBtn;
@@ -67,12 +75,9 @@ public class AccueilController implements Initializable {
     private ComboBox typesGraphe;
     @FXML
     private TextField nomGraphe;
+    @FXML
+    private AnchorPane modificationContainer;
 
-    
-    private Line ligneEnCours = null;
-    private Arc arcEnCours = null;
-    private Group arcEnCoursGroupe;
-    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -98,7 +103,19 @@ public class AccueilController implements Initializable {
     private void dessin(javafx.scene.input.MouseEvent evt) {        
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectione l'option selection
-            //TODO
+                
+                if (factory instanceof FactoryGrapheSimpleNonOriente && estLien) {
+                    /* Recuperation du lien selectionner */
+                    areteEnCours = (Arete) graphe.getAreteDuGraphe(noeudCible, noeudSource);
+                    System.out.println(areteEnCours);
+                    
+                    
+                    /* Reinitialisation des valeurs */
+                    areteEnCours = null;
+                    noeudCible = null;
+                    noeudCible = null;
+                }
+                
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
                 
                 if (isDrawable == true) {
@@ -204,14 +221,16 @@ public class AccueilController implements Initializable {
             // Si le graphe est une instance de graphe simple non oriente
             if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
                 
-                if (graphe.estNoeudGraphe(x, y) != null && ligneEnCours == null) {
+                if (graphe.estNoeudGraphe(x, y) != null && areteEnCours == null) {
                     noeudSource = graphe.estNoeudGraphe(x, y);
-                    ligneEnCours = Arete.dessinerLien(zoneDessin, noeudSource, noeudSource);
+                    areteEnCours = (Arete) factory.creerLien(noeudSource, noeudSource);
+                    areteEnCoursGroupe = areteEnCours.dessinerLien(zoneDessin);
                 
-                } else if (noeudSource != null && ligneEnCours != null) {
-                    zoneDessin.getChildren().remove(ligneEnCours);
+                } else if (noeudSource != null && areteEnCours != null) {
+                    zoneDessin.getChildren().remove(areteEnCoursGroupe);
                     Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
-                    ligneEnCours = Arete.dessinerLien(zoneDessin, noeudSource, noeudProvisoire);
+                    areteEnCours = (Arete) factory.creerLien(noeudSource, noeudProvisoire);
+                    areteEnCoursGroupe = areteEnCours.dessinerLien(zoneDessin);
                     NoeudSimple.cpt = compteurNoeud;
                 }
                 
@@ -238,7 +257,7 @@ public class AccueilController implements Initializable {
     @FXML
     private void zoneDessinMouseReleased(MouseEvent evt){
         
-        if (lienBtn.isSelected() && ligneEnCours != null || lienBtn.isSelected() && arcEnCours != null) {
+        if (lienBtn.isSelected() && areteEnCours != null || lienBtn.isSelected() && arcEnCours != null) {
             Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());          
             
             // Si le graphe est une instance de graphe simple non oriente
@@ -247,13 +266,15 @@ public class AccueilController implements Initializable {
                 if (noeudCible != null && !graphe.estAreteDuGraphe(noeudSource, noeudCible)) {
                     try{
                         graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
-                        Arete.dessinerLien(zoneDessin,noeudSource,noeudCible);
+                        areteEnCours= (Arete) factory.creerLien(noeudSource, noeudCible);
+                        areteEnCours.dessinerLien(zoneDessin);
                     }catch(Exception e){
                         System.out.println(e.getMessage());
                     }
                 }
-                zoneDessin.getChildren().remove(ligneEnCours);
-                ligneEnCours = null;
+                zoneDessin.getChildren().remove(areteEnCoursGroupe);
+                areteEnCours = null;
+                areteEnCoursGroupe = null;
                 noeudSource = null;
                 
             } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {

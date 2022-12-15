@@ -96,6 +96,17 @@ public abstract class Graphe {
     }
     
     
+    public Lien getAreteDuGraphe(Noeud sourceATester, Noeud cibleATester) {
+        for (Lien lien : liens) {
+            if ((lien.getSource() == sourceATester && lien.getCible() == cibleATester )
+                || (lien.getSource() == cibleATester && lien.getCible() == sourceATester)) {
+                return lien;
+            }
+        }
+        return null;
+    }
+    
+    
     @Override
     public String toString() {
         

@@ -4,10 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Arc.java</file>
-            <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Noeud.java</file>
-            <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/NoeudSimple.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/application/AccueilController.java</file>
+            <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/FactoryManager.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Lien.java</file>
+            <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Graphe.java</file>
             <file>file:/Z:/SAE/Graphe/GrapheProba/src/traitement/Arete.java</file>
         </group>
     </open-files>

@@ -1,6 +1,8 @@
 package traitement;
 
 import application.AccueilController;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 
@@ -10,7 +12,7 @@ public class Arete extends Lien {
         super(source, cible);
     }
     
-    public static Line dessinerLien(AnchorPane zoneDessin, Noeud source, Noeud cible) {
+    public Line dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
 
@@ -23,6 +25,22 @@ public class Arete extends Lien {
         Line ligne = new Line(xCible, yCible, xSource, ySource);
         zoneDessin.getChildren().addAll(ligne);
         
+        ligne.setOnMousePressed((new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent evt) {
+                System.out.println(".handle()");
+                AccueilController.estLien = true;
+                AccueilController.noeudSource = source;
+                AccueilController.noeudCible = cible;
+            }
+        }));
+        
         return ligne;
     }
+    
+    public void proprieteLien(AnchorPane zonePropriete) {
+        
+    }
+    
 }

@@ -57,7 +57,7 @@ public class AccueilController implements Initializable {
     public static boolean estLien = false;
     
     private Arete areteEnCours;
-    private Line areteEnCoursGroupe;
+    private Group areteEnCoursGroupe;
     private Arc arcEnCours;
     private Group arcEnCoursGroupe;
     
@@ -108,6 +108,7 @@ public class AccueilController implements Initializable {
                     /* Recuperation du lien selectionner */
                     areteEnCours = (Arete) graphe.getAreteDuGraphe(noeudCible, noeudSource);
                     System.out.println(areteEnCours);
+                    areteEnCours.proprieteLien(zoneDessin);
                     
                     
                     /* Reinitialisation des valeurs */

@@ -2,6 +2,7 @@ package traitement;
 
 //import java.util.ArrayList;
 
+import javafx.scene.Group;
 //import java.util.List;
 
 public abstract class Lien {
@@ -9,6 +10,8 @@ public abstract class Lien {
     public final Noeud source;
 
     public final Noeud cible;
+    
+    Group groupe;
 
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 

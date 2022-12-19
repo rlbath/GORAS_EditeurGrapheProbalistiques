@@ -17,7 +17,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -107,8 +106,7 @@ public class AccueilController implements Initializable {
                 if (factory instanceof FactoryGrapheSimpleNonOriente && estLien) {
                     /* Recuperation du lien selectionner */
                     areteEnCours = (Arete) graphe.getAreteDuGraphe(noeudCible, noeudSource);
-                    System.out.println(areteEnCours);
-                    areteEnCours.proprieteLien(zoneDessin);
+                    areteEnCours.proprieteLien(modificationContainer, graphe, zoneDessin);
                     
                     
                     /* Reinitialisation des valeurs */
@@ -225,13 +223,15 @@ public class AccueilController implements Initializable {
                 if (graphe.estNoeudGraphe(x, y) != null && areteEnCours == null) {
                     noeudSource = graphe.estNoeudGraphe(x, y);
                     areteEnCours = (Arete) factory.creerLien(noeudSource, noeudSource);
-                    areteEnCoursGroupe = areteEnCours.dessinerLien(zoneDessin);
+                    areteEnCours.dessinerLien(zoneDessin);
+                    areteEnCoursGroupe = areteEnCours.getGroup();
                 
                 } else if (noeudSource != null && areteEnCours != null) {
                     zoneDessin.getChildren().remove(areteEnCoursGroupe);
                     Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
                     areteEnCours = (Arete) factory.creerLien(noeudSource, noeudProvisoire);
-                    areteEnCoursGroupe = areteEnCours.dessinerLien(zoneDessin);
+                    areteEnCours.dessinerLien(zoneDessin);                    
+                    areteEnCoursGroupe = areteEnCours.getGroup();
                     NoeudSimple.cpt = compteurNoeud;
                 }
                 
@@ -264,16 +264,18 @@ public class AccueilController implements Initializable {
             // Si le graphe est une instance de graphe simple non oriente
             if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
                 
-                if (noeudCible != null && !graphe.estAreteDuGraphe(noeudSource, noeudCible)) {
+                if (noeudCible != null && !graphe.estAreteDuGraphe(noeudSource, noeudCible) && noeudCible != noeudSource) {
                     try{
-                        graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
-                        areteEnCours= (Arete) factory.creerLien(noeudSource, noeudCible);
+                        areteEnCours = (Arete) factory.creerLien(noeudSource, noeudCible);
                         areteEnCours.dessinerLien(zoneDessin);
+                        graphe.ajouterLien(areteEnCours);
                     }catch(Exception e){
                         System.out.println(e.getMessage());
                     }
                 }
+                
                 zoneDessin.getChildren().remove(areteEnCoursGroupe);
+
                 areteEnCours = null;
                 areteEnCoursGroupe = null;
                 noeudSource = null;

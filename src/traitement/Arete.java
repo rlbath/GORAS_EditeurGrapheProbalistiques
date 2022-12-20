@@ -28,15 +28,16 @@ public class Arete extends Lien {
      * Et une enveloppe pour permettre les actions sur une arete plus confortable
      * @param zoneDessin zone de dessin du graphe
      */
+    @Override
     public void dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
 
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * AccueilController.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * AccueilController.getRadius();
+        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
+        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * AccueilController.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * AccueilController.getRadius();
+        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
+        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
 
 
         Line enveloppe = new Line(xCible, yCible, xSource, ySource);
@@ -62,89 +63,7 @@ public class Arete extends Lien {
         }));
         zoneDessin.getChildren().addAll(groupe);
     }
-    
-    /**
-     * Affiche sur la zone de propriété les zones de saisie des propriétés d'une arete
-     * @param zonePropriete zone ou les propriete s'afficher sur l'interface graphique
-     * @param graphe graphe en cours de traitement
-     * @param zoneDessin zone de dessin du graphe
-     */
-    public void proprieteLien(AnchorPane zonePropriete, Graphe graphe, AnchorPane zoneDessin) {
-        System.out.println("propri " + getGroup());
-        //Gestion propriete source
-        Label labelSource = new Label("Source : ");
-        labelSource.setLayoutX(26);
-        labelSource.setLayoutY(53);
-        
-        ComboBox noeudsSource = new ComboBox();
-        noeudsSource.setLayoutX(120);
-        noeudsSource.setLayoutY(50);
-        for (Noeud noeud : graphe.getNoeuds()) {
-            
-            if (noeud == this.source) { // Si le noeud actuel est la source du lien
-                noeudsSource.getItems().add(noeud.getLibelle());
-                noeudsSource.setValue(noeud.getLibelle()); //Selected ComboBox
-            } else { // Ajout des autres noeuds
-                noeudsSource.getItems().add(noeud.getLibelle());
-            }  
-        }
-        zonePropriete.getChildren().addAll(labelSource, noeudsSource);
 
-        //Gestion propriete cible
-        Label labelCible = new Label("Cible : ");
-        labelCible.setLayoutX(26);
-        labelCible.setLayoutY(103);
-        
-        ComboBox noeudsCible = new ComboBox();
-        noeudsCible.setLayoutX(120);
-        noeudsCible.setLayoutY(100);
-        for (Noeud noeud : graphe.getNoeuds()) {
-            
-            if (noeud == this.cible) { // Si le noeud actuel est la cible du lien
-                noeudsCible.getItems().add(noeud.getLibelle());
-                noeudsCible.setValue(noeud.getLibelle()); //Selected ComboBox
-            } else { // Ajout des autres noeuds
-                noeudsCible.getItems().add(noeud.getLibelle());
-            }  
-        }
-        zonePropriete.getChildren().addAll(labelCible, noeudsCible);
-        
-        // Bouton de validation du nouveau nom
-        Button validationModif = new Button("Valider");
-        validationModif.setLayoutX(60);
-        validationModif.setLayoutY(203);
-        zonePropriete.getChildren().addAll(validationModif);
-        
-        
-        // Si validation des changements
-        validationModif.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent evt) {
-                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin);
-            }
-        });
-        
-        // Bouton de validation du nouveau nom
-        Button supprimerLien = new Button("Supprimer");
-        supprimerLien.setLayoutX(60);
-        supprimerLien.setLayoutY(223);
-        zonePropriete.getChildren().addAll(supprimerLien);
-        
-        
-        // Si validation des changements
-        supprimerLien.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent evt) {
-                System.out.println("Avant suppr" + graphe.liens.toString());
-                supprimer(zoneDessin);
-                graphe.supprimerArete(noeudsSource, noeudsCible);
-                System.out.println("Apres suppr" + graphe.liens.toString());
-            }
-        });
-        
-    }
     
     /**
      * Actualise les propriétés de l'arete en fonction des paramètres des combobox
@@ -153,7 +72,8 @@ public class Arete extends Lien {
      * @param graphe graphe en cours de traitement
      * @param zoneDessin zone de dessin du graphe
      */
-    private void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin) {
+    @Override
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();
@@ -172,7 +92,7 @@ public class Arete extends Lien {
         }
         
         //Verification que l'arete n'existe pas deja et que les nouvelles valeurs ne forment pas de boucle
-        if (!graphe.estAreteDuGraphe(noeudSource, noeudCible) && noeudSource != noeudCible) {
+        if (!graphe.estLienDuGraphe(noeudSource, noeudCible) && noeudSource != noeudCible) {
             
             //Modification des sources et cibles de l'instance
             setSource(noeudSource);

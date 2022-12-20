@@ -7,12 +7,12 @@ package traitement;
 public class FactoryGrapheSimpleOriente implements FactoryGraphe {
 
     @Override
-    public Graphe creerGraphe(String libelle) {
+    public GrapheOriente creerGraphe(String libelle) {
         return new GrapheOriente(libelle);
     }
 
     @Override
-    public Lien creerLien(Noeud source, Noeud cible) {
+    public Arc creerLien(Noeud source, Noeud cible) {
         return new Arc(source, cible);
     }
 

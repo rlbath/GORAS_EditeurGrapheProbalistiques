@@ -3,7 +3,7 @@ package traitement;
 public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
 
     @Override
-    public Graphe creerGraphe(String libelle) {
+    public GrapheSimple creerGraphe(String libelle) {
         return new GrapheSimple(libelle);
     }
 
@@ -13,7 +13,7 @@ public class FactoryGrapheSimpleNonOriente implements FactoryGraphe{
     }
 
     @Override
-    public Lien creerLien(Noeud source, Noeud cible) {
+    public Arete creerLien(Noeud source, Noeud cible) {
         return new Arete(source, cible);
     }
     

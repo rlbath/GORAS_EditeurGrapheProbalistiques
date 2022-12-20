@@ -4,11 +4,17 @@ package traitement;
 //import java.util.List;
 
 public abstract class Noeud {
+    
+    /* Libelle du noeud */
     private String libelle;
     
+    /* Coordonnée d'un noeud */
     private final double coordX;
     private final double coordY;
-
+    
+    /* Rayon des cercle représentant un noeud */
+    private static final double RADIUS = 30.0;
+    
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 
     public Noeud(String libelle, double coordX, double coordY) {
@@ -31,6 +37,10 @@ public abstract class Noeud {
 
     public double getY() {
         return coordY;
+    }
+    
+    public static double getRadius() {
+        return RADIUS;
     }
     
     public String toString() {

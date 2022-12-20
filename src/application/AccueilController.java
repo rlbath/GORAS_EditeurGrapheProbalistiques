@@ -26,13 +26,9 @@ import traitement.FactoryManager;
 import traitement.Graphe;
 import traitement.Noeud;
 import traitement.NoeudSimple;
-import traitement.Arc;
-import traitement.Arete;
 
 import static traitement.NoeudSimple.dessinerNoeud;
-
-import traitement.FactoryGrapheSimpleNonOriente;
-import traitement.FactoryGrapheSimpleOriente;
+import traitement.Lien;
 
 /**
  *
@@ -44,22 +40,24 @@ public class AccueilController implements Initializable {
     
     public static FactoryGraphe factory;
     
+    /* Instance du graphe en cours de traitement */
     public static Graphe graphe;
     
-    private static final double RADIUS = 30.0;
-    
-    /* pour le dessin d'un lien */
+    /* Pour le dessin d'un lien */
     public static Noeud noeudCible;
     public static Noeud noeudSource;
     
+    /* Boolean permettant la transmission d'information entre AccueilController
+     *  et les actions des elements de l'interface graphique
+     */
     public static boolean isDrawable = true;
     public static boolean estLien = false;
     
-    private Arete areteEnCours;
-    private Group areteEnCoursGroupe;
-    private Arc arcEnCours;
-    private Group arcEnCoursGroupe;
+    /* Pour le dessin d'un lien ainsi que pour sa modification */
+    private Lien lienEnCours;
+    private Group lienEnCoursGroup;
     
+    //Element de l'interface graphique
     @FXML
     private ToggleButton selectionBtn;
     @FXML
@@ -103,17 +101,14 @@ public class AccueilController implements Initializable {
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectione l'option selection
                 
-                if (factory instanceof FactoryGrapheSimpleNonOriente && estLien) {
-                    /* Recuperation du lien selectionner */
-                    areteEnCours = (Arete) graphe.getAreteDuGraphe(noeudCible, noeudSource);
-                    areteEnCours.proprieteLien(modificationContainer, graphe, zoneDessin);
-                    
-                    
-                    /* Reinitialisation des valeurs */
-                    areteEnCours = null;
-                    noeudCible = null;
-                    noeudCible = null;
-                }
+                /* Recuperation du lien selectionner */
+                lienEnCours = graphe.getLienDuGraphe(noeudSource, noeudCible);
+                lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin);
+
+                /* Reinitialisation des valeurs */
+                lienEnCours = null;
+                noeudSource = null;
+                noeudCible = null;
                 
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
                 
@@ -201,11 +196,6 @@ public class AccueilController implements Initializable {
         }
         //TODO Empecher validation si nom vide ou type vide
     }
-    
-    
-    public static double getRadius() {
-        return RADIUS;
-    }
 
     @FXML
     private void zoneDessinMouseDragged(MouseEvent evt) {
@@ -216,87 +206,47 @@ public class AccueilController implements Initializable {
 
             double x = evt.getX();
             double y = evt.getY();            
-            
-            // Si le graphe est une instance de graphe simple non oriente
-            if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
-                
-                if (graphe.estNoeudGraphe(x, y) != null && areteEnCours == null) {
-                    noeudSource = graphe.estNoeudGraphe(x, y);
-                    areteEnCours = (Arete) factory.creerLien(noeudSource, noeudSource);
-                    areteEnCours.dessinerLien(zoneDessin);
-                    areteEnCoursGroupe = areteEnCours.getGroup();
-                
-                } else if (noeudSource != null && areteEnCours != null) {
-                    zoneDessin.getChildren().remove(areteEnCoursGroupe);
-                    Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
-                    areteEnCours = (Arete) factory.creerLien(noeudSource, noeudProvisoire);
-                    areteEnCours.dessinerLien(zoneDessin);                    
-                    areteEnCoursGroupe = areteEnCours.getGroup();
-                    NoeudSimple.cpt = compteurNoeud;
-                }
-                
-            } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
-                
-                if (graphe.estNoeudGraphe(x, y) != null && arcEnCours == null) {
-                    noeudSource = graphe.estNoeudGraphe(x, y);
-                    arcEnCours = (Arc) factory.creerLien(noeudSource, noeudSource);
-                    arcEnCoursGroupe = arcEnCours.dessinerLien(zoneDessin);
-                    
-                    
-                } else if (noeudSource != null && arcEnCours != null) {
-                    // Supression de l'arc en cours
-                    zoneDessin.getChildren().remove(arcEnCoursGroupe);
-                    Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
-                    arcEnCours = (Arc) factory.creerLien(noeudSource, noeudProvisoire);
-                    arcEnCoursGroupe = arcEnCours.dessinerLien(zoneDessin);
-                    NoeudSimple.cpt = compteurNoeud;
-                }
-            } 
+
+
+            if (graphe.estNoeudGraphe(x, y) != null && lienEnCours == null) {
+                noeudSource = graphe.estNoeudGraphe(x, y);
+                lienEnCours = factory.creerLien(noeudSource, noeudSource);
+                lienEnCours.dessinerLien(zoneDessin);
+                lienEnCoursGroup = lienEnCours.getGroup();
+
+            } else if (noeudSource != null && lienEnCours != null) {
+                zoneDessin.getChildren().remove(lienEnCoursGroup);
+                Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
+                lienEnCours = factory.creerLien(noeudSource, noeudProvisoire);
+                lienEnCours.dessinerLien(zoneDessin);                    
+                lienEnCoursGroup = lienEnCours.getGroup();
+                NoeudSimple.cpt = compteurNoeud;
+            }
+
         }
     }
 
     @FXML
     private void zoneDessinMouseReleased(MouseEvent evt){
         
-        if (lienBtn.isSelected() && areteEnCours != null || lienBtn.isSelected() && arcEnCours != null) {
+        if (lienBtn.isSelected() && lienEnCours != null || lienBtn.isSelected() && lienEnCours != null) {
             Noeud noeudCible = graphe.estNoeudGraphe(evt.getX(), evt.getY());          
-            
-            // Si le graphe est une instance de graphe simple non oriente
-            if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
-                
-                if (noeudCible != null && !graphe.estAreteDuGraphe(noeudSource, noeudCible) && noeudCible != noeudSource) {
-                    try{
-                        areteEnCours = (Arete) factory.creerLien(noeudSource, noeudCible);
-                        areteEnCours.dessinerLien(zoneDessin);
-                        graphe.ajouterLien(areteEnCours);
-                    }catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
-                }
-                
-                zoneDessin.getChildren().remove(areteEnCoursGroupe);
 
-                areteEnCours = null;
-                areteEnCoursGroupe = null;
-                noeudSource = null;
-                
-            } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
-                
-                if (noeudCible != null && !graphe.estArcDuGraphe(noeudSource, noeudCible)) {
-                    try{
-                        graphe.ajouterLien(factory.creerLien(noeudSource, noeudCible));
-                        arcEnCours.dessinerLien(zoneDessin);
-                    }catch(Exception e){
-                        System.out.println(e.getMessage());
-                    }
+            if (noeudCible != null && !graphe.estLienDuGraphe(noeudSource, noeudCible)) {
+                try{
+                    lienEnCours = factory.creerLien(noeudSource, noeudCible);
+                    graphe.ajouterLien(lienEnCours);
+                    lienEnCours.dessinerLien(zoneDessin);
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
                 }
-
-                zoneDessin.getChildren().remove(arcEnCoursGroupe);
-                arcEnCours = null;
-                arcEnCoursGroupe = null;
-                noeudSource = null;
-                
             }
+
+            zoneDessin.getChildren().remove(lienEnCoursGroup);
+            lienEnCours = null;
+            lienEnCoursGroup = null;
+            noeudSource = null;
+
         }
     }
     

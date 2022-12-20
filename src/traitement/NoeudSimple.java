@@ -21,12 +21,12 @@ public class NoeudSimple extends Noeud {
     public static void dessinerNoeud(AnchorPane zoneDessin, Noeud noeud) {
         
         /* Cercle extérieur */
-        Circle cercleExterieur = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius() * 2.5);
+        Circle cercleExterieur = new Circle(noeud.getX(), noeud.getY(), Noeud.getRadius() * 2.5);
         cercleExterieur.setFill(Color.TRANSPARENT);
         cercleExterieur.setStroke(Color.TRANSPARENT);
         
         /* cercle */
-        Circle cercle = new Circle(noeud.getX(), noeud.getY(), AccueilController.getRadius());
+        Circle cercle = new Circle(noeud.getX(), noeud.getY(), Noeud.getRadius());
         cercle.setFill(Color.TRANSPARENT);  
         cercle.setStroke(Color.BLACK);
 

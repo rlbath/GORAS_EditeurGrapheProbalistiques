@@ -58,6 +58,10 @@ public abstract class Graphe implements Serializable {
         return libelle;
     }
     
+    public void setLibelle(String nouveauLibelle) {
+        libelle = nouveauLibelle;
+    }
+    
     /**
      * Determine si des coordonnées font partie d'un noeud du graphe
      * @param xATester

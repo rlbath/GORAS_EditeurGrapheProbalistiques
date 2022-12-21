@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.input.*?>
 <?import javafx.scene.web.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <AnchorPane id="AnchorPane" fx:id="mainContainer" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AccueilController">
     <children>
@@ -14,16 +17,62 @@
         <menus>
           <Menu mnemonicParsing="false" text="Graphes">
             <items>
-              <MenuItem fx:id="newGrapheBtn" mnemonicParsing="false" onAction="#nouveauGraphe" text="Nouveau Graphe" />
-              <MenuItem mnemonicParsing="false" onAction="#ouvrir" text="Ouvrir" />
-              <MenuItem mnemonicParsing="false" text="Enregistrer" />
-              <MenuItem mnemonicParsing="false" onAction="#enregistrerSous" text="Enregistrer sous" />
+                
+                <fx:define>
+                  <ImageView fx:id = "save">
+                      <Image url="@../img/disquette.png"></Image>
+                  </ImageView>
+                  <ImageView fx:id = "saveAs">
+                      <Image url="@../img/disquette.png"></Image>
+                  </ImageView>
+                  <ImageView fx:id = "open">
+                      <Image url="@../img/folder.png"></Image>
+                  </ImageView>
+                  <ImageView fx:id = "graphe">
+                      <Image url="@../img/line-chart.png"></Image>
+                  </ImageView>
+                  <ImageView fx:id = "redo">
+                      <Image url="@../img/redo.png"></Image>
+                  </ImageView>
+                  <ImageView fx:id = "undo">
+                      <Image url="@../img/undo.png"></Image>
+                  </ImageView>
+              </fx:define>
+                
+              <MenuItem fx:id="newGrapheBtn" graphic="$graphe" mnemonicParsing="false" onAction="#nouveauGraphe" text="Nouveau Graphe">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="N" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+              </MenuItem>
+              <MenuItem graphic="$open" mnemonicParsing="false" onAction="#ouvrir" text="Ouvrir">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="O" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+              </MenuItem>
+              <MenuItem graphic="$save" mnemonicParsing="false" onAction="#enregistrer" text="Enregistrer">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+              </MenuItem>
+              <MenuItem graphic="$saveAs" mnemonicParsing="false" onAction="#enregistrerSous" text="Enregistrer sous">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+              </MenuItem>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edition">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#unDo" text="UnDo" />
-                  <MenuItem mnemonicParsing="false" onAction="#reDo" text="ReDo" />
+              <MenuItem graphic="$undo" mnemonicParsing="false" onAction="#unDo" text="UnDo">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+              </MenuItem>
+                <MenuItem graphic="$redo" mnemonicParsing="false" onAction="#reDo" text="ReDo">
+                   <accelerator>
+                      <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                   </accelerator>
+                </MenuItem>
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Traitements">

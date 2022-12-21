@@ -9,11 +9,11 @@ import java.io.Serializable;
 public abstract class Noeud implements Serializable{
     
     /* Libelle du noeud */
-    private String libelle;
+    String libelle;
     
     /* Coordonnée d'un noeud */
-    private final double coordX;
-    private final double coordY;
+    final double coordX;
+    final double coordY;
     
     /* Rayon des cercle représentant un noeud */
     private static final double RADIUS = 30.0;
@@ -46,6 +46,11 @@ public abstract class Noeud implements Serializable{
         return RADIUS;
     }
     
+    public int getId() {
+        return 0;
+    }
+    
+    @Override
     public String toString() {
         String noeud = libelle + " X: " + coordX + " Y :" + coordY;
         return noeud;

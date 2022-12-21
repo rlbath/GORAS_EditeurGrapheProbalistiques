@@ -23,6 +23,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -67,6 +68,9 @@ public class AccueilController implements Initializable {
     private Lien lienEnCours;
     public static Group lienEnCoursGroup;
     
+    /* Chemin du graphe courant dans l'explorateur de fichier */
+    private static String filePath;
+    
     //Element de l'interface graphique
     @FXML
     private ToggleButton selectionBtn;
@@ -83,8 +87,7 @@ public class AccueilController implements Initializable {
     @FXML
     private TextField nomGraphe;
     @FXML
-    private AnchorPane modificationContainer;
-    
+    private AnchorPane modificationContainer; 
     @FXML
     private Label labelNomGraphe;
     @FXML
@@ -146,14 +149,20 @@ public class AccueilController implements Initializable {
      */
     @FXML
     private void nouveauGraphe() throws IOException {
+        
         Parent root = FXMLLoader.load(getClass().getResource("FXMLNouveauGraphe.fxml"));
         Stage nouveauGrapheStage = new Stage();
         nouveauGrapheStage.initModality(Modality.APPLICATION_MODAL);
         nouveauGrapheStage.setTitle("Nouveau graphe");
+        nouveauGrapheStage.getIcons().add(new Image("/img/line-chart.png"));
         nouveauGrapheStage.setScene(new Scene(root));  
         nouveauGrapheStage.show();
+        zoneDessin.getChildren().clear();
     }
     
+    /*
+     * Affiche le menu d'aide de manipulation des graphes
+     */
     @FXML
     private void afficheAideManipGraphe() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLAideManipGraphe.fxml"));
@@ -164,6 +173,9 @@ public class AccueilController implements Initializable {
         afficheAideManipGraphe.show();
     }
     
+    /*
+     * Affiche le menu d'aide de creation des graphes
+     */
     @FXML
     private void aficheAideCreaGraphe() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLAideCreaGraphe.fxml"));
@@ -174,6 +186,9 @@ public class AccueilController implements Initializable {
         aficheAideCreaGraphe.show();
     }
     
+    /*
+     * Affiche le menu d'aide sur les menus de l'application
+     */
     @FXML
     private void aficheAideMenu() throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("FXMLAideMenus.fxml"));
@@ -184,6 +199,9 @@ public class AccueilController implements Initializable {
         aficheAideCreaGraphe.show();
     }
     
+    /*
+     * Fermeture de la fenetre courante
+     */
     @FXML
     private void fermeFenetre() {
         Stage stage = (Stage) annulerBtn.getScene().getWindow();
@@ -320,61 +338,114 @@ public class AccueilController implements Initializable {
         }
     }
     
-    
+    /*
+     * Enregistre le graphe courant avec un chemin et un nom spécifiés
+     */
     @FXML
     private void enregistrerSous() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Enregistrer sous");
-
-        // Set Initial Directory
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        
-        File file = fileChooser.showSaveDialog(mainStage);
-        
         
         try {
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("graphe.dat"));
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Enregistrer sous");
+
+            //Set le repertoire par defaut
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            //Set le ou les extensions possibles
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
+            //Set le nom par defaut du graphe
+            fileChooser.setInitialFileName(graphe.getLibelle());
+
+            File file = fileChooser.showSaveDialog(mainStage);
+
+            //Recuperation du nom du fichier puis modification du libelle du graphe
+            String nom = file.getName().substring(0, file.getName().length()-4);
+            graphe.setLibelle(nom);
+            
+            filePath =  file.getParent();
+            
+            //Serialization des objets
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
             output.writeObject(graphe);
             output.writeObject(factory);
             output.close();
+            
+        } catch (NullPointerException e) {
+            //Enregistrement sans graphe
+            System.err.println(e.getMessage());
         } catch (IOException e) {
+            //Erreur de la sauvegarde
             System.err.println(e.getMessage());
         }
         
     }
     
+    /*
+     * Enregistre le graphe courant dans son emplacement par défaut 
+     * s'il n'existe pas on applique la methode enregistreSous
+     */
+    @FXML
+    private void enregistrer() {
+        if (filePath != null) {
+            
+            try {
+                //Serialization des objets
+                ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filePath));
+                output.writeObject(graphe);
+                output.writeObject(factory);
+                output.close();
+            } catch (IOException e) {
+                System.err.println(e.getMessage());
+            }
+            
+        } else {
+            enregistrerSous();
+        }
+    }
+    
+    /*
+     * Ouvre un graphe a partir de son chemin
+     */
     @FXML
     private void ouvrir() {
-        
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Ouvrir un graphe");
-
-        // Set Initial Directory
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-        fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
-        
-        File file = fileChooser.showOpenDialog(mainStage);
-        
         try {
+            
+            //Reinitialisation de la zone de dessin et des parametes de dessin
+            zoneDessin.getChildren().clear();
+            NoeudSimple.cpt = 0;
+            
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Ouvrir un graphe");
+
+            // Set le repertoire par defaut
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+            //Set le ou les extensions possibles
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
+        
+            File file = fileChooser.showOpenDialog(mainStage);
+            filePath =  file.getPath();
+            
             //Recuperation des objets dans le fichier
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
             graphe = (Graphe) input.readObject();
             factory = (FactoryGraphe) input.readObject();
             
             //Dessin du graphe choisi
+            int idMax = 0;
             for (Noeud noeud : graphe.getNoeuds()) {
                 dessinerNoeud(zoneDessin, noeud);
+                idMax = Integer.max(idMax, noeud.getId());
             }
             for (Lien lien : graphe.getLiens()) {
                 lien.dessinerLien(zoneDessin);
             }
-            System.out.println(graphe.getLibelle());
-            System.out.println(graphe.getNoeuds());
-            System.out.println(graphe.getLiens());
+            
+            NoeudSimple.cpt = idMax;
             
         } catch (IOException e) {
             System.err.println(e.getMessage());
         } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+        } catch (NullPointerException e) {
             System.err.println(e.getMessage());
         }
     }

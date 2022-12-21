@@ -12,12 +12,27 @@ import javafx.scene.shape.Circle;
 
 public class NoeudSimple extends Noeud {
     
+    /** Compteur du nombre de noeud que contient un graphe */
     public static int cpt = 0;
-
+    
+    /** id de ce noeud utiliser pour l'ouverture d'un graphe */
+    private int id;
+    
+    /**
+     * Creer un noeud simple
+     * @param coordX coordonnee en abscisse de ce noeud
+     * @param coordY coordonnee en ordonnee de ce noeud
+     */
     public NoeudSimple(double coordX, double coordY) {
         super(Integer.toString(cpt+=1), coordX, coordY);
+        id = cpt;
     }
     
+    /**
+     * Dessine un noeudSimple sur la zone de dessin
+     * @param zoneDessin zone de dessin de l'application
+     * @param noeud noeud a dessiner
+     */
     public static void dessinerNoeud(AnchorPane zoneDessin, Noeud noeud) {
         
         /* Cercle extérieur */
@@ -50,5 +65,16 @@ public class NoeudSimple extends Noeud {
         }));
         zoneDessin.getChildren().addAll(groupe);
         
+    }
+    
+    /** @return l'id de ce noeud */
+    public int getId() {
+        return id;
+    }
+    
+    @Override
+    public String toString() {
+        String noeud = libelle + " X: " + coordX + " Y :" + coordY + " id : " + id;
+        return noeud;
     }
 }

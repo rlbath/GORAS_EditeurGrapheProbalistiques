@@ -16,6 +16,10 @@ public class GrapheSimple extends Graphe {
     /** Liste des liens du graphe */
     public List<Arete> liens;
     
+    /**
+     * Creer une instance de graphe simple
+     * @param libelle libelle de ce graphe
+     */
     public GrapheSimple(String libelle) {
         super(libelle);
         this.libelle = libelle;
@@ -41,7 +45,7 @@ public class GrapheSimple extends Graphe {
         return false;
     }
 
-        /**
+    /**
      * Determine si une arete existe entre deux noeuds 
      * @param sourceATester source ou cible potentielle de l'arete (arete non oriente)
      * @param cibleATester  cible ou source potentielle de l'arete (arete non oriente)
@@ -97,6 +101,7 @@ public class GrapheSimple extends Graphe {
         }
     }
     
+    /** @return la liste des liens de ce graphe */
     @Override
     public List<Arete> getLiens() {
         return liens;

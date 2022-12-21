@@ -25,7 +25,10 @@ public class GrapheOriente extends Graphe implements Serializable{
     /** Liste des liens du graphe */
     public List<Arc> liens;
     
-
+    /**
+     * Creer une instance de graphe oriente
+     * @param libelle libelle de ce graphe
+     */
     public GrapheOriente(String libelle) {
         super(libelle);
         this.libelle = libelle;
@@ -105,6 +108,7 @@ public class GrapheOriente extends Graphe implements Serializable{
         liens.add((Arc) lien);
     }
     
+    /** @return la liste des liens de ce graphe */
     @Override
     public List<Arc> getLiens() {
         return liens;

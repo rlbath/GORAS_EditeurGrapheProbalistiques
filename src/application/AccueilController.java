@@ -1,6 +1,8 @@
 package application;
 
+import static application.Accueil.mainStage;
 import exceptions.TypeGrapheFactoryException;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -16,11 +18,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -78,6 +84,11 @@ public class AccueilController implements Initializable {
     private TextField nomGraphe;
     @FXML
     private AnchorPane modificationContainer;
+    
+    @FXML
+    private Label labelNomGraphe;
+    @FXML
+    private Label labelTypeGraphe;
 
     
     @Override
@@ -187,18 +198,22 @@ public class AccueilController implements Initializable {
         
         String type = (String) typesGraphe.getValue();
         String nom = nomGraphe.getText();
-        fermeFenetre();
         
-        try {
-            
-            factory = factoryManager.getInstance().getFactoryGraphe(type);
-            graphe = factory.creerGraphe(nom);
-            System.out.println("Creation du nouveau graphe : " + nom);           
-        } catch (TypeGrapheFactoryException e) {
-        
-            
+        if (!nom.trim().isEmpty() && type != null) {
+            fermeFenetre();
+            try {
+                factory = factoryManager.getInstance().getFactoryGraphe(type);
+                graphe = factory.creerGraphe(nom);
+                System.out.println("Creation du nouveau graphe : " + nom);           
+            } catch (TypeGrapheFactoryException e) {
+                System.err.println("Erreur creation du graphe type imposssible");
+            }      
+        } else {
+            labelNomGraphe.setTextFill(Color.RED);
+            labelTypeGraphe.setTextFill(Color.RED);
+            System.err.println("Type ou nom incorrect");
         }
-        //TODO Empecher validation si nom vide ou type vide
+        
     }
 
     @FXML
@@ -240,7 +255,6 @@ public class AccueilController implements Initializable {
                     lienEnCours = factory.creerLien(noeudSource, noeudCible);                    
                     graphe.ajouterLien(lienEnCours);                    
                     lienEnCours.dessinerLien(zoneDessin);
-                    System.out.println(graphe.getLiens().toString());
                 }catch(Exception e){
                     System.out.println(e.getMessage());
                 }
@@ -309,7 +323,15 @@ public class AccueilController implements Initializable {
     
     @FXML
     private void enregistrerSous() {
-        System.out.println("enregistrer sous");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer sous");
+
+        // Set Initial Directory
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        
+        File file = fileChooser.showSaveDialog(mainStage);
+        
+        
         try {
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("graphe.dat"));
             output.writeObject(graphe);
@@ -323,10 +345,19 @@ public class AccueilController implements Initializable {
     
     @FXML
     private void ouvrir() {
-        System.out.println("ouvrir");
+        
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Ouvrir un graphe");
+
+        // Set Initial Directory
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
+        
+        File file = fileChooser.showOpenDialog(mainStage);
+        
         try {
             //Recuperation des objets dans le fichier
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream("graphe.dat"));
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
             graphe = (Graphe) input.readObject();
             factory = (FactoryGraphe) input.readObject();
             
@@ -337,6 +368,9 @@ public class AccueilController implements Initializable {
             for (Lien lien : graphe.getLiens()) {
                 lien.dessinerLien(zoneDessin);
             }
+            System.out.println(graphe.getLibelle());
+            System.out.println(graphe.getNoeuds());
+            System.out.println(graphe.getLiens());
             
         } catch (IOException e) {
             System.err.println(e.getMessage());

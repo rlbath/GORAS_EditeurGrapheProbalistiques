@@ -1,10 +1,13 @@
 package traitement;
 
 import application.AccueilController;
+import static application.AccueilController.factory;
 import traitement.Graphe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -68,6 +71,7 @@ public class NoeudSimple extends Noeud {
                 // récupération du nom du noeud
                 Label getterLabelNom = (Label) groupe.getChildren().get(1);
                 libelleModif.setText(getterLabelNom.getText());
+                String nomBase = getterLabelNom.getText();
                 
                 // label pour la modification du nom du noeud
                 Label labelLibelleModif = new Label();
@@ -101,6 +105,8 @@ public class NoeudSimple extends Noeud {
                 Circle getterCoordonnees = (Circle) groupe.getChildren().get(0);
                 coordX.setText(Double.toString(getterCoordonnees.getCenterX()));
                 coordY.setText(Double.toString(getterCoordonnees.getCenterY()));
+                Double coordXBase = Double.parseDouble(coordX.getText());
+                Double coordYBase = Double.parseDouble(coordY.getText());
                 
                 // Bouton de validation du nouveau nom
                 Button validationModif = new Button();
@@ -110,9 +116,53 @@ public class NoeudSimple extends Noeud {
                 
                 validationModif.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent evt) {
+                        
                         String nouveauNom = libelleModif.getText();
                         Double nouvelleCoordX = Double.parseDouble(coordX.getText());
                         Double nouvelleCoordY = Double.parseDouble(coordY.getText());
+                        
+                        // gestion d'erreur de collision après modification des coordonnées de X et Y
+                        
+                        //TODO ça marche pas donc il faut trouver d'autres conditions
+                        int cptErreur = 0;
+                        /*
+                        for (int i = 0; i < Graphe.noeuds.size(); i++) {
+                            if (nouvelleCoordX - Graphe.noeuds.get(i).getX() < 50 && nouvelleCoordY - Graphe.noeuds.get(i).getY() < 50) {
+                                cptErreur = 1;
+                            } 
+                            if (coordXBase - nouvelleCoordX == 0 && coordYBase - nouvelleCoordY == 0) {
+                                cptErreur = 0;
+                            }
+                        }
+                        // Si erreur alors on remets la coordonnées avant le changement
+                        if (cptErreur == 1) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Erreur Coord X");
+                            alert.setHeaderText("Coordonnée de X trop proche d'un autre noeud");
+                            alert.showAndWait();
+                            nouvelleCoordX = coordXBase;
+                            nouvelleCoordY = coordYBase;
+                        } 
+                        */
+
+                        // Gestion des noms en double
+                        cptErreur = 0;
+                        for (int i = 0; i < Graphe.noeuds.size(); i++) {
+                            if (nouveauNom.equals(Graphe.noeuds.get(i).getLibelle())) {
+                                cptErreur = 1;
+                            } 
+                            if (nomBase.equals(nouveauNom)) {
+                                cptErreur = 0;
+                            }
+                        }
+                        // si le nom existe déjà alors on remets l'ancien nom d'avant la modification
+                        if (cptErreur == 1) {
+                            Alert alert = new Alert(AlertType.ERROR);
+                            alert.setTitle("Erreur Nom");
+                            alert.setHeaderText("Nom déjà existant sur un autre noeud");
+                            alert.showAndWait();
+                            nouveauNom = nomBase;
+                        }
                         
                         /* Cercle extérieur */
                         Circle nvCercleExterieur = new Circle(nouvelleCoordX, nouvelleCoordY, AccueilController.getRadius() * 2.5);
@@ -124,30 +174,39 @@ public class NoeudSimple extends Noeud {
                         nvCercle.setFill(Color.TRANSPARENT);  
                         nvCercle.setStroke(Color.BLACK);
 
-                        /* label */
+                        /* label */    
                         Label nvLibelle = new Label(nouveauNom);
                         nvLibelle.setLayoutX(nouvelleCoordX - 3);
-                        nvLibelle.setLayoutY(nouvelleCoordY - 8);
-                        
+                        nvLibelle.setLayoutY(nouvelleCoordY - 8); 
+  
                         groupe.getChildren().clear();
                         groupe.getChildren().addAll(nvCercle, nvLibelle, nvCercleExterieur);
                         
-                        // TODO vérification de si un libellé existe ou pas + pas de déplacement du noeud sur un autre noeud déjà existant
+                        // TODO pas de déplacement du noeud sur un autre noeud déjà existant
                         AccueilController.noeudASelectionner.setLibelle(nouveauNom);
                         AccueilController.noeudASelectionner.setX(nouvelleCoordX);
                         AccueilController.noeudASelectionner.setY(nouvelleCoordY);
-                        System.out.println("Noeud après modif : " + AccueilController.noeudASelectionner);
                         
                         Graphe.modifLienNoeud(AccueilController.noeudASelectionner);
-                        System.out.println(Graphe.getLiensNoeud(AccueilController.noeudASelectionner));
                         
-                        Line ligneEnCours = null;
-                        for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
-                            ligneEnCours = Arete.dessinerModifLien(
-                                    Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
-                                    Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
-                            groupe.getChildren().addAll(ligneEnCours);
-                        } 
+                        //TODO Faire en sorte de supprimer les liens impacté par le déplacement d'un noeud avant de les re dessiner
+                        if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
+                            Line ligneEnCours;
+                            for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
+                                ligneEnCours = Arete.dessinerModifLien(
+                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
+                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
+                                groupe.getChildren().addAll(ligneEnCours);
+                            } 
+                        } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
+                            Group arcEnCours;
+                            for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
+                                arcEnCours = Arc.dessinerModifierLien(
+                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
+                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
+                                groupe.getChildren().addAll(arcEnCours);
+                            } 
+                        }
                     }
                 });
                 

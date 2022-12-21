@@ -8,7 +8,7 @@ import traitement.NoeudSimple;
 public abstract class Graphe {
     public String libelle;
 
-    public List<Noeud> noeuds;
+    public static List<Noeud> noeuds;
 
     public static List<Lien> liens;
 

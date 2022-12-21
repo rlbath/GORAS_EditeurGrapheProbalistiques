@@ -10,16 +10,13 @@ public abstract class Graphe {
 
     public List<Noeud> noeuds;
 
-    public List<Lien> liens;
+    public static List<Lien> liens;
 
     public List<Traitement> traitements;
     // Sert pour le REDO pour récupérer le dernier noeud / lien supprimé
     public List<Noeud> archiveNoeud = new ArrayList<>();
     public List<Lien> archiveLien = new ArrayList<>();
     
-    
-    
-
     public Graphe(String libelle) {
         //TODO tester le libellé
         this.libelle = libelle;
@@ -93,6 +90,33 @@ public abstract class Graphe {
             }
         }
         return false;
+    }
+    
+    //TODO faire la doc
+    public static void modifLienNoeud(Noeud noeudCourant) {
+        for (Lien lien : liens) {
+            if (lien.getCible() == noeudCourant) {
+                lien.setCible(noeudCourant); 
+            }
+            if (lien.getSource() == noeudCourant) {
+                lien.setSource(noeudCourant);
+            }
+        }
+    }
+    
+    //TODO faire la doc
+    public static List<Noeud> getLiensNoeud(Noeud noeudCourant) {
+        List<Noeud> noeudLien = new ArrayList<>();
+        for (Lien lien : liens) {
+            if (lien.getCible() == noeudCourant) {
+                noeudLien.add(lien.getSource());
+                noeudLien.add(noeudCourant);
+            } else if (lien.getSource() == noeudCourant) {
+                noeudLien.add(noeudCourant);
+                noeudLien.add(lien.getCible());
+            }
+        }
+        return noeudLien;
     }
     
     

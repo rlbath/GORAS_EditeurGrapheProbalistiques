@@ -27,9 +27,17 @@ public abstract class Noeud {
     public double getX() {
         return coordX;
     }
+    
+    public void setX(Double value) {
+        this.coordX = value;;
+    }
 
     public double getY() {
         return coordY;
+    }
+    
+    public void setY(Double value) {
+        this.coordY = value;
     }
     
     public String toString() {

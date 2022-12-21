@@ -1,6 +1,7 @@
 package traitement;
 
 import application.AccueilController;
+import traitement.Graphe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -11,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
+import javafx.scene.shape.Line;
 public class NoeudSimple extends Noeud {
     
     public static int cpt = 0;
@@ -102,13 +103,12 @@ public class NoeudSimple extends Noeud {
                 coordY.setText(Double.toString(getterCoordonnees.getCenterY()));
                 
                 // Bouton de validation du nouveau nom
-                Button validationModifNom = new Button();
-                validationModifNom.setText("Valider");
-                validationModifNom.setLayoutX(60);
-                validationModifNom.setLayoutY(203);
+                Button validationModif = new Button();
+                validationModif.setText("Valider");
+                validationModif.setLayoutX(60);
+                validationModif.setLayoutY(203);
                 
-                // Changement du nom
-                validationModifNom.setOnAction(new EventHandler<ActionEvent>() {
+                validationModif.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent evt) {
                         String nouveauNom = libelleModif.getText();
                         Double nouvelleCoordX = Double.parseDouble(coordX.getText());
@@ -124,7 +124,6 @@ public class NoeudSimple extends Noeud {
                         nvCercle.setFill(Color.TRANSPARENT);  
                         nvCercle.setStroke(Color.BLACK);
 
-
                         /* label */
                         Label nvLibelle = new Label(nouveauNom);
                         nvLibelle.setLayoutX(nouvelleCoordX - 3);
@@ -133,16 +132,26 @@ public class NoeudSimple extends Noeud {
                         groupe.getChildren().clear();
                         groupe.getChildren().addAll(nvCercle, nvLibelle, nvCercleExterieur);
                         
-                        // TODO Récupérer l'objet noeud pour le modifier (j'y arrive pas)
-                        /* 
-                        AccueilController.noeudASelectionner.libelle = nouveauNom;
-                        AccueilController.noeudASelectionner.coordX = nouvelleCoordX;
-                        AccueilController.noeudASelectionner.coordY = nouvelleCoordY;
-                        */
+                        // TODO vérification de si un libellé existe ou pas + pas de déplacement du noeud sur un autre noeud déjà existant
+                        AccueilController.noeudASelectionner.setLibelle(nouveauNom);
+                        AccueilController.noeudASelectionner.setX(nouvelleCoordX);
+                        AccueilController.noeudASelectionner.setY(nouvelleCoordY);
+                        System.out.println("Noeud après modif : " + AccueilController.noeudASelectionner);
+                        
+                        Graphe.modifLienNoeud(AccueilController.noeudASelectionner);
+                        System.out.println(Graphe.getLiensNoeud(AccueilController.noeudASelectionner));
+                        
+                        Line ligneEnCours = null;
+                        for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
+                            ligneEnCours = Arete.dessinerModifLien(
+                                    Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
+                                    Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
+                            groupe.getChildren().addAll(ligneEnCours);
+                        } 
                     }
                 });
                 
-                main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModifNom);
+                main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModif);
             }
         }));
     }

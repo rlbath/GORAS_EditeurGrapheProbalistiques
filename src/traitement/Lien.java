@@ -10,9 +10,9 @@ import javafx.scene.shape.Line;
 
 public abstract class Lien {
     
-    private final Noeud source;
+    private Noeud source;
 
-    private final Noeud cible;
+    private Noeud cible;
 
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 
@@ -25,8 +25,16 @@ public abstract class Lien {
         return source;
     }
     
+    public void  setSource(Noeud value) {
+        this.source = value;
+    }
+    
     public Noeud getCible() {
         return cible;
+    }
+    
+    public void  setCible (Noeud value) {
+        this.cible = value;
     }
 
     @Override

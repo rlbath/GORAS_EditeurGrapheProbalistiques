@@ -1,7 +1,11 @@
 package application;
 
 import exceptions.TypeGrapheFactoryException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -55,7 +59,7 @@ public class AccueilController implements Initializable {
     
     /* Pour le dessin d'un lien ainsi que pour sa modification */
     private Lien lienEnCours;
-    private Group lienEnCoursGroup;
+    public static Group lienEnCoursGroup;
     
     //Element de l'interface graphique
     @FXML
@@ -103,10 +107,10 @@ public class AccueilController implements Initializable {
                 
                 /* Recuperation du lien selectionner */
                 lienEnCours = graphe.getLienDuGraphe(noeudSource, noeudCible);
-                lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin);
-
+                lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin, lienEnCoursGroup);
                 /* Reinitialisation des valeurs */
                 lienEnCours = null;
+                lienEnCoursGroup = null;
                 noeudSource = null;
                 noeudCible = null;
                 
@@ -211,15 +215,14 @@ public class AccueilController implements Initializable {
             if (graphe.estNoeudGraphe(x, y) != null && lienEnCours == null) {
                 noeudSource = graphe.estNoeudGraphe(x, y);
                 lienEnCours = factory.creerLien(noeudSource, noeudSource);
-                lienEnCours.dessinerLien(zoneDessin);
-                lienEnCoursGroup = lienEnCours.getGroup();
+                lienEnCoursGroup = lienEnCours.dessinerLien(zoneDessin);
+                //zoneDessin.getChildren().add(lienEnCoursGroup);
 
             } else if (noeudSource != null && lienEnCours != null) {
                 zoneDessin.getChildren().remove(lienEnCoursGroup);
                 Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
                 lienEnCours = factory.creerLien(noeudSource, noeudProvisoire);
-                lienEnCours.dessinerLien(zoneDessin);                    
-                lienEnCoursGroup = lienEnCours.getGroup();
+                lienEnCoursGroup = lienEnCours.dessinerLien(zoneDessin);
                 NoeudSimple.cpt = compteurNoeud;
             }
 
@@ -234,9 +237,10 @@ public class AccueilController implements Initializable {
 
             if (noeudCible != null && !graphe.estLienDuGraphe(noeudSource, noeudCible)) {
                 try{
-                    lienEnCours = factory.creerLien(noeudSource, noeudCible);
-                    graphe.ajouterLien(lienEnCours);
+                    lienEnCours = factory.creerLien(noeudSource, noeudCible);                    
+                    graphe.ajouterLien(lienEnCours);                    
                     lienEnCours.dessinerLien(zoneDessin);
+                    System.out.println(graphe.getLiens().toString());
                 }catch(Exception e){
                     System.out.println(e.getMessage());
                 }
@@ -299,6 +303,45 @@ public class AccueilController implements Initializable {
             zoneDessin.getChildren().remove(graphe.liens.size());
         } catch (Exception e) {
             System.err.println("UnDo sur un noeud impossible"); 
+        }
+    }
+    
+    
+    @FXML
+    private void enregistrerSous() {
+        System.out.println("enregistrer sous");
+        try {
+            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("graphe.dat"));
+            output.writeObject(graphe);
+            output.writeObject(factory);
+            output.close();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+        
+    }
+    
+    @FXML
+    private void ouvrir() {
+        System.out.println("ouvrir");
+        try {
+            //Recuperation des objets dans le fichier
+            ObjectInputStream input = new ObjectInputStream(new FileInputStream("graphe.dat"));
+            graphe = (Graphe) input.readObject();
+            factory = (FactoryGraphe) input.readObject();
+            
+            //Dessin du graphe choisi
+            for (Noeud noeud : graphe.getNoeuds()) {
+                dessinerNoeud(zoneDessin, noeud);
+            }
+            for (Lien lien : graphe.getLiens()) {
+                lien.dessinerLien(zoneDessin);
+            }
+            
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println(e.getMessage());
         }
     }
 }    

@@ -94,6 +94,11 @@ public class GrapheSimple extends Graphe {
     public void ajouterLien(Lien lien) {
         if (!lien.getSource().equals(lien.getCible())) {
             liens.add((Arete) lien);
-        }  
+        }
+    }
+    
+    @Override
+    public List<Arete> getLiens() {
+        return liens;
     }
 }

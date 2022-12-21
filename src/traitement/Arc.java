@@ -1,12 +1,9 @@
 package traitement;
 
 import application.AccueilController;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -25,7 +22,7 @@ public class Arc extends Lien {
     
     
     @Override
-    public void dessinerLien(AnchorPane zoneDessin) {
+    public Group dessinerLien(AnchorPane zoneDessin) {
         
         /* TODO Si dessin d'une boucle verifier que l, xDirDroite et yDirDroite !=0
          * Sinon division par 0 donc coord égal NaN
@@ -86,7 +83,7 @@ public class Arc extends Lien {
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
                 
-        groupe = new Group();
+        Group groupe = new Group();
         groupe.getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         //Action s'il on clique sur l'arc
@@ -95,12 +92,14 @@ public class Arc extends Lien {
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.estLien = true;
+                AccueilController.lienEnCoursGroup = groupe;
                 AccueilController.noeudSource = source;
                 AccueilController.noeudCible = cible;
             }
         }));
         
         zoneDessin.getChildren().addAll(groupe);
+        return groupe;
     }
     
     /**
@@ -111,7 +110,7 @@ public class Arc extends Lien {
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin) {
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();
@@ -136,7 +135,7 @@ public class Arc extends Lien {
             setSource(noeudSource);
             setCible(noeudCible);
             
-            supprimer(zoneDessin);
+            supprimer(zoneDessin, groupe);
             //Dessin du nouveau lien
             dessinerLien(zoneDessin);
             

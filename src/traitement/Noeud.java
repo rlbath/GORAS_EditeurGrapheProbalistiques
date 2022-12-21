@@ -1,9 +1,12 @@
 package traitement;
 
 //import java.util.ArrayList;
+
+import java.io.Serializable;
+
 //import java.util.List;
 
-public abstract class Noeud {
+public abstract class Noeud implements Serializable{
     
     /* Libelle du noeud */
     private String libelle;

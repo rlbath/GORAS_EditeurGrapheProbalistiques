@@ -1,10 +1,11 @@
 package traitement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.ComboBox;
 
-public abstract class Graphe {
+public abstract class Graphe implements Serializable {
     
     /** Libelle du graphe */
     public String libelle;
@@ -49,11 +50,8 @@ public abstract class Graphe {
         return noeuds;
     }
     
-    /**
-     * @return la liste des liens du graphe
-     */
-    public List<Lien> getLiens() {
-        return liens;
+    public List<? extends Lien> getLiens() {
+        return null;
     }
     
     /**

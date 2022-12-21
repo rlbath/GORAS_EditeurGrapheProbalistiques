@@ -1,11 +1,9 @@
 package traitement;
 
 import application.AccueilController;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -29,7 +27,7 @@ public class Arete extends Lien {
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public void dessinerLien(AnchorPane zoneDessin) {
+    public Group dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
 
@@ -49,6 +47,8 @@ public class Arete extends Lien {
         //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
         enveloppe.setStroke(Color.RED);
         
+        Group groupe = new Group();
+        
         groupe.getChildren().addAll(enveloppe, ligne);
         
         //Action s'il on clique sur l'arete
@@ -57,11 +57,13 @@ public class Arete extends Lien {
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.estLien = true;
+                AccueilController.lienEnCoursGroup = groupe;
                 AccueilController.noeudSource = source;
                 AccueilController.noeudCible = cible;
             }
         }));
         zoneDessin.getChildren().addAll(groupe);
+        return groupe;
     }
 
     
@@ -73,7 +75,7 @@ public class Arete extends Lien {
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin) {
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();
@@ -98,7 +100,7 @@ public class Arete extends Lien {
             setSource(noeudSource);
             setCible(noeudCible);
             
-            supprimer(zoneDessin);
+            supprimer(zoneDessin, groupe);
             //Dessin du nouveau lien
             dessinerLien(zoneDessin);
             

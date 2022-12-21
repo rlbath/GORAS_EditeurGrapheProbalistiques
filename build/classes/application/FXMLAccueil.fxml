@@ -15,9 +15,9 @@
           <Menu mnemonicParsing="false" text="Graphes">
             <items>
               <MenuItem fx:id="newGrapheBtn" mnemonicParsing="false" onAction="#nouveauGraphe" text="Nouveau Graphe" />
-              <MenuItem mnemonicParsing="false" text="Ouvrir" />
+              <MenuItem mnemonicParsing="false" onAction="#ouvrir" text="Ouvrir" />
               <MenuItem mnemonicParsing="false" text="Enregistrer" />
-              <MenuItem mnemonicParsing="false" text="Enregistrer sous" />
+              <MenuItem mnemonicParsing="false" onAction="#enregistrerSous" text="Enregistrer sous" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edition">

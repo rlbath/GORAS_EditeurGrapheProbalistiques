@@ -2,6 +2,7 @@ package traitement;
 
 //import java.util.ArrayList;
 
+import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -11,7 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 //import java.util.List;
 
-public abstract class Lien {
+public abstract class Lien implements Serializable{
     
     /** Source du lien*/ 
     Noeud source;
@@ -20,7 +21,7 @@ public abstract class Lien {
     Noeud cible;
     
     /** Groupe (dessin) du lien*/
-    Group groupe;
+    //Group groupe;
 
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
     
@@ -32,7 +33,7 @@ public abstract class Lien {
     public Lien(Noeud source, Noeud cible) {
         this.source = source;
         this.cible = cible;
-        groupe = new Group();
+        //groupe = new Group();
     }
     
     /** @return la source du lien */
@@ -46,9 +47,9 @@ public abstract class Lien {
     }
     
     /** @return le group du lien */
-    public Group getGroup() {
+    /*public Group getGroup() {
         return groupe;
-    }
+    }*/
     
     /**
      * Modifie la source du lien
@@ -69,29 +70,33 @@ public abstract class Lien {
     /**
      * Supprime le lien de la zone de dessin
      * @param zoneDessin la zone de dessin du graphe
+     * @param groupe dessin du lien
      */
-    public void supprimer(AnchorPane zoneDessin) {
+    public void supprimer(AnchorPane zoneDessin, Group groupe) {
         //Suppression de ce que contient le groupe 
-        getGroup().getChildren().clear();
+        groupe.getChildren().clear();
         //Suppression du groupe sur la zone de dessin
-        zoneDessin.getChildren().remove(getGroup());
+        zoneDessin.getChildren().remove(groupe);
     }
     
     @Override
     public String toString() {
-        String lien = "Source :" + source + " Cible: " + cible + " Group: " + groupe;
+        String lien = "Source :" + source + " Cible: " + cible;
         return lien;
     }
 
-    public void dessinerLien(AnchorPane zoneDessin) { }
+    public Group dessinerLien(AnchorPane zoneDessin) { 
+        return null;
+    }
 
    /**
      * Affiche sur la zone de propriété les zones de saisie des propriétés d'un lien
      * @param zonePropriete zone ou les propriete s'afficher sur l'interface graphique
      * @param graphe graphe en cours de traitement
      * @param zoneDessin zone de dessin du graphe
+     * @param groupe dessin du lien
      */
-    public void proprieteLien(AnchorPane zonePropriete, Graphe graphe, AnchorPane zoneDessin) {
+    public void proprieteLien(AnchorPane zonePropriete, Graphe graphe, AnchorPane zoneDessin, Group groupe) {
         
         //Gestion propriete source
         Label labelSource = new Label("Source : ");
@@ -143,7 +148,7 @@ public abstract class Lien {
             
             @Override
             public void handle(ActionEvent evt) {
-                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin);
+                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin, groupe);
             }
 
             
@@ -161,7 +166,7 @@ public abstract class Lien {
             
             @Override
             public void handle(ActionEvent evt) {
-                supprimer(zoneDessin);
+                supprimer(zoneDessin, groupe);
                 graphe.supprimerLien(noeudsSource, noeudsCible);
                 zonePropriete.getChildren().clear();
             }
@@ -169,5 +174,5 @@ public abstract class Lien {
         
     }
     
-    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin) { }
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) { }
 }

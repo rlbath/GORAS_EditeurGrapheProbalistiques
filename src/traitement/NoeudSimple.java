@@ -2,6 +2,7 @@ package traitement;
 
 import application.AccueilController;
 import static application.AccueilController.factory;
+import static application.AccueilController.graphe;
 import traitement.Graphe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -74,7 +75,7 @@ public class NoeudSimple extends Noeud {
         return groupe;
     }
 
-    public void selectionGroupe(AnchorPane main, Group groupe, Graphe graphe) {
+    public void selectionGroupe(AnchorPane main, Group groupe, Graphe graphe, AnchorPane zoneDessin) {
         groupe.setOnMouseClicked((new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent evt) {
@@ -129,6 +130,12 @@ public class NoeudSimple extends Noeud {
                 validationModif.setText("Valider");
                 validationModif.setLayoutX(60);
                 validationModif.setLayoutY(203);
+                
+                // Bouton de supression d'un noeud
+                Button suppression = new Button();
+                suppression.setText("Supprimer");
+                suppression.setLayoutX(120);
+                suppression.setLayoutY(203);
                 
                 validationModif.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent evt) {
@@ -198,29 +205,43 @@ public class NoeudSimple extends Noeud {
                         groupe.getChildren().clear();
                         groupe.getChildren().addAll(nvCercle, nvLibelle, nvCercleExterieur);
                         
-                        // TODO pas de déplacement du noeud sur un autre noeud déjà existant
                         AccueilController.noeudASelectionner.setLibelle(nouveauNom);
                         AccueilController.noeudASelectionner.setX(nouvelleCoordX);
                         AccueilController.noeudASelectionner.setY(nouvelleCoordY);
                         
                         graphe.modifLienNoeud(AccueilController.noeudASelectionner);
-                        
-                        System.out.println(graphe.getLiensNoeud(AccueilController.noeudASelectionner));
-                        //TODO Faire en sorte de supprimer les liens impacté par le déplacement d'un noeud avant de les re dessiner
 
+                        // On efface tout le dessin pour le redessiner avec les nouvelles modifications
+                        zoneDessin.getChildren().clear();
+                        
+                        // On redessine les noeuds et les liens
+                        for (Noeud noeud : graphe.getNoeuds()) {
+                            noeud.dessinerNoeud(zoneDessin);
+                        }
+                        for (Lien lien : graphe.getLiens()) {
+                            lien.dessinerLien(zoneDessin);
+                        }
+                        
+                        /*
                         Group ligneEnCours;
                         for (int i = 0; i < graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {     
-                            
-                            // TODO récupérer le groupe afin de le supprimer
                             ligneEnCours = graphe.getLienDuGraphe(graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i),
                                     graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i + 1)).dessinerModifLien();
                             System.out.println(ligneEnCours);
                             groupe.getChildren().addAll(ligneEnCours);
                         } 
+                        */
                     }
                 });
                 
-                main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModif);
+                validationModif.setOnAction(new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent evt) {
+                        
+                    }    
+                });
+                
+                
+                main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModif, suppression);
             }
         }));
     }

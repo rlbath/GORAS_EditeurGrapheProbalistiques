@@ -118,7 +118,7 @@ public class AccueilController implements Initializable {
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectionne l'option selections
                 noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
-                noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe);
+                noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe, zoneDessin);
                 /* Recuperation du lien selectionner */
                 lienEnCours = graphe.getLienDuGraphe(noeudSource, noeudCible);
                 lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin, lienEnCoursGroup);

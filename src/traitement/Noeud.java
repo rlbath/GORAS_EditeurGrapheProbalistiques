@@ -60,7 +60,6 @@ public abstract class Noeud implements Serializable{
     }
     
     public Group dessinerNoeud(AnchorPane zoneDessin) {
-       
        return null;
    }
     

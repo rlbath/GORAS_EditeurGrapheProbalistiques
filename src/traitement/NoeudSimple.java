@@ -18,51 +18,67 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 public class NoeudSimple extends Noeud {
     
+    /** Compteur du nombre de noeud que contient un graphe */
     public static int cpt = 0;
     
-    public Group groupe;
+    /** id de ce noeud utiliser pour l'ouverture d'un graphe */
+    private int id;
     
+    /**
+     * Creer un noeud simple
+     * @param coordX coordonnee en abscisse de ce noeud
+     * @param coordY coordonnee en ordonnee de ce noeud
+     */
     public NoeudSimple(double coordX, double coordY) {
         super(Integer.toString(cpt+=1), coordX, coordY);
+        id = cpt;
     }
     
-    public void dessinerNoeud(AnchorPane zoneDessin) {
+
+    /**
+     * Dessine un noeudSimple sur la zone de dessin
+     * @param zoneDessin zone de dessin de l'application
+     * @return Group le groupe crée
+     */
+    @Override
+    public Group dessinerNoeud(AnchorPane zoneDessin) {
         
         /* Cercle extérieur */
-        Circle cercleExterieur = new Circle(this.getX(), this.getY(), AccueilController.getRadius() * 2.5);
+        Circle cercleExterieur = new Circle(getX(), getY(), Noeud.getRadius() * 2.5);
         cercleExterieur.setFill(Color.TRANSPARENT);
         cercleExterieur.setStroke(Color.TRANSPARENT);
         
         /* cercle */
-        Circle cercle = new Circle(this.getX(), this.getY(), AccueilController.getRadius());
+        Circle cercle = new Circle(getX(), getY(), Noeud.getRadius());
         cercle.setFill(Color.TRANSPARENT);  
         cercle.setStroke(Color.BLACK);
 
 
         /* label */
         Label libelle = new Label(this.getLibelle());
-
         libelle.setLayoutX(this.getX() - 3);
         libelle.setLayoutY(this.getY() - 8);
 
         /* Groupe cercle + label */
-        groupe = new Group();
+        Group groupe = new Group();
         groupe.getChildren().addAll(cercle, libelle, cercleExterieur);
 
         groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.isDrawable = false;
+                AccueilController.noeudEnCoursGroup = groupe;
             }
         }));
         zoneDessin.getChildren().addAll(groupe);
-        
+        return groupe;
     }
-    
-    public void selectionGroupe(AnchorPane main) {
+
+    public void selectionGroupe(AnchorPane main, Group groupe, Graphe graphe) {
         groupe.setOnMouseClicked((new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent evt) {
+
                 // Text field pour changer libelle du noeud sélectionné
                 TextField libelleModif = new TextField();
                 libelleModif.setLayoutX(60);
@@ -147,8 +163,8 @@ public class NoeudSimple extends Noeud {
 
                         // Gestion des noms en double
                         cptErreur = 0;
-                        for (int i = 0; i < Graphe.noeuds.size(); i++) {
-                            if (nouveauNom.equals(Graphe.noeuds.get(i).getLibelle())) {
+                        for (int i = 0; i < graphe.noeuds.size(); i++) {
+                            if (nouveauNom.equals(graphe.noeuds.get(i).getLibelle())) {
                                 cptErreur = 1;
                             } 
                             if (nomBase.equals(nouveauNom)) {
@@ -165,12 +181,12 @@ public class NoeudSimple extends Noeud {
                         }
                         
                         /* Cercle extérieur */
-                        Circle nvCercleExterieur = new Circle(nouvelleCoordX, nouvelleCoordY, AccueilController.getRadius() * 2.5);
+                        Circle nvCercleExterieur = new Circle(nouvelleCoordX, nouvelleCoordY, Noeud.getRadius() * 2.5);
                         nvCercleExterieur.setFill(Color.TRANSPARENT);
                         nvCercleExterieur.setStroke(Color.TRANSPARENT);
 
                         /* cercle */
-                        Circle nvCercle = new Circle(nouvelleCoordX, nouvelleCoordY, AccueilController.getRadius());
+                        Circle nvCercle = new Circle(nouvelleCoordX, nouvelleCoordY, Noeud.getRadius());
                         nvCercle.setFill(Color.TRANSPARENT);  
                         nvCercle.setStroke(Color.BLACK);
 
@@ -187,31 +203,37 @@ public class NoeudSimple extends Noeud {
                         AccueilController.noeudASelectionner.setX(nouvelleCoordX);
                         AccueilController.noeudASelectionner.setY(nouvelleCoordY);
                         
-                        Graphe.modifLienNoeud(AccueilController.noeudASelectionner);
+                        graphe.modifLienNoeud(AccueilController.noeudASelectionner);
                         
+                        System.out.println(graphe.getLiensNoeud(AccueilController.noeudASelectionner));
                         //TODO Faire en sorte de supprimer les liens impacté par le déplacement d'un noeud avant de les re dessiner
-                        if (factory.getClass() == new FactoryGrapheSimpleNonOriente().getClass()) { 
-                            Line ligneEnCours;
-                            for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
-                                ligneEnCours = Arete.dessinerModifLien(
-                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
-                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
-                                groupe.getChildren().addAll(ligneEnCours);
-                            } 
-                        } else if (factory.getClass() == new FactoryGrapheSimpleOriente().getClass()) {
-                            Group arcEnCours;
-                            for (int i = 0; i < Graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {
-                                arcEnCours = Arc.dessinerModifierLien(
-                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i) , 
-                                        Graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i+1));
-                                groupe.getChildren().addAll(arcEnCours);
-                            } 
-                        }
+
+                        Group ligneEnCours;
+                        for (int i = 0; i < graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {     
+                            
+                            // TODO récupérer le groupe afin de le supprimer
+                            ligneEnCours = graphe.getLienDuGraphe(graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i),
+                                    graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i + 1)).dessinerModifLien();
+                            System.out.println(ligneEnCours);
+                            groupe.getChildren().addAll(ligneEnCours);
+                        } 
                     }
                 });
                 
                 main.getChildren().addAll(libelleModif, labelLibelleModif, coordX, coordY, labelCoordX, labelCoordY, validationModif);
             }
         }));
+    }
+
+    /** @return l'id de ce noeud */
+    @Override
+    public int getId() {
+        return id;
+    }
+    
+    @Override
+    public String toString() {
+        String noeud = libelle + " X: " + coordX + " Y :" + coordY + " id : " + id;
+        return noeud;
     }
 }

@@ -1,16 +1,20 @@
 package traitement;
 
-import application.AccueilController;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import traitement.NoeudSimple;
+import javafx.scene.control.ComboBox;
 
-public abstract class Graphe {
+public abstract class Graphe implements Serializable {
+    
+    /** Libelle du graphe */
     public String libelle;
 
-    public static List<Noeud> noeuds;
+    /** Liste des noeuds du graphe */
+    public List<Noeud> noeuds;
 
-    public static List<Lien> liens;
+    /** Liste des liens du graphe */
+    public List<Lien> liens;
 
     public List<Traitement> traitements;
     // Sert pour le REDO pour récupérer le dernier noeud / lien supprimé
@@ -24,17 +28,39 @@ public abstract class Graphe {
         liens = new ArrayList<> ();
     }
    
+    /**
+     * Ajoute un noeud au graphe
+     * @param noeud noeud a ajouter au graphe
+     */
     public void ajouterNoeud(Noeud noeud) {
         noeuds.add(noeud);
     }
 
-    public void ajouterLien(Lien lien) {
-        liens.add(lien);
-    }
+    public void ajouterLien(Lien lien) { }
+    
     /* TODO a mettre dans graphe proba, orienté
     public void ajouterTraitement(Traitement traitement) {
         traitements.add(traitement);
     }*/
+    
+    /**
+     * @return la liste des noeuds du graphe
+     */
+    public List<Noeud> getNoeuds() {
+        return noeuds;
+    }
+    
+    public List<? extends Lien> getLiens() {
+        return null;
+    }
+    
+    public String getLibelle() {
+        return libelle;
+    }
+    
+    public void setLibelle(String nouveauLibelle) {
+        libelle = nouveauLibelle;
+    }
     
     /**
      * Determine si des coordonnées font partie d'un noeud du graphe
@@ -46,10 +72,10 @@ public abstract class Graphe {
         
         for(Noeud noeud : noeuds) {
             
-            double minX = noeud.getX() - AccueilController.getRadius();
-            double maxX = noeud.getX() + AccueilController.getRadius();
-            double minY = noeud.getY() - AccueilController.getRadius();
-            double maxY = noeud.getY() + AccueilController.getRadius();
+            double minX = noeud.getX() - Noeud.getRadius();
+            double maxX = noeud.getX() + Noeud.getRadius();
+            double minY = noeud.getY() - Noeud.getRadius();
+            double maxY = noeud.getY() + Noeud.getRadius();
             
             if (minX < xATester && xATester < maxX && minY < yATester && yATester < maxY) {
                 return noeud;   
@@ -58,42 +84,17 @@ public abstract class Graphe {
         
         return null;
     }
-    
-    
-        /**
-     * Determine si deux noeuds forment une arete du graphe
-     * @param noeudATester
-     * @param noeudATester2
-     * @return true si les deux noeuds forment une arete, false sinon
-     */
-    public boolean estAreteDuGraphe(Noeud noeudATester, Noeud noeudATester2) {
-        
-        for (Lien lien : liens) {
-            if (lien.getSource() == noeudATester && lien.getCible() == noeudATester2 
-                || lien.getSource() == noeudATester2 && lien.getCible() == noeudATester) {
-                return true;
-            }
-        }
-        return false;
+
+    public boolean estLienDuGraphe(Noeud noeudATester, Noeud noeudATester2) {        
+        return false; //Bouchon pour compilateur
     }
     
-    /**
-     * 
-     * @param noeudATester
-     * @param noeudATester2
-     * @return 
-     */
-    public boolean estArcDuGraphe(Noeud noeudATester, Noeud noeudATester2) {
-        for (Lien lien : liens) {
-            if (lien.getSource() == noeudATester && lien.getCible() == noeudATester2) {
-                return true;
-            }
-        }
-        return false;
+    public Lien getLienDuGraphe(Noeud sourceATester, Noeud cibleATester) {
+        return null; //Bouchon pour compilateur
     }
     
     //TODO faire la doc
-    public static void modifLienNoeud(Noeud noeudCourant) {
+    public void modifLienNoeud(Noeud noeudCourant) {
         for (Lien lien : liens) {
             if (lien.getCible() == noeudCourant) {
                 lien.setCible(noeudCourant); 
@@ -105,26 +106,17 @@ public abstract class Graphe {
     }
     
     //TODO faire la doc
-    public static List<Noeud> getLiensNoeud(Noeud noeudCourant) {
-        List<Noeud> noeudLien = new ArrayList<>();
-        for (Lien lien : liens) {
-            if (lien.getCible() == noeudCourant) {
-                noeudLien.add(lien.getSource());
-                noeudLien.add(noeudCourant);
-            } else if (lien.getSource() == noeudCourant) {
-                noeudLien.add(noeudCourant);
-                noeudLien.add(lien.getCible());
-            }
-        }
-        return noeudLien;
+    public List<? extends Noeud> getLiensNoeud(Noeud noeudCourant) {
+        return null;
     }
     
+    public void supprimerLien(ComboBox noeudsSource, ComboBox noeudsCible) { }
+
     
     @Override
     public String toString() {
-        
         String tout = "nom : " + libelle + "   noeuds : " + noeuds.toString() + "   liens : " + liens.toString();
         return tout;
-    }
+    }   
 
 }

@@ -111,6 +111,8 @@ public abstract class Graphe implements Serializable {
     }
     
     public void supprimerLien(ComboBox noeudsSource, ComboBox noeudsCible) { }
+    
+    public void supprimerLien(Noeud noeudsSource, Noeud noeudsCible) { }
 
     
     @Override

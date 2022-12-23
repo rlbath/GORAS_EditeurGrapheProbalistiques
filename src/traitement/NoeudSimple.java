@@ -3,6 +3,8 @@ package traitement;
 import application.AccueilController;
 import static application.AccueilController.factory;
 import static application.AccueilController.graphe;
+import static application.AccueilController.noeudCible;
+import static application.AccueilController.noeudSource;
 import traitement.Graphe;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -221,21 +223,27 @@ public class NoeudSimple extends Noeud {
                         for (Lien lien : graphe.getLiens()) {
                             lien.dessinerLien(zoneDessin);
                         }
-                        
-                        /*
-                        Group ligneEnCours;
-                        for (int i = 0; i < graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {     
-                            ligneEnCours = graphe.getLienDuGraphe(graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i),
-                                    graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i + 1)).dessinerModifLien();
-                            System.out.println(ligneEnCours);
-                            groupe.getChildren().addAll(ligneEnCours);
-                        } 
-                        */
                     }
                 });
                 
-                validationModif.setOnAction(new EventHandler<ActionEvent>() {
+                
+                //TODO continuer la méthode de suppression. Il faut récupérer les liens du noeud courant
+                suppression.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent evt) {
+                        
+                        System.out.println(AccueilController.noeudASelectionner);
+                        System.out.println(graphe.getLiens());
+                        for (int i = 0; i < graphe.getLiens().size(); i++) {     
+                            if (graphe.getLiens().get(i).getSource().equals(AccueilController.noeudASelectionner)
+                                || graphe.getLiens().get(i).getCible().equals(AccueilController.noeudASelectionner)) {
+                                graphe.supprimerLien(graphe.getLiens().get(i).getSource(), graphe.getLiens().get(i).getCible());
+                                System.err.println("Après suppression des liens  :  " + graphe.getLiens());
+                                
+                                //TODO supprimer graphiquement les liens imapacté par la suppression du noeud
+                            }
+                        }
+                        
+                        groupe.getChildren().clear();
                         
                     }    
                 });

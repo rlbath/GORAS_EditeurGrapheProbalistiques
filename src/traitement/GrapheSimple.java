@@ -91,6 +91,18 @@ public class GrapheSimple extends Graphe {
     }
     
     /**
+     * Supprime un lien du graphe en fonction de 2 libelles de noeuds
+     * @param noeudsSource combobox contenant le libelle de la source du lien a supprimer
+     * @param noeudsCible ombobox contenant le libelle de la cible du lien a supprimer
+     */
+    @Override
+    public void supprimerLien(Noeud noeudsSource, Noeud noeudsCible) {
+        
+        Arete lienAsuppr = getLienDuGraphe(noeudsSource, noeudsCible);
+        liens.remove(lienAsuppr);
+    }
+    
+    /**
      * Ajoute un lien au graphe
      * @param lien lien a ajouter au graphe
      */

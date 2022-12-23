@@ -117,17 +117,27 @@ public class AccueilController implements Initializable {
     private void dessin(javafx.scene.input.MouseEvent evt) {  
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectionne l'option selections
-                noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
-                noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe, zoneDessin);
-                /* Recuperation du lien selectionner */
-                lienEnCours = graphe.getLienDuGraphe(noeudSource, noeudCible);
-                lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin, lienEnCoursGroup);
-                /* Reinitialisation des valeurs */
-                lienEnCours = null;
-                lienEnCoursGroup = null;
-                noeudSource = null;
-                noeudCible = null;
+                try {
+                    noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
+                    noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe, zoneDessin);
+                    noeudASelectionner = null;
+                } catch (NullPointerException e) {
+                    
+                }
                 
+                try {
+                    /* Recuperation du lien selectionner */
+                    lienEnCours = graphe.getLienDuGraphe(noeudSource, noeudCible);
+                    lienEnCours.proprieteLien(modificationContainer, graphe, zoneDessin, lienEnCoursGroup);
+                    /* Reinitialisation des valeurs */
+                    lienEnCours = null;
+                    lienEnCoursGroup = null;
+                    noeudSource = null;
+                    noeudCible = null;
+                } catch (NullPointerException e) {
+                    
+                }
+
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
                 
                 if (isDrawable == true) {

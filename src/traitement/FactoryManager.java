@@ -13,6 +13,7 @@ public class FactoryManager {
         factories = new HashMap<> ();
         factories.put("Graphe simple", new FactoryGrapheSimpleNonOriente() );
         factories.put("Graphe oriente", new FactoryGrapheSimpleOriente() );
+        factories.put("Graphe probabiliste", new FactoryGrapheProbabiliste());
     }
 
     public static FactoryManager getInstance() {

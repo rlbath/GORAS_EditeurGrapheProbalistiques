@@ -234,7 +234,7 @@ public class NoeudSimple extends Noeud {
                     }
                 });
                 
-                validationModif.setOnAction(new EventHandler<ActionEvent>() {
+                suppression.setOnAction(new EventHandler<ActionEvent>() {
                     public void handle(ActionEvent evt) {
                         
                     }    

@@ -33,6 +33,10 @@ class ArcProbabiliste extends Arete{
         return ponderation;
     }
     
+    public void setPonderation(double ponderation) {
+        this.ponderation = ponderation;
+    }
+    
     
     @Override
     public Group dessinerLien(AnchorPane zoneDessin) {
@@ -209,7 +213,7 @@ class ArcProbabiliste extends Arete{
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) {
+    public void setProprieteArcProba(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();
@@ -233,6 +237,7 @@ class ArcProbabiliste extends Arete{
             //Modification des sources et cibles de l'instance
             setSource(noeudSource);
             setCible(noeudCible);
+            setPonderation(ponderation);
             
             supprimer(zoneDessin, groupe);
             //Dessin du nouveau lien

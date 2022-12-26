@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Line;
 //import java.util.List;
@@ -99,7 +100,7 @@ public abstract class Lien implements Serializable{
         
         //Gestion propriete source
         Label labelSource = new Label("Source : ");
-        labelSource.setLayoutX(26);
+        labelSource.setLayoutX(10);
         labelSource.setLayoutY(53);
         
         ComboBox noeudsSource = new ComboBox();
@@ -118,7 +119,7 @@ public abstract class Lien implements Serializable{
 
         //Gestion propriete cible
         Label labelCible = new Label("Cible : ");
-        labelCible.setLayoutX(26);
+        labelCible.setLayoutX(10);
         labelCible.setLayoutY(103);
         
         ComboBox noeudsCible = new ComboBox();
@@ -134,6 +135,22 @@ public abstract class Lien implements Serializable{
             }  
         }
         zonePropriete.getChildren().addAll(labelCible, noeudsCible);
+       
+        // Titre de TextField du changement de pondération de l'arc
+        Label labelPonderation = new Label();
+        labelPonderation.setText("Pondération : ");
+        labelPonderation.setLayoutX(10);
+        labelPonderation.setLayoutY(153);
+        
+        // récupération de la pondération de l'arc
+        Label getterPonderation = (Label) groupe.getChildren().get(3);
+        // Pour changer la pondération de l'arc
+        TextField ponderation = new TextField();
+        ponderation.setLayoutX(90);
+        ponderation.setLayoutY(150);
+        ponderation.setText(getterPonderation.getText());
+        
+        zonePropriete.getChildren().addAll(labelPonderation, ponderation);
         
         // Bouton de validation
         Button validationModif = new Button("Valider");
@@ -141,13 +158,14 @@ public abstract class Lien implements Serializable{
         validationModif.setLayoutY(203);
         zonePropriete.getChildren().addAll(validationModif);
         
-        
         // Si validation des changements
         validationModif.setOnAction(new EventHandler<ActionEvent>() {
             
+            double nouvellePonderation = Double.parseDouble(ponderation.getText());
+            
             @Override
             public void handle(ActionEvent evt) {
-                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin, groupe);
+                setProprieteArcProba(noeudsSource, noeudsCible, graphe, zoneDessin, groupe, nouvellePonderation);
             }
 
             
@@ -156,7 +174,7 @@ public abstract class Lien implements Serializable{
         // Bouton de suppression de l'arc
         Button supprimerLien = new Button("Supprimer");
         supprimerLien.setLayoutX(60);
-        supprimerLien.setLayoutY(223);
+        supprimerLien.setLayoutY(233);
         zonePropriete.getChildren().addAll(supprimerLien);
         
         
@@ -176,6 +194,8 @@ public abstract class Lien implements Serializable{
     }
     
     public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) { }
+    public void setProprieteArcProba(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) { }
+    
     
     public Group dessinerModifLien() {
         return null;

@@ -22,19 +22,16 @@ import javafx.scene.shape.QuadCurve;
  */
 class ArcProbabiliste extends Arete{
     
-    private double ponderation;
+
+    private double nouvellePonderation = 0.0;
     
     public ArcProbabiliste(Noeud source, Noeud cible) {
         super(source, cible);
-        ponderation = 0.0;
     }
-    
-    public double getPonderation() {
-        return ponderation;
-    }
-    
+
+   
     public void setPonderation(double ponderation) {
-        this.ponderation = ponderation;
+        nouvellePonderation = ponderation;
     }
     
     
@@ -81,7 +78,7 @@ class ArcProbabiliste extends Arete{
         ligne.setFill(Color.TRANSPARENT);
         ligne.setStroke(Color.BLACK);
         
-        Label labelPonderation = new Label(Double.toString(ponderation));
+        Label labelPonderation = new Label(Double.toString(nouvellePonderation));
         labelPonderation.setLayoutX(xControle);
         labelPonderation.setLayoutY(yControle);
 
@@ -166,7 +163,7 @@ class ArcProbabiliste extends Arete{
         ligne.setFill(Color.TRANSPARENT);
         ligne.setStroke(Color.BLACK);
         
-        Label labelPonderation = new Label(Double.toString(ponderation));
+        Label labelPonderation = new Label(Double.toString(nouvellePonderation));
         labelPonderation.setLayoutX(xControle);
         labelPonderation.setLayoutY(yControle);
 
@@ -237,7 +234,8 @@ class ArcProbabiliste extends Arete{
             //Modification des sources et cibles de l'instance
             setSource(noeudSource);
             setCible(noeudCible);
-            setPonderation(ponderation);
+            
+            System.err.println("Tu passe par là if");
             
             supprimer(zoneDessin, groupe);
             //Dessin du nouveau lien
@@ -247,6 +245,11 @@ class ArcProbabiliste extends Arete{
             //ComboBox aux parametres par defauts
             noeudsSource.setValue(getSource().getLibelle());
             noeudsCible.setValue(getCible().getLibelle());
+            //groupe.getChildren().remove(3);
+            nouvellePonderation = ponderation;
+            
+            //TODO faire le changement du label (j'y arrive pas)
+           
         }
     }
     

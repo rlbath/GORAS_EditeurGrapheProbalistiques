@@ -23,7 +23,7 @@ import javafx.scene.shape.QuadCurve;
 class ArcProbabiliste extends Arete{
     
 
-    private double nouvellePonderation = 1.0;
+    private double nouvellePonderation = 0.0;
     
     public ArcProbabiliste(Noeud source, Noeud cible) {
         super(source, cible);
@@ -213,8 +213,8 @@ class ArcProbabiliste extends Arete{
      * @param graphe graphe en cours de traitement
      * @param zoneDessin zone de dessin du graphe
      */
-    @Override
-    public void setProprieteArcProba(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) {
+    
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();

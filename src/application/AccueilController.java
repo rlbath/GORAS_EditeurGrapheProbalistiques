@@ -230,6 +230,7 @@ public class AccueilController implements Initializable {
         
         String type = (String) typesGraphe.getValue();
         String nom = nomGraphe.getText();
+        NoeudSimple.cpt = 0;
         
         if (!nom.trim().isEmpty() && type != null) {
             fermeFenetre();

@@ -165,7 +165,7 @@ public abstract class Lien implements Serializable{
             
             @Override
             public void handle(ActionEvent evt) {
-                setProprieteArcProba(noeudsSource, noeudsCible, graphe, zoneDessin, groupe, nouvellePonderation);
+                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin, groupe);
             }
 
             

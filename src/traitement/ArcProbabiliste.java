@@ -23,7 +23,7 @@ import javafx.scene.shape.QuadCurve;
 class ArcProbabiliste extends Arete{
     
 
-    private double nouvellePonderation = 0.0;
+    private double nouvellePonderation = 1.0;
     
     public ArcProbabiliste(Noeud source, Noeud cible) {
         super(source, cible);
@@ -32,6 +32,10 @@ class ArcProbabiliste extends Arete{
    
     public void setPonderation(double ponderation) {
         nouvellePonderation = ponderation;
+    }
+    
+    public double getPonderation() {
+        return nouvellePonderation;
     }
     
     

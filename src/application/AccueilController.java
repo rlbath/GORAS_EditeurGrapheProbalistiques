@@ -35,9 +35,12 @@ import javafx.stage.Stage;
 import traitement.FactoryGraphe;
 import traitement.FactoryManager;
 import traitement.Graphe;
+import traitement.GrapheProbabiliste;
 import traitement.Noeud;
 import traitement.NoeudSimple;
 import traitement.Lien;
+import traitement.Traitement;
+import traitement.TraitementProbabiliste;
 
 /**
  *
@@ -281,7 +284,7 @@ public class AccueilController implements Initializable {
             if (noeudCible != null && !graphe.estLienDuGraphe(noeudSource, noeudCible)) {
                 try{
                     lienEnCours = factory.creerLien(noeudSource, noeudCible);                    
-                    graphe.ajouterLien(lienEnCours);                    
+                    graphe.ajouterLien(lienEnCours);                   
                     lienEnCours.dessinerLien(zoneDessin);
                 }catch(Exception e){
                     System.out.println(e.getMessage());
@@ -460,5 +463,14 @@ public class AccueilController implements Initializable {
         } catch (NullPointerException e) {
             System.err.println(e.getMessage());
         }
+    }
+    
+    @FXML
+    private void traitement() {  
+        
+        
+        TraitementProbabiliste traitement = new TraitementProbabiliste(graphe);
+        traitement.matriceTransition();
+     
     }
 }    

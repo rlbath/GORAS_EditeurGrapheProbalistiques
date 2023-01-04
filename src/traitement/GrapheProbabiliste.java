@@ -118,7 +118,7 @@ public class GrapheProbabiliste extends Graphe{
      * @param lien lien a ajouter au graphe
      */
     @Override
-    public void ajouterLien(Lien lien) {
+    public void ajouterLien(Lien lien) {  
         liens.add((ArcProbabiliste) lien);
     }
     
@@ -127,6 +127,12 @@ public class GrapheProbabiliste extends Graphe{
     public List<ArcProbabiliste> getLiens() {
         return liens;
     }
+    
+    @Override
+    public String toString() {
+        String tout = "nom : " + libelle + "   noeuds : " + noeuds.toString() + "   liens : " + liens.toString();
+        return tout;
+    }   
 
     
 }

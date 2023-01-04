@@ -147,39 +147,39 @@ public class NoeudSimple extends Noeud {
                         // gestion d'erreur de collision après modification des coordonnées de X et Y
                         
                         //TODO ça marche pas donc il faut trouver d'autres conditions
-                        int cptErreur = 0;
-                        /*
-                        for (int i = 0; i < Graphe.noeuds.size(); i++) {
-                            if (nouvelleCoordX - Graphe.noeuds.get(i).getX() < 50 && nouvelleCoordY - Graphe.noeuds.get(i).getY() < 50) {
-                                cptErreur = 1;
-                            } 
-                            if (coordXBase - nouvelleCoordX == 0 && coordYBase - nouvelleCoordY == 0) {
-                                cptErreur = 0;
+                        boolean noeudMemePosition = false;
+                        
+                        for (int i = 0; i < graphe.getNoeuds().size(); i++) {
+                            if(graphe.getNoeuds().get(i).getId() != AccueilController.noeudASelectionner.getId()){
+                                if (Math.sqrt(Math.pow((graphe.getNoeuds().get(i).getX()-nouvelleCoordX), 2)+Math.pow((graphe.getNoeuds().get(i).getY()-nouvelleCoordY), 2)) < 100) {
+                                    noeudMemePosition = true;
+                                } 
                             }
                         }
                         // Si erreur alors on remets la coordonnées avant le changement
-                        if (cptErreur == 1) {
+                        if (noeudMemePosition) {
                             Alert alert = new Alert(AlertType.ERROR);
-                            alert.setTitle("Erreur Coord X");
-                            alert.setHeaderText("Coordonnée de X trop proche d'un autre noeud");
+                            alert.setTitle("Erreur Coord");
+                            alert.setHeaderText("Coordonnée trop proche d'un autre noeud");
                             alert.showAndWait();
                             nouvelleCoordX = coordXBase;
+                            coordX.setText(Double.toString(getterCoordonnees.getCenterX()));
                             nouvelleCoordY = coordYBase;
+                            coordY.setText(Double.toString(getterCoordonnees.getCenterY()));
                         } 
-                        */
-
+                        
                         // Gestion des noms en double
-                        cptErreur = 0;
+                        boolean memeNomNoeud = false;
                         for (int i = 0; i < graphe.noeuds.size(); i++) {
                             if (nouveauNom.equals(graphe.noeuds.get(i).getLibelle())) {
-                                cptErreur = 1;
+                                memeNomNoeud = true;
                             } 
                             if (nomBase.equals(nouveauNom)) {
-                                cptErreur = 0;
+                                memeNomNoeud = false;
                             }
                         }
                         // si le nom existe déjà alors on remets l'ancien nom d'avant la modification
-                        if (cptErreur == 1) {
+                        if (memeNomNoeud) {
                             Alert alert = new Alert(AlertType.ERROR);
                             alert.setTitle("Erreur Nom");
                             alert.setHeaderText("Nom déjà existant sur un autre noeud");
@@ -221,22 +221,19 @@ public class NoeudSimple extends Noeud {
                         for (Lien lien : graphe.getLiens()) {
                             lien.dessinerLien(zoneDessin);
                         }
-                        
-                        /*
-                        Group ligneEnCours;
-                        for (int i = 0; i < graphe.getLiensNoeud(AccueilController.noeudASelectionner).size(); i = i + 2) {     
-                            ligneEnCours = graphe.getLienDuGraphe(graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i),
-                                    graphe.getLiensNoeud(AccueilController.noeudASelectionner).get(i + 1)).dessinerModifLien();
-                            System.out.println(ligneEnCours);
-                            groupe.getChildren().addAll(ligneEnCours);
-                        } 
-                        */
+                        main.getChildren().clear();
                     }
                 });
                 
                 suppression.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
                     public void handle(ActionEvent evt) {
-                        
+                        //Suppression de ce que contient le groupe 
+                        groupe.getChildren().clear();
+                        //Suppression du groupe sur la zone de dessin
+                        zoneDessin.getChildren().remove(groupe);
+                        graphe.supprimerNoeud(AccueilController.noeudASelectionner, groupe);
+                        main.getChildren().clear();
                     }    
                 });
                 

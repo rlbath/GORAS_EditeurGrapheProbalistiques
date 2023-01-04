@@ -3,6 +3,7 @@ package traitement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
 
 public abstract class Graphe implements Serializable {
@@ -111,6 +112,8 @@ public abstract class Graphe implements Serializable {
     }
     
     public void supprimerLien(ComboBox noeudsSource, ComboBox noeudsCible) { }
+    
+    public void supprimerNoeud(Noeud noeud, Group groupe) { }
 
     
     @Override

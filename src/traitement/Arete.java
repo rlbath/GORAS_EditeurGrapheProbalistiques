@@ -65,45 +65,6 @@ public class Arete extends Lien {
         zoneDessin.getChildren().addAll(groupe);
         return groupe;
     }
-    
-    @Override
-    public Group dessinerModifLien() {
-        
-        double l = Math.sqrt(Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
-
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
-
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
-
-
-        Line enveloppe = new Line(xCible, yCible, xSource, ySource);
-        Line ligne = new Line(xCible, yCible, xSource, ySource);
-        
-        // Defini la zone cliquable autour de la ligne representant le lien
-        enveloppe.setStrokeWidth(5);
-        
-        //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
-        enveloppe.setStroke(Color.RED);
-        
-        Group groupe = new Group();
-        
-        groupe.getChildren().addAll(enveloppe, ligne);
-        
-        //Action s'il on clique sur l'arete
-        groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent evt) {
-                AccueilController.estLien = true;
-                AccueilController.lienEnCoursGroup = groupe;
-                AccueilController.noeudSource = source;
-                AccueilController.noeudCible = cible;
-            }
-        }));
-        return groupe;
-    }
 
     
     /**

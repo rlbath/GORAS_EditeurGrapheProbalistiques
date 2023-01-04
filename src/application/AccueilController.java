@@ -123,9 +123,9 @@ public class AccueilController implements Initializable {
                 try {
                     noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
                     noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe, zoneDessin);
-                    noeudASelectionner = null;
+                    //noeudASelectionner = null;
                 } catch (NullPointerException e) {
-                    
+                    modificationContainer.getChildren().clear();
                 }
                 
                 try {
@@ -138,7 +138,7 @@ public class AccueilController implements Initializable {
                     noeudSource = null;
                     noeudCible = null;
                 } catch (NullPointerException e) {
-                    
+
                 }
 
             } else if(noeudBtn.isSelected()) { //Cas si on selectione l'option noeud
@@ -172,6 +172,7 @@ public class AccueilController implements Initializable {
         nouveauGrapheStage.setScene(new Scene(root));  
         nouveauGrapheStage.show();
         zoneDessin.getChildren().clear();
+        modificationContainer.getChildren().clear();
     }
     
     /*

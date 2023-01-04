@@ -136,12 +136,15 @@ public abstract class Lien implements Serializable{
         }
         zonePropriete.getChildren().addAll(labelCible, noeudsCible);
        
+        /*
         // Titre de TextField du changement de pondération de l'arc
         Label labelPonderation = new Label();
         labelPonderation.setText("Pondération : ");
         labelPonderation.setLayoutX(10);
         labelPonderation.setLayoutY(153);
+        */
         
+        /*
         // récupération de la pondération de l'arc
         Label getterPonderation = (Label) groupe.getChildren().get(3);
         // Pour changer la pondération de l'arc
@@ -151,6 +154,7 @@ public abstract class Lien implements Serializable{
         ponderation.setText(getterPonderation.getText());
         
         zonePropriete.getChildren().addAll(labelPonderation, ponderation);
+        */
         
         // Bouton de validation
         Button validationModif = new Button("Valider");
@@ -161,11 +165,12 @@ public abstract class Lien implements Serializable{
         // Si validation des changements
         validationModif.setOnAction(new EventHandler<ActionEvent>() {
             
-            double nouvellePonderation = Double.parseDouble(ponderation.getText());
-            
+            //double nouvellePonderation = Double.parseDouble(ponderation.getText());
+
             @Override
             public void handle(ActionEvent evt) {
                 setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin, groupe);
+                zonePropriete.getChildren().clear();
             }
 
             

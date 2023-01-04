@@ -1,7 +1,10 @@
 package traitement;
 
+import application.AccueilController;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
 
 
@@ -87,7 +90,6 @@ public class GrapheSimple extends Graphe {
         }
         Arete lienAsuppr = getLienDuGraphe(noeudSource, noeudCible);
         liens.remove(lienAsuppr);
-
     }
     
     /**
@@ -120,5 +122,17 @@ public class GrapheSimple extends Graphe {
     @Override
     public List<Arete> getLiens() {
         return liens;
+    }
+    
+    @Override
+    public void supprimerNoeud(Noeud noeud, Group groupe) {
+        
+        Iterator LiensASuppr = liens.iterator();
+        while(LiensASuppr.hasNext()) {
+            Arete lien = (Arete) LiensASuppr.next();
+            if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
+                LiensASuppr.remove();  
+            }
+        }
     }
 }

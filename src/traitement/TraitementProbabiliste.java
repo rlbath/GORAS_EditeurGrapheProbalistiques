@@ -52,6 +52,7 @@ public class TraitementProbabiliste extends Traitement {
             } else if (graphe.liens.get(i).source == x) {
                 System.out.println(graphe.liens.get(i));
                 testExistenceChemin(graphe.liens.get(i).cible , y);
+                
             }
         }
     }

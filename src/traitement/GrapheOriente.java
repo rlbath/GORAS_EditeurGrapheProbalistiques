@@ -5,16 +5,17 @@
  */
 package traitement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
  * @author antoine.gouzy
  */
-public class GrapheOriente extends Graphe implements Serializable{
+public class GrapheOriente extends Graphe{
     
     /** Libelle du graphe */
     public String libelle;
@@ -24,6 +25,10 @@ public class GrapheOriente extends Graphe implements Serializable{
 
     /** Liste des liens du graphe */
     public List<Arc> liens;
+    
+    public GrapheOriente() {
+        
+    }
     
     /**
      * Creer une instance de graphe oriente
@@ -127,6 +132,21 @@ public class GrapheOriente extends Graphe implements Serializable{
     @Override
     public List<Arc> getLiens() {
         return liens;
+    }
+    
+    @Override
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {
+        
+        Iterator liensASuppr = liens.iterator();
+        while(liensASuppr.hasNext()) {
+            Arc lien = (Arc) liensASuppr.next();
+            if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
+                lien.getGroup().getChildren().clear();
+                zoneDessin.getChildren().remove(lien.getGroup());
+                liensASuppr.remove();  
+            }
+        }
+        getNoeuds().remove(noeud);
     }
     
     

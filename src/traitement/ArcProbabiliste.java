@@ -20,22 +20,26 @@ import javafx.scene.shape.QuadCurve;
  *
  * @author Gouzy
  */
-class ArcProbabiliste extends Arete{
+class ArcProbabiliste extends Lien{
     
 
-    private double nouvellePonderation = 0.0;
+    private double ponderation = 0.0;
+    
+    public ArcProbabiliste() {
+        
+    }
     
     public ArcProbabiliste(Noeud source, Noeud cible) {
         super(source, cible);
     }
 
    
-    public void setPonderation(double ponderation) {
-        nouvellePonderation = ponderation;
+    public void setPonderation(double nouvellePonderation) {
+       ponderation = nouvellePonderation;
     }
     
     public double getPonderation() {
-        return nouvellePonderation;
+        return ponderation;
     }
     
     
@@ -46,13 +50,13 @@ class ArcProbabiliste extends Arete{
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
+        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
         
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
+        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
+        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
+        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
+        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -68,8 +72,8 @@ class ArcProbabiliste extends Arete{
         double xControle;
         double yControle;
 
-        if (source.getX()- Noeud.getRadius() <= cible.getX() && cible.getX() <= source.getX() + Noeud.getRadius() 
-            && source.getY() - Noeud.getRadius() <= cible.getY() && cible.getY() <= source.getY() + Noeud.getRadius() ) {
+        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
+            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -82,7 +86,7 @@ class ArcProbabiliste extends Arete{
         ligne.setFill(Color.TRANSPARENT);
         ligne.setStroke(Color.BLACK);
         
-        Label labelPonderation = new Label(Double.toString(nouvellePonderation));
+        Label labelPonderation = new Label(Double.toString(ponderation));
         labelPonderation.setLayoutX(xControle);
         labelPonderation.setLayoutY(yControle);
 
@@ -131,13 +135,13 @@ class ArcProbabiliste extends Arete{
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
+        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
         
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
+        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
+        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
+        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
+        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -153,8 +157,8 @@ class ArcProbabiliste extends Arete{
         double xControle;
         double yControle;
 
-        if (source.getX()- Noeud.getRadius() <= cible.getX() && cible.getX() <= source.getX() + Noeud.getRadius() 
-            && source.getY() - Noeud.getRadius() <= cible.getY() && cible.getY() <= source.getY() + Noeud.getRadius() ) {
+        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
+            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -167,7 +171,7 @@ class ArcProbabiliste extends Arete{
         ligne.setFill(Color.TRANSPARENT);
         ligne.setStroke(Color.BLACK);
         
-        Label labelPonderation = new Label(Double.toString(nouvellePonderation));
+        Label labelPonderation = new Label(Double.toString(ponderation));
         labelPonderation.setLayoutX(xControle);
         labelPonderation.setLayoutY(yControle);
 
@@ -214,7 +218,7 @@ class ArcProbabiliste extends Arete{
      * @param zoneDessin zone de dessin du graphe
      */
     
-    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) {
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double nouvellePonderation) {
         
         String libelleNoeudSource = (String) noeudsSource.getValue();
         String libelleNoeudCible = (String) noeudsCible.getValue();
@@ -250,7 +254,7 @@ class ArcProbabiliste extends Arete{
             noeudsSource.setValue(getSource().getLibelle());
             noeudsCible.setValue(getCible().getLibelle());
             //groupe.getChildren().remove(3);
-            nouvellePonderation = ponderation;
+            ponderation = nouvellePonderation;
             
             //TODO faire le changement du label (j'y arrive pas)
            

@@ -1,13 +1,11 @@
 package traitement;
 
 //import java.util.ArrayList;
-
-import java.io.Serializable;
 import javafx.scene.Group;
 import javafx.scene.layout.AnchorPane;
-
 //import java.util.List;
-public abstract class Noeud implements Serializable{
+
+public abstract class Noeud {
     
     /* Libelle du noeud */
     String libelle;
@@ -16,11 +14,21 @@ public abstract class Noeud implements Serializable{
     double coordX;
     double coordY;
     
+    /** id de ce noeud utiliser pour l'ouverture d'un graphe */
+    int id;
+    
+    /** groupe du lien */
+    Group groupe;
+    
     /* Rayon des cercle représentant un noeud */
-    private static final double RADIUS = 30.0;
+    private static double radius = 30.0;
     
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
 
+    public Noeud() {
+        
+    }
+    
     public Noeud(String libelle, double coordX, double coordY) {
        this.libelle = libelle;
        this.coordX = coordX;
@@ -28,35 +36,51 @@ public abstract class Noeud implements Serializable{
     }
 
     public String getLibelle() {
-        return this.libelle;
+        return libelle;
     }
 
-    public void setLibelle(String value) {
-        this.libelle = value;
-    }
-    
-    public double getX() {
+    public double getCoordX() {
         return coordX;
     }
-    
-    public void setX(Double value) {
-        coordX = value;
-    }
 
-    public double getY() {
+    public double getCoordY() {
         return coordY;
     }
 
-    public void setY(Double value) {
-        coordY = value;
-    }
-    
-     public static double getRadius() {
-        return RADIUS;
-    }
-    
     public int getId() {
-        return 0;
+        return id;
+    }
+
+    public Group getGroupe() {
+        return groupe;
+    }
+
+    public static double getRadius() {
+        return radius;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
+    public void setCoordX(double coordX) {
+        this.coordX = coordX;
+    }
+
+    public void setCoordY(double coordY) {
+        this.coordY = coordY;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setGroupe(Group groupe) {
+        this.groupe = groupe;
+    }
+
+    public static void setRadius(double radius) {
+        Noeud.radius = radius;
     }
     
     public Group dessinerNoeud(AnchorPane zoneDessin) {
@@ -70,4 +94,6 @@ public abstract class Noeud implements Serializable{
         
     }
 
+    
+    
 }

@@ -1,12 +1,12 @@
 package traitement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
-public abstract class Graphe implements Serializable {
+public abstract class Graphe {
     
     /** Libelle du graphe */
     public String libelle;
@@ -18,9 +18,10 @@ public abstract class Graphe implements Serializable {
     public List<Lien> liens;
 
     public List<Traitement> traitements;
-    // Sert pour le REDO pour récupérer le dernier noeud / lien supprimé
-    public List<Noeud> archiveNoeud = new ArrayList<>();
-    public List<Lien> archiveLien = new ArrayList<>();
+    
+    public Graphe() {
+        
+    }
     
     public Graphe(String libelle) {
         //TODO tester le libellé
@@ -51,8 +52,16 @@ public abstract class Graphe implements Serializable {
         return noeuds;
     }
     
+    public void setNoeuds(List nouveauxNoeuds) {
+        noeuds = nouveauxNoeuds;
+    }
+    
     public List<? extends Lien> getLiens() {
         return null;
+    }
+    
+    public void setLiens(List nouveauxLiens) {
+        liens = nouveauxLiens;
     }
     
     public String getLibelle() {
@@ -61,6 +70,14 @@ public abstract class Graphe implements Serializable {
     
     public void setLibelle(String nouveauLibelle) {
         libelle = nouveauLibelle;
+    }
+    
+    public List<? extends Traitement> getTraitement() {
+        return traitements;
+    }
+    
+    public void setTraitement(List nouveauxTraitements) {
+        traitements = nouveauxTraitements;
     }
     
     /**
@@ -73,10 +90,10 @@ public abstract class Graphe implements Serializable {
         
         for(Noeud noeud : noeuds) {
             
-            double minX = noeud.getX() - Noeud.getRadius();
-            double maxX = noeud.getX() + Noeud.getRadius();
-            double minY = noeud.getY() - Noeud.getRadius();
-            double maxY = noeud.getY() + Noeud.getRadius();
+            double minX = noeud.getCoordX() - Noeud.getRadius();
+            double maxX = noeud.getCoordX() + Noeud.getRadius();
+            double minY = noeud.getCoordY() - Noeud.getRadius();
+            double maxY = noeud.getCoordY() + Noeud.getRadius();
             
             if (minX < xATester && xATester < maxX && minY < yATester && yATester < maxY) {
                 return noeud;   
@@ -113,7 +130,7 @@ public abstract class Graphe implements Serializable {
     
     public void supprimerLien(ComboBox noeudsSource, ComboBox noeudsCible) { }
     
-    public void supprimerNoeud(Noeud noeud, Group groupe) { }
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {}
 
     
     @Override

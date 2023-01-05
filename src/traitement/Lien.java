@@ -2,19 +2,16 @@ package traitement;
 
 //import java.util.ArrayList;
 
-import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 //import java.util.List;
 
-public abstract class Lien implements Serializable{
+public abstract class Lien {
 
     /** Source du lien*/ 
     Noeud source;
@@ -22,7 +19,14 @@ public abstract class Lien implements Serializable{
     /** Cible du lien*/
     Noeud cible;
     
+    /** Groupe du lien (dessin) */
+    Group groupe;
+    
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
+    
+    public Lien () {
+        
+    }
     
     /**
      * Creer une instance de Lien
@@ -47,9 +51,9 @@ public abstract class Lien implements Serializable{
     }
 
     /** @return le group du lien */
-    /*public Group getGroup() {
+    public Group getGroup() {
         return groupe;
-    }*/
+    }
     
     /**
      * Modifie la source du lien
@@ -65,6 +69,14 @@ public abstract class Lien implements Serializable{
      */
     public void setCible(Noeud nouvelleCible) {
         cible = nouvelleCible;
+    }
+    
+    /**
+     * Modifie la cible du lien
+     * @param nouveauGroupe le nouveau dessin du lien
+     */
+    public void setGroupe(Group nouveauGroupe) {
+        groupe = nouveauGroupe;
     }
     
     /**

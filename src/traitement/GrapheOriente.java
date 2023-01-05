@@ -5,7 +5,6 @@
  */
 package traitement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.ComboBox;
@@ -14,7 +13,7 @@ import javafx.scene.control.ComboBox;
  *
  * @author antoine.gouzy
  */
-public class GrapheOriente extends Graphe implements Serializable{
+public class GrapheOriente extends Graphe{
     
     /** Libelle du graphe */
     public String libelle;
@@ -24,6 +23,10 @@ public class GrapheOriente extends Graphe implements Serializable{
 
     /** Liste des liens du graphe */
     public List<Arc> liens;
+    
+    public GrapheOriente() {
+        
+    }
     
     /**
      * Creer une instance de graphe oriente

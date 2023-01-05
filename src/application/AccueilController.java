@@ -2,12 +2,13 @@ package application;
 
 import static application.Accueil.mainStage;
 import exceptions.TypeGrapheFactoryException;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -35,11 +36,9 @@ import javafx.stage.Stage;
 import traitement.FactoryGraphe;
 import traitement.FactoryManager;
 import traitement.Graphe;
-import traitement.GrapheProbabiliste;
 import traitement.Noeud;
 import traitement.NoeudSimple;
 import traitement.Lien;
-import traitement.Traitement;
 import traitement.TraitementProbabiliste;
 
 /**
@@ -301,60 +300,6 @@ public class AccueilController implements Initializable {
         }
     }
     
-    @FXML
-    private void unDo() {
-        try {
-            System.out.println("Noeuds : " + graphe.noeuds);
-            graphe.archiveNoeud.add(graphe.noeuds.get(graphe.noeuds.size() - 1));
-            graphe.noeuds.remove(graphe.noeuds.get(graphe.noeuds.size() - 1));
-            System.out.println("Noeuds après remove : " + graphe.noeuds);
-            zoneDessin.getChildren().remove(graphe.noeuds.size());
-            System.out.println("archive noeud à la fin du undo" + graphe.archiveNoeud);
-
-            /* 
-            System.out.println("Liens : " + graphe.liens);
-            graphe.archiveReDo.add(graphe.liens.get(graphe.liens.size() - 1));
-            graphe.liens.remove(graphe.liens.get(graphe.liens.size() - 1));
-            zoneDessin.getChildren().remove(graphe.liens.size());
-            System.out.println("Liens après remove : " + graphe.liens);
-            */
-
-        } catch (Exception e) {
-            System.err.println("UnDo impossible"); 
-        }
-        
-    }
-    
-    @FXML
-    private void reDo() {
-        try {
-            graphe.noeuds.add(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
-            System.out.println("Noeud après ajout de l'archive" + graphe.noeuds);
-            
-            //TODO faire ne sort que ça marche
-            //graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1).dessinerNoeud(zoneDessin);
-            System.out.println("Archive noeud avant remove" + graphe.archiveNoeud);
-            graphe.archiveNoeud.remove(graphe.archiveNoeud.get(graphe.archiveNoeud.size() - 1));
-            System.out.println("Archive noeud après remove" + graphe.archiveNoeud);
-        } catch (Exception e) {
-            System.err.println("ReDo impossible"); 
-        }
-        
-    }  
-
-    // Supprime le dernier lien crée puis l'ajoute dans l'arrayList archiveLien
-    public void undoLien() {
-        try {
-            System.out.println(graphe.liens);
-            //archiveLien.add(liens.get(liens.size() - 1));
-            graphe.liens.remove(graphe.liens.get(graphe.liens.size()));
-            System.out.println(graphe.liens);
-            zoneDessin.getChildren().remove(graphe.liens.size());
-        } catch (Exception e) {
-            System.err.println("UnDo sur un noeud impossible"); 
-        }
-    }
-    
     /*
      * Enregistre le graphe courant avec un chemin et un nom spécifiés
      */
@@ -368,7 +313,7 @@ public class AccueilController implements Initializable {
             //Set le repertoire par defaut
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             //Set le ou les extensions possibles
-            fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
             //Set le nom par defaut du graphe
             fileChooser.setInitialFileName(graphe.getLibelle());
 
@@ -380,8 +325,8 @@ public class AccueilController implements Initializable {
             
             filePath =  file.getParent();
             
-            //Serialization des objets
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
+            // Sérialisation XML d'un graphe dans fichier file
+            XMLEncoder output = new XMLEncoder(new FileOutputStream(file));
             output.writeObject(graphe);
             output.writeObject(factory);
             output.close();
@@ -389,8 +334,7 @@ public class AccueilController implements Initializable {
         } catch (NullPointerException e) {
             //Enregistrement sans graphe
             System.err.println(e.getMessage());
-        } catch (IOException e) {
-            //Erreur de la sauvegarde
+        } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
         
@@ -405,12 +349,12 @@ public class AccueilController implements Initializable {
         if (filePath != null) {
             
             try {
-                //Serialization des objets
-                ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(filePath));
+                // Sérialisation XML d'un graphe dans fichier file
+                XMLEncoder output = new XMLEncoder(new FileOutputStream(filePath));
                 output.writeObject(graphe);
                 output.writeObject(factory);
                 output.close();
-            } catch (IOException e) {
+            } catch (FileNotFoundException e) {
                 System.err.println(e.getMessage());
             }
             
@@ -436,15 +380,16 @@ public class AccueilController implements Initializable {
             // Set le repertoire par defaut
             fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
             //Set le ou les extensions possibles
-            fileChooser.getExtensionFilters().add(new ExtensionFilter("Data files", "*.dat"));
+            fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files", "*.xml"));
         
             File file = fileChooser.showOpenDialog(mainStage);
             filePath =  file.getPath();
             
-            //Recuperation des objets dans le fichier
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
-            graphe = (Graphe) input.readObject();
-            factory = (FactoryGraphe) input.readObject();
+            
+            // Déserialisation
+            XMLDecoder decoder = new XMLDecoder(new FileInputStream(file));
+            graphe = (Graphe) decoder.readObject();
+            factory = (FactoryGraphe) decoder.readObject();
             
             //Dessin du graphe choisi
             int idMax = 0;
@@ -459,8 +404,6 @@ public class AccueilController implements Initializable {
             NoeudSimple.cpt = idMax;
             
         } catch (IOException e) {
-            System.err.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         } catch (NullPointerException e) {
             System.err.println(e.getMessage());

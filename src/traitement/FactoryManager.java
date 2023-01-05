@@ -20,6 +20,10 @@ public class FactoryManager {
         return instance;
     }
     
+    public static void setInstance() {
+        instance = null;
+    }
+    
     public FactoryGraphe getFactoryGraphe(String type) throws TypeGrapheFactoryException { 
         if (factories.containsKey(type)) {
             return factories.get(type);
@@ -30,6 +34,10 @@ public class FactoryManager {
 
     public HashMap<String, FactoryGraphe> getFactories() {
         return factories;
+    }
+    
+    public void setFactories() {
+        factories = null;
     }
 
 }

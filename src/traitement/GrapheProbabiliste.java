@@ -24,6 +24,10 @@ public class GrapheProbabiliste extends Graphe{
     /** Liste des liens du graphe */
     public List<ArcProbabiliste> liens;
     
+    public GrapheProbabiliste() {
+        
+    }
+    
     /**
      * Creer une instance de graphe oriente
      * @param libelle libelle de ce graphe

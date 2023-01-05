@@ -11,6 +11,10 @@ import javafx.scene.shape.Line;
 
 public class Arete extends Lien {
     
+    public Arete() {
+        
+    }
+    
     /**
      * Creer une instance arete en apellant le constructeur de la superClass Lien
      * @param source noeud source de l'arete
@@ -29,13 +33,13 @@ public class Arete extends Lien {
     @Override
     public Group dessinerLien(AnchorPane zoneDessin) {
         
-        double l = Math.sqrt(Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
+        double l = Math.sqrt(Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
 
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
+        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
+        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
+        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
+        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
 
 
         Line enveloppe = new Line(xCible, yCible, xSource, ySource);
@@ -47,7 +51,7 @@ public class Arete extends Lien {
         //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
         enveloppe.setStroke(Color.RED);
         
-        Group groupe = new Group();
+        groupe = new Group();
         
         groupe.getChildren().addAll(enveloppe, ligne);
         

@@ -15,6 +15,10 @@ import javafx.scene.shape.QuadCurve;
  * @author antoine.gouzy
  */
 public class Arc extends Lien {
+    
+    public Arc() {
+        
+    }
 
     public Arc(Noeud source, Noeud cible) {
         super(source, cible);
@@ -28,13 +32,13 @@ public class Arc extends Lien {
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
+        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
         
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
+        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
+        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
+        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
+        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -50,8 +54,8 @@ public class Arc extends Lien {
         double xControle;
         double yControle;
 
-        if (source.getX()- Noeud.getRadius() <= cible.getX() && cible.getX() <= source.getX() + Noeud.getRadius() 
-            && source.getY() - Noeud.getRadius() <= cible.getY() && cible.getY() <= source.getY() + Noeud.getRadius() ) {
+        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
+            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -83,7 +87,7 @@ public class Arc extends Lien {
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
                 
-        Group groupe = new Group();
+        groupe = new Group();
         groupe.getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         //Action s'il on clique sur l'arc
@@ -109,13 +113,13 @@ public class Arc extends Lien {
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getX()- cible.getX(), 2) + Math.pow(source.getY()- cible.getY(), 2));
+        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
         
-        double xSource = source.getX() + (cible.getX() - source.getX()) / l * Noeud.getRadius();
-        double ySource = source.getY() + (cible.getY() - source.getY()) / l * Noeud.getRadius();
+        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
+        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getX() + (source.getX() - cible.getX()) / l * Noeud.getRadius();
-        double yCible  = cible.getY() + (source.getY() - cible.getY()) / l * Noeud.getRadius();
+        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
+        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -131,8 +135,8 @@ public class Arc extends Lien {
         double xControle;
         double yControle;
 
-        if (source.getX()- Noeud.getRadius() <= cible.getX() && cible.getX() <= source.getX() + Noeud.getRadius() 
-            && source.getY() - Noeud.getRadius() <= cible.getY() && cible.getY() <= source.getY() + Noeud.getRadius() ) {
+        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
+            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -164,7 +168,7 @@ public class Arc extends Lien {
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
                 
-        Group groupe = new Group();
+        groupe = new Group();
         groupe.getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         //Action s'il on clique sur l'arc

@@ -63,12 +63,12 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Edition">
             <items>
-              <MenuItem graphic="$undo" mnemonicParsing="false" onAction="#unDo" text="UnDo">
+              <MenuItem graphic="$undo" mnemonicParsing="false" text="UnDo">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="Z" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
               </MenuItem>
-                <MenuItem graphic="$redo" mnemonicParsing="false" onAction="#reDo" text="ReDo">
+                <MenuItem graphic="$redo" mnemonicParsing="false" text="ReDo">
                    <accelerator>
                       <KeyCodeCombination alt="UP" code="Y" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                    </accelerator>

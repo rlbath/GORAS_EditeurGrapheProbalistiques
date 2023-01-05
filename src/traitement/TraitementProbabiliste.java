@@ -5,6 +5,7 @@
  */
 package traitement;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,4 +45,14 @@ public class TraitementProbabiliste extends Traitement {
         }
     }
     
+    public void testExistenceChemin(Noeud x, Noeud y) {
+        for (int i = 0 ; i < graphe.liens.size() ; i++) {
+            if (graphe.liens.get(i).source == x && graphe.liens.get(i).cible == y) {
+                System.out.println(graphe.liens.get(i));
+            } else if (graphe.liens.get(i).source == x) {
+                System.out.println(graphe.liens.get(i));
+                testExistenceChemin(graphe.liens.get(i).cible , y);
+            }
+        }
+    }
 }

@@ -51,7 +51,7 @@ public abstract class Graphe implements Serializable {
     }
     
     public List<? extends Lien> getLiens() {
-        return null;
+        return liens;
     }
     
     public String getLibelle() {

@@ -45,13 +45,28 @@ public class TraitementProbabiliste extends Traitement {
         }
     }
     
+    public boolean testCheminValide(Noeud x, Noeud y, List chemin) {
+        chemin.add(x.libelle);
+        for (int i = 0 ; i < graphe.liens.size() ; i++) {
+            if (graphe.liens.get(i).source == x && graphe.liens.get(i).cible == y) {
+                chemin.add(graphe.liens.get(i).cible.libelle);
+            }else if (graphe.liens.get(i).source == x) {
+                
+            }
+        }
+        return false;
+    }
+    
     public void testExistenceChemin(Noeud x, Noeud y) {
         for (int i = 0 ; i < graphe.liens.size() ; i++) {
             if (graphe.liens.get(i).source == x && graphe.liens.get(i).cible == y) {
-                System.out.println(graphe.liens.get(i));
+                System.out.println(graphe.liens.get(i).source.libelle + "," + graphe.liens.get(i).cible.libelle + " ; ");
             } else if (graphe.liens.get(i).source == x) {
-                System.out.println(graphe.liens.get(i));
-                testExistenceChemin(graphe.liens.get(i).cible , y);
+                List<Lien> chemin = new ArrayList<>();
+                System.out.print(graphe.liens.get(i).source.libelle + "," + graphe.liens.get(i).cible.libelle + " ; ");
+                if (testCheminValide(graphe.liens.get(i).cible , y, chemin) == true) {
+                    System.out.println();
+                }
                 
             }
         }

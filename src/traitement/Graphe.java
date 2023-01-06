@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
 public abstract class Graphe {
     
@@ -131,7 +132,7 @@ public abstract class Graphe {
     
     public void supprimerLien(ComboBox noeudsSource, ComboBox noeudsCible) { }
     
-    public void supprimerNoeud(Noeud noeud, Group groupe) { }
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {}
 
     
     @Override

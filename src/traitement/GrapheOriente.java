@@ -6,8 +6,10 @@
 package traitement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -130,6 +132,21 @@ public class GrapheOriente extends Graphe{
     @Override
     public List<Arc> getLiens() {
         return liens;
+    }
+    
+    @Override
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {
+        
+        Iterator liensASuppr = liens.iterator();
+        while(liensASuppr.hasNext()) {
+            Arc lien = (Arc) liensASuppr.next();
+            if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
+                lien.getGroup().getChildren().clear();
+                zoneDessin.getChildren().remove(lien.getGroup());
+                liensASuppr.remove();  
+            }
+        }
+        getNoeuds().remove(noeud);
     }
     
     

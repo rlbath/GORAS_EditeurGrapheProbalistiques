@@ -238,7 +238,8 @@ public class NoeudSimple extends Noeud {
                         groupe.getChildren().clear();
                         //Suppression du groupe sur la zone de dessin
                         zoneDessin.getChildren().remove(groupe);
-                        graphe.supprimerNoeud(AccueilController.noeudASelectionner, groupe);
+                        graphe.supprimerNoeud(AccueilController.noeudASelectionner, zoneDessin);
+                        
                         main.getChildren().clear();
                     }    
                 });

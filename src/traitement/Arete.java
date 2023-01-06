@@ -32,7 +32,7 @@ public class Arete extends Lien {
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public void dessinerLien(AnchorPane zoneDessin) {
+    public Group dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt(Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
 
@@ -68,6 +68,8 @@ public class Arete extends Lien {
             }
         }));
         zoneDessin.getChildren().addAll(groupe);
+        
+        return groupe;
     }
 
     

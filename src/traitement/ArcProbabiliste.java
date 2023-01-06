@@ -44,7 +44,7 @@ class ArcProbabiliste extends Lien{
     
     
     @Override
-    public void dessinerLien(AnchorPane zoneDessin) {
+    public Group dessinerLien(AnchorPane zoneDessin) {
         
         /* TODO Si dessin d'une boucle verifier que l, xDirDroite et yDirDroite !=0
          * Sinon division par 0 donc coord égal NaN
@@ -125,6 +125,8 @@ class ArcProbabiliste extends Lien{
         }));
         
         zoneDessin.getChildren().addAll(groupe);
+        
+        return groupe;
     }
 
     /**

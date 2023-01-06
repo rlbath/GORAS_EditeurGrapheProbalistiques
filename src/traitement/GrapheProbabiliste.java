@@ -112,7 +112,7 @@ public class GrapheProbabiliste extends Graphe{
                 noeudLien.add((NoeudSimple) noeudCourant);
                 noeudLien.add((NoeudSimple) lien.getCible());
             }
-        }
+        }        
         return noeudLien;
     }
     

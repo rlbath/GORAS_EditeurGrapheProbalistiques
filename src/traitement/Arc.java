@@ -112,6 +112,7 @@ public class Arc extends Lien {
      * @param noeudsCible ComboBox contenant tous les noeuds du graphe
      * @param graphe graphe en cours de traitement
      * @param zoneDessin zone de dessin du graphe
+     * @param groupe
      */
     @Override
     public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) {

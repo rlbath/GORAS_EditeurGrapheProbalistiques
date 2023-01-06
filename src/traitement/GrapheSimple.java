@@ -135,8 +135,8 @@ public class GrapheSimple extends Graphe {
         while(liensASuppr.hasNext()) {
             Arete lien = (Arete) liensASuppr.next();
             if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
-                lien.getGroup().getChildren().clear();
-                zoneDessin.getChildren().remove(lien.getGroup());
+                lien.getGroupe().getChildren().clear();
+                zoneDessin.getChildren().remove(lien.getGroupe());
                 liensASuppr.remove();  
             }
         }

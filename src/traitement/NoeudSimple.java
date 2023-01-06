@@ -147,8 +147,8 @@ public class NoeudSimple extends Noeud {
                     public void handle(ActionEvent evt) {
                         
                         String nouveauNom = libelleModif.getText();
-                        Double nouvelleCoordX = Double.parseDouble(coordX.getText());
-                        Double nouvelleCoordY = Double.parseDouble(coordY.getText());
+                        double nouvelleCoordX = Double.parseDouble(coordX.getText());
+                        double nouvelleCoordY = Double.parseDouble(coordY.getText());
                         
                         // gestion d'erreur de collision après modification des coordonnées de X et Y
                         

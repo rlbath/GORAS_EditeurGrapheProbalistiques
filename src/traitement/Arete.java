@@ -22,6 +22,7 @@ public class Arete extends Lien {
      */
     public Arete(Noeud source, Noeud cible) {
         super(source, cible);
+        groupe = new Group();
     }
     
     /**
@@ -31,7 +32,7 @@ public class Arete extends Lien {
      * @param zoneDessin zone de dessin du graphe
      */
     @Override
-    public Group dessinerLien(AnchorPane zoneDessin) {
+    public void dessinerLien(AnchorPane zoneDessin) {
         
         double l = Math.sqrt(Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
 
@@ -51,7 +52,7 @@ public class Arete extends Lien {
         //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
         enveloppe.setStroke(Color.RED);
         
-        groupe = new Group();
+        groupe.getChildren().clear();
         
         groupe.getChildren().addAll(enveloppe, ligne);
         
@@ -67,7 +68,6 @@ public class Arete extends Lien {
             }
         }));
         zoneDessin.getChildren().addAll(groupe);
-        return groupe;
     }
 
     

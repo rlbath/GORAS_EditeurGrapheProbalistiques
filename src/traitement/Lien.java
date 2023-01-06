@@ -97,9 +97,7 @@ public abstract class Lien {
         return lien;
     }
 
-    public Group dessinerLien(AnchorPane zoneDessin) { 
-        return null;
-    }
+    public void dessinerLien(AnchorPane zoneDessin) { }
 
    /**
      * Affiche sur la zone de propriété les zones de saisie des propriétés d'un lien

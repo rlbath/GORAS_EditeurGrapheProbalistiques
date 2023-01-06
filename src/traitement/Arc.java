@@ -22,7 +22,7 @@ public class Arc extends Lien {
 
     public Arc(Noeud source, Noeud cible) {
         super(source, cible);
-        groupe = new Group();
+        //groupe() = new Group();
     }
     
     
@@ -33,13 +33,13 @@ public class Arc extends Lien {
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
+        double l = Math.sqrt( Math.pow(getSource().getCoordX()- getCible().getCoordX(), 2) + Math.pow(getSource().getCoordY()- getCible().getCoordY(), 2));
         
-        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
-        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
+        double xSource = getSource().getCoordX() + (getCible().getCoordX() - getSource().getCoordX()) / l * Noeud.getRadius();
+        double ySource = getSource().getCoordY() + (getCible().getCoordY() - getSource().getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
-        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
+        double xCible = getCible().getCoordX() + (getSource().getCoordX() - getCible().getCoordX()) / l * Noeud.getRadius();
+        double yCible  = getCible().getCoordY() + (getSource().getCoordY() - getCible().getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -55,8 +55,8 @@ public class Arc extends Lien {
         double xControle;
         double yControle;
 
-        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
-            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
+        if (getSource().getCoordX()- Noeud.getRadius() <= getCible().getCoordX() && getCible().getCoordX() <= getSource().getCoordX() + Noeud.getRadius() 
+            && getSource().getCoordY() - Noeud.getRadius() <= getCible().getCoordY() && getCible().getCoordY() <= getSource().getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -87,25 +87,25 @@ public class Arc extends Lien {
         
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
-                
-        groupe.getChildren().clear();
-        groupe.getChildren().addAll(ligne, flecheBas, flecheHaut);
+                        
+        getGroupe().getChildren().clear();
+        getGroupe().getChildren().addAll(ligne, flecheBas, flecheHaut);
         
         //Action s'il on clique sur l'arc
-        groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
+        getGroupe().setOnMousePressed((new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.estLien = true;
-                AccueilController.lienEnCoursGroup = groupe;
-                AccueilController.noeudSource = source;
-                AccueilController.noeudCible = cible;
+                AccueilController.lienEnCoursGroup = getGroupe();
+                AccueilController.noeudSource = getSource();
+                AccueilController.noeudCible = getCible();
             }
         }));
         
-        zoneDessin.getChildren().addAll(groupe);
+        zoneDessin.getChildren().addAll(getGroupe());
 
-        return groupe;
+        return getGroupe();
     }
 
     /**
@@ -152,4 +152,5 @@ public class Arc extends Lien {
             noeudsCible.setValue(getCible().getLibelle());
         }
     }
+    
 }

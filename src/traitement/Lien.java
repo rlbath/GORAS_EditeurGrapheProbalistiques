@@ -14,13 +14,13 @@ import javafx.scene.layout.AnchorPane;
 public abstract class Lien {
 
     /** Source du lien*/ 
-    Noeud source;
+    private Noeud source;
 
     /** Cible du lien*/
-    Noeud cible;
+    private Noeud cible;
     
     /** Groupe du lien (dessin) */
-    Group groupe;
+    private Group groupe;
     
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
     
@@ -36,7 +36,7 @@ public abstract class Lien {
     public Lien(Noeud source, Noeud cible) {
         this.source = source;
         this.cible = cible;
-        //groupe = new Group();
+        groupe = new Group();
     }
     
     /** @return la source du lien */

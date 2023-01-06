@@ -54,13 +54,13 @@ class ArcProbabiliste extends Lien{
          * Sinon division par 0 donc coord égal NaN
          */
         
-        double l = Math.sqrt( Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
+        double l = Math.sqrt( Math.pow(getSource().getCoordX()- getCible().getCoordX(), 2) + Math.pow(getSource().getCoordY()- getCible().getCoordY(), 2));
         
-        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
-        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
+        double xSource = getSource().getCoordX() + (getCible().getCoordX() - getSource().getCoordX()) / l * Noeud.getRadius();
+        double ySource = getSource().getCoordY() + (getCible().getCoordY() - getSource().getCoordY()) / l * Noeud.getRadius();
 
-        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
-        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
+        double xCible = getCible().getCoordX() + (getSource().getCoordX() - getCible().getCoordX()) / l * Noeud.getRadius();
+        double yCible  = getCible().getCoordY() + (getSource().getCoordY() - getCible().getCoordY()) / l * Noeud.getRadius();
         
         
         /* Creation de la ligne courbe  */
@@ -76,8 +76,8 @@ class ArcProbabiliste extends Lien{
         double xControle;
         double yControle;
 
-        if (source.getCoordX()- Noeud.getRadius() <= cible.getCoordX() && cible.getCoordX() <= source.getCoordX() + Noeud.getRadius() 
-            && source.getCoordY() - Noeud.getRadius() <= cible.getCoordY() && cible.getCoordY() <= source.getCoordY() + Noeud.getRadius() ) {
+        if (getSource().getCoordX()- Noeud.getRadius() <= getCible().getCoordX() && getCible().getCoordX() <= getSource().getCoordX() + Noeud.getRadius() 
+            && getSource().getCoordY() - Noeud.getRadius() <= getCible().getCoordY() && getCible().getCoordY() <= getSource().getCoordY() + Noeud.getRadius() ) {
             xControle = xNorDroite * 200 + xMilieuLien;
             yControle = yNorDroite * 200 + yMilieuLien;            
             
@@ -113,24 +113,25 @@ class ArcProbabiliste extends Lien{
         Line flecheHaut = new Line(xCible, yCible, xflecheH, yflecheH);
         Line flecheBas = new Line(xCible, yCible, xflecheB, yflecheB);
                 
-        groupe = new Group();
-        groupe.getChildren().addAll(ligne, flecheBas, flecheHaut, labelPonderation);
+        //groupe = new Group();
+        getGroupe().getChildren().clear();        
+        getGroupe().getChildren().addAll(ligne, flecheBas, flecheHaut, labelPonderation);
         
         //Action s'il on clique sur l'arc
-        groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
+        getGroupe().setOnMousePressed((new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.estLien = true;
-                AccueilController.lienEnCoursGroup = groupe;
-                AccueilController.noeudSource = source;
-                AccueilController.noeudCible = cible;
+                AccueilController.lienEnCoursGroup = getGroupe();
+                AccueilController.noeudSource = getSource();
+                AccueilController.noeudCible = getCible();
             }
         }));
         
-        zoneDessin.getChildren().addAll(groupe);
+        zoneDessin.getChildren().addAll(getGroupe());
         
-        return groupe;
+        return getGroupe();
     }
 
     /**
@@ -207,7 +208,7 @@ class ArcProbabiliste extends Lien{
         noeudsSource.setLayoutY(50);
         for (Noeud noeud : graphe.getNoeuds()) {
             
-            if (noeud == this.source) { // Si le noeud actuel est la source du lien
+            if (noeud == getSource()) { // Si le noeud actuel est la source du lien
                 noeudsSource.getItems().add(noeud.getLibelle());
                 noeudsSource.setValue(noeud.getLibelle()); //Selected ComboBox
             } else { // Ajout des autres noeuds
@@ -226,7 +227,7 @@ class ArcProbabiliste extends Lien{
         noeudsCible.setLayoutY(100);
         for (Noeud noeud : graphe.getNoeuds()) {
             
-            if (noeud == this.cible) { // Si le noeud actuel est la cible du lien
+            if (noeud == getCible()) { // Si le noeud actuel est la cible du lien
                 noeudsCible.getItems().add(noeud.getLibelle());
                 noeudsCible.setValue(noeud.getLibelle()); //Selected ComboBox
             } else { // Ajout des autres noeuds
@@ -267,8 +268,8 @@ class ArcProbabiliste extends Lien{
             @Override
             public void handle(ActionEvent evt) {
                 double anciennePonde = ponderation;
-                Noeud ancienneSource = source;
-                Noeud ancienneCible = cible;
+                Noeud ancienneSource = getSource();
+                Noeud ancienneCible = getCible();
                 
                 double nouvellePonderation = Double.parseDouble(ponderationText.getText());
                 

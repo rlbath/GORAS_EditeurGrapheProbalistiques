@@ -51,7 +51,7 @@ public abstract class Lien {
     }
 
     /** @return le group du lien */
-    public Group getGroup() {
+    public Group getGroupe() {
         return groupe;
     }
     
@@ -101,7 +101,7 @@ public abstract class Lien {
         return null;
     }
 
-   /**
+    /**
      * Affiche sur la zone de propriété les zones de saisie des propriétés d'un lien
      * @param zonePropriete zone ou les propriete s'afficher sur l'interface graphique
      * @param graphe graphe en cours de traitement
@@ -211,7 +211,7 @@ public abstract class Lien {
     }
     
     public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) { }
-    public void setProprieteArcProba(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) { }
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) { }
     
     
     public Group dessinerModifLien() {

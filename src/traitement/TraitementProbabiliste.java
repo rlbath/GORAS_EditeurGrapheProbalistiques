@@ -7,6 +7,7 @@ package traitement;
 
 import java.util.Arrays;
 import java.util.List;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -23,6 +24,8 @@ public class TraitementProbabiliste extends Traitement {
     
     public void matriceTransition(){
         
+        String matrice = "";
+        
         //Création de la matrice
         double[][] mat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
         for(int i = 0; i < mat.length; i++){
@@ -37,11 +40,17 @@ public class TraitementProbabiliste extends Traitement {
                     mat[i][j] = 0.0;
                     
                 }
-                System.out.print(mat[i][j] + "  ");
+                matrice += mat[i][j] + "  ";
             }
-            System.out.println();
-            System.out.println();
+            matrice += "\n\n";
+            
+            
         }
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Matrice de Transtion");
+        alert.setHeaderText("Matrice de Transtion : ");
+        alert.setContentText(matrice);
+        alert.showAndWait();
     }
     
 }

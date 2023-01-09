@@ -6,8 +6,10 @@
 package traitement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -23,6 +25,10 @@ public class GrapheProbabiliste extends Graphe{
 
     /** Liste des liens du graphe */
     public List<ArcProbabiliste> liens;
+    
+    public GrapheProbabiliste() {
+        
+    }
     
     /**
      * Creer une instance de graphe oriente
@@ -108,7 +114,7 @@ public class GrapheProbabiliste extends Graphe{
                 noeudLien.add((NoeudSimple) noeudCourant);
                 noeudLien.add((NoeudSimple) lien.getCible());
             }
-        }
+        }        
         return noeudLien;
     }
     
@@ -133,6 +139,36 @@ public class GrapheProbabiliste extends Graphe{
         String tout = "nom : " + libelle + "   noeuds : " + noeuds.toString() + "   liens : " + liens.toString();
         return tout;
     }   
-
+    
+    @Override
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {
+        
+        Iterator liensASuppr = liens.iterator();
+        while(liensASuppr.hasNext()) {
+            ArcProbabiliste lien = (ArcProbabiliste) liensASuppr.next();
+            if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
+                lien.getGroupe().getChildren().clear();
+                zoneDessin.getChildren().remove(lien.getGroupe());
+                liensASuppr.remove();  
+            }
+        }
+        getNoeuds().remove(noeud);
+    }
+    
+    public boolean getPondeNoeud(Noeud noeudATester) {
+        
+        double sommePonderation = 0;
+        
+        for (ArcProbabiliste arc : getLiens()) {
+            if (arc.getSource() == noeudATester) {
+                sommePonderation += arc.getPonderation();
+            }
+            
+            if (sommePonderation > 1.0) {
+                return false;
+            }
+        }    
+        return true;
+    }
     
 }

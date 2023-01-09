@@ -2,27 +2,31 @@ package traitement;
 
 //import java.util.ArrayList;
 
-import java.io.Serializable;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.Line;
 //import java.util.List;
 
-public abstract class Lien implements Serializable{
+public abstract class Lien {
 
     /** Source du lien*/ 
-    Noeud source;
+    private Noeud source;
 
     /** Cible du lien*/
-    Noeud cible;
+    private Noeud cible;
+    
+    /** Groupe du lien (dessin) */
+    private Group groupe;
     
     //public List<ElementGraphe> elementGraphe = new ArrayList<ElementGraphe> ();
+    
+    public Lien () {
+        
+    }
     
     /**
      * Creer une instance de Lien
@@ -32,7 +36,7 @@ public abstract class Lien implements Serializable{
     public Lien(Noeud source, Noeud cible) {
         this.source = source;
         this.cible = cible;
-        //groupe = new Group();
+        groupe = new Group();
     }
     
     /** @return la source du lien */
@@ -47,9 +51,9 @@ public abstract class Lien implements Serializable{
     }
 
     /** @return le group du lien */
-    /*public Group getGroup() {
+    public Group getGroupe() {
         return groupe;
-    }*/
+    }
     
     /**
      * Modifie la source du lien
@@ -65,6 +69,14 @@ public abstract class Lien implements Serializable{
      */
     public void setCible(Noeud nouvelleCible) {
         cible = nouvelleCible;
+    }
+    
+    /**
+     * Modifie la cible du lien
+     * @param nouveauGroupe le nouveau dessin du lien
+     */
+    public void setGroupe(Group nouveauGroupe) {
+        groupe = nouveauGroupe;
     }
     
     /**
@@ -85,11 +97,11 @@ public abstract class Lien implements Serializable{
         return lien;
     }
 
-    public Group dessinerLien(AnchorPane zoneDessin) { 
+    public Group dessinerLien(AnchorPane zoneDessin) {
         return null;
     }
 
-   /**
+    /**
      * Affiche sur la zone de propriété les zones de saisie des propriétés d'un lien
      * @param zonePropriete zone ou les propriete s'afficher sur l'interface graphique
      * @param graphe graphe en cours de traitement
@@ -136,12 +148,15 @@ public abstract class Lien implements Serializable{
         }
         zonePropriete.getChildren().addAll(labelCible, noeudsCible);
        
+        /*
         // Titre de TextField du changement de pondération de l'arc
         Label labelPonderation = new Label();
         labelPonderation.setText("Pondération : ");
         labelPonderation.setLayoutX(10);
         labelPonderation.setLayoutY(153);
+        */
         
+        /*
         // récupération de la pondération de l'arc
         Label getterPonderation = (Label) groupe.getChildren().get(3);
         // Pour changer la pondération de l'arc
@@ -151,6 +166,7 @@ public abstract class Lien implements Serializable{
         ponderation.setText(getterPonderation.getText());
         
         zonePropriete.getChildren().addAll(labelPonderation, ponderation);
+        */
         
         // Bouton de validation
         Button validationModif = new Button("Valider");
@@ -161,11 +177,12 @@ public abstract class Lien implements Serializable{
         // Si validation des changements
         validationModif.setOnAction(new EventHandler<ActionEvent>() {
             
-            double nouvellePonderation = Double.parseDouble(ponderation.getText());
-            
+            //double nouvellePonderation = Double.parseDouble(ponderation.getText());
+
             @Override
             public void handle(ActionEvent evt) {
-                setProprieteArcProba(noeudsSource, noeudsCible, graphe, zoneDessin, groupe, nouvellePonderation);
+                setPropriete(noeudsSource, noeudsCible, graphe, zoneDessin, groupe);
+                zonePropriete.getChildren().clear();
             }
 
             
@@ -194,7 +211,7 @@ public abstract class Lien implements Serializable{
     }
     
     public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe) { }
-    public void setProprieteArcProba(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) { }
+    public void setPropriete(ComboBox noeudsSource, ComboBox noeudsCible, Graphe graphe, AnchorPane zoneDessin, Group groupe, double ponderation) { }
     
     
     public Group dessinerModifLien() {

@@ -5,13 +5,11 @@
  */
 package traitement;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Gouzy
  */
-public class FactoryGrapheProbabiliste implements FactoryGraphe, Serializable{
+public class FactoryGrapheProbabiliste implements FactoryGraphe{
 
     @Override
     public GrapheProbabiliste creerGraphe(String libelle) {

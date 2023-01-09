@@ -1,8 +1,11 @@
 package traitement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import javafx.scene.Group;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.AnchorPane;
 
 
 public class GrapheSimple extends Graphe {
@@ -15,6 +18,10 @@ public class GrapheSimple extends Graphe {
 
     /** Liste des liens du graphe */
     public List<Arete> liens;
+    
+    public GrapheSimple() {
+        
+    }
     
     /**
      * Creer une instance de graphe simple
@@ -87,7 +94,6 @@ public class GrapheSimple extends Graphe {
         }
         Arete lienAsuppr = getLienDuGraphe(noeudSource, noeudCible);
         liens.remove(lienAsuppr);
-
     }
     
     /**
@@ -120,5 +126,26 @@ public class GrapheSimple extends Graphe {
     @Override
     public List<Arete> getLiens() {
         return liens;
+    }
+    
+    @Override
+    public void supprimerNoeud(Noeud noeud, AnchorPane zoneDessin) {
+        
+        Iterator liensASuppr = liens.iterator();
+        while(liensASuppr.hasNext()) {
+            Arete lien = (Arete) liensASuppr.next();
+            if (lien.getSource().getId() == noeud.getId() || lien.getCible().getId() == noeud.getId()) {
+                lien.getGroupe().getChildren().clear();
+                zoneDessin.getChildren().remove(lien.getGroupe());
+                liensASuppr.remove();  
+            }
+        }
+        getNoeuds().remove(noeud);
+    }
+    
+    @Override
+    public String toString() {
+        String tout = "nom : " + libelle + "   noeuds : " + getNoeuds().toString() + "   liens : " + getLiens().toString();
+        return tout;
     }
 }

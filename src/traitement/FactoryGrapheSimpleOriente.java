@@ -1,12 +1,10 @@
 package traitement;
 
-import java.io.Serializable;
-
 /**
  *
  * @author Gouzy
  */
-public class FactoryGrapheSimpleOriente implements FactoryGraphe, Serializable {
+public class FactoryGrapheSimpleOriente implements FactoryGraphe {
 
     @Override
     public GrapheOriente creerGraphe(String libelle) {

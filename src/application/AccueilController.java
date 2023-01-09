@@ -471,7 +471,8 @@ public class AccueilController implements Initializable {
         
         TraitementProbabiliste traitement = new TraitementProbabiliste(graphe);
         traitement.matriceTransition();
-        traitement.testExistenceChemin(graphe.noeuds.get(0), graphe.noeuds.get(3));
+//        traitement.testExistenceChemin(graphe.noeuds.get(0), graphe.noeuds.get(3));
+        traitement.loiDeProbabiliteEnNTransitions(3);
      
     }
 }    

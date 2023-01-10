@@ -152,20 +152,20 @@ public class TraitementProbabiliste extends Traitement {
         List<String> chemin = new ArrayList<>();
         int indice = 0;
         for (int i = indice ; i < graphe.liens.size() ; i++) {
-            if (graphe.liens.get(i).source == noeudSFinal) {
+            if (graphe.liens.get(i).getSource() == noeudSFinal) {
                 chemin.add(noeudSFinal.getLibelle());
-                noeudS = graphe.liens.get(i).cible;
+                noeudS = graphe.liens.get(i).getCible();
             }
-            if (graphe.liens.get(i).source == noeudS && graphe.liens.get(i).source != noeudSFinal) {
+            if (graphe.liens.get(i).getSource() == noeudS && graphe.liens.get(i).getSource() != noeudSFinal) {
                 chemin.add(noeudS.getLibelle());
-                noeudS = graphe.liens.get(i).cible;
+                noeudS = graphe.liens.get(i).getCible();
             }
-            if(graphe.liens.get(i).cible == noeudCFinal){
+            if(graphe.liens.get(i).getCible() == noeudCFinal){
                 chemin.add(noeudCFinal.getLibelle());
                 cheminFinal = chemin;
                 cheminFinal.add("///");
             }
-            if(graphe.liens.get(i).cible != noeudCFinal && graphe.liens.get(i).cible == null){
+            if(graphe.liens.get(i).getCible() != noeudCFinal && graphe.liens.get(i).getCible() == null){
                 indice++;
                 chemin.clear();
                 existenceChemin(noeudSFinal);

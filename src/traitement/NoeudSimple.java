@@ -20,7 +20,6 @@ public class NoeudSimple extends Noeud {
     public static int cpt = 0;
     
     public NoeudSimple() {
-        
     }
     
     /**

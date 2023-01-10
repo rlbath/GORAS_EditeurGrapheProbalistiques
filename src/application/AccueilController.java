@@ -119,6 +119,7 @@ public class AccueilController implements Initializable {
     private void dessin(javafx.scene.input.MouseEvent evt) {  
         try {
             if (selectionBtn.isSelected()) { //Cas si on selectionne l'option selections
+                
                 try {
                     noeudASelectionner = (NoeudSimple)graphe.estNoeudGraphe(evt.getX(), evt.getY());
                     noeudASelectionner.selectionGroupe(modificationContainer, noeudEnCoursGroup, graphe, zoneDessin);
@@ -262,14 +263,15 @@ public class AccueilController implements Initializable {
             if (graphe.estNoeudGraphe(x, y) != null && lienEnCours == null) {
                 noeudSource = graphe.estNoeudGraphe(x, y);
                 lienEnCours = factory.creerLien(noeudSource, noeudSource);
-                lienEnCoursGroup = lienEnCours.dessinerLien(zoneDessin);
-                //zoneDessin.getChildren().add(lienEnCoursGroup);
+                lienEnCours.dessinerLien(zoneDessin);
+                lienEnCoursGroup = lienEnCours.getGroupe();
 
             } else if (noeudSource != null && lienEnCours != null) {
                 zoneDessin.getChildren().remove(lienEnCoursGroup);
                 Noeud noeudProvisoire = factory.creerNoeud(evt.getX(), evt.getY());
                 lienEnCours = factory.creerLien(noeudSource, noeudProvisoire);
-                lienEnCoursGroup = lienEnCours.dessinerLien(zoneDessin);
+                lienEnCours.dessinerLien(zoneDessin);
+                lienEnCoursGroup = lienEnCours.getGroupe();
                 NoeudSimple.cpt = compteurNoeud;
             }
 
@@ -416,6 +418,7 @@ public class AccueilController implements Initializable {
         
         TraitementProbabiliste traitement = new TraitementProbabiliste(graphe);
         traitement.matriceTransition();
+        traitement.affichageChemin(modificationContainer);
      
     }
 }    

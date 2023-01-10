@@ -12,7 +12,6 @@ import javafx.scene.shape.Line;
 public class Arete extends Lien {
     
     public Arete() {
-        
     }
     
     /**
@@ -29,17 +28,18 @@ public class Arete extends Lien {
      * Le dessin d'un arete comporte une ligne visible par l'utilisateur
      * Et une enveloppe pour permettre les actions sur une arete plus confortable
      * @param zoneDessin zone de dessin du graphe
+     * @return 
      */
     @Override
     public Group dessinerLien(AnchorPane zoneDessin) {
         
-        double l = Math.sqrt(Math.pow(source.getCoordX()- cible.getCoordX(), 2) + Math.pow(source.getCoordY()- cible.getCoordY(), 2));
+        double l = Math.sqrt( Math.pow(getSource().getCoordX()- getCible().getCoordX(), 2) + Math.pow(getSource().getCoordY()- getCible().getCoordY(), 2));
+        
+        double xSource = getSource().getCoordX() + (getCible().getCoordX() - getSource().getCoordX()) / l * Noeud.getRadius();
+        double ySource = getSource().getCoordY() + (getCible().getCoordY() - getSource().getCoordY()) / l * Noeud.getRadius();
 
-        double xSource = source.getCoordX() + (cible.getCoordX() - source.getCoordX()) / l * Noeud.getRadius();
-        double ySource = source.getCoordY() + (cible.getCoordY() - source.getCoordY()) / l * Noeud.getRadius();
-
-        double xCible = cible.getCoordX() + (source.getCoordX() - cible.getCoordX()) / l * Noeud.getRadius();
-        double yCible  = cible.getCoordY() + (source.getCoordY() - cible.getCoordY()) / l * Noeud.getRadius();
+        double xCible = getCible().getCoordX() + (getSource().getCoordX() - getCible().getCoordX()) / l * Noeud.getRadius();
+        double yCible  = getCible().getCoordY() + (getSource().getCoordY() - getCible().getCoordY()) / l * Noeud.getRadius();
 
 
         Line enveloppe = new Line(xCible, yCible, xSource, ySource);
@@ -49,25 +49,26 @@ public class Arete extends Lien {
         enveloppe.setStrokeWidth(5);
         
         //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
-        enveloppe.setStroke(Color.RED);
+        enveloppe.setStroke(Color.TRANSPARENT);
         
-        groupe = new Group();
+        getGroupe().getChildren().clear();
         
-        groupe.getChildren().addAll(enveloppe, ligne);
+        getGroupe().getChildren().addAll(enveloppe, ligne);
         
         //Action s'il on clique sur l'arete
-        groupe.setOnMousePressed((new EventHandler<MouseEvent>() {
+        getGroupe().setOnMousePressed((new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent evt) {
                 AccueilController.estLien = true;
-                AccueilController.lienEnCoursGroup = groupe;
-                AccueilController.noeudSource = source;
-                AccueilController.noeudCible = cible;
+                AccueilController.lienEnCoursGroup = getGroupe();
+                AccueilController.noeudSource = getSource();
+                AccueilController.noeudCible = getCible();
             }
         }));
-        zoneDessin.getChildren().addAll(groupe);
-        return groupe;
+        zoneDessin.getChildren().addAll(getGroupe());
+        
+        return getGroupe();
     }
 
     

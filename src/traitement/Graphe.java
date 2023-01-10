@@ -80,6 +80,8 @@ public abstract class Graphe {
         traitements = nouveauxTraitements;
     }
     
+    
+    
     /**
      * Determine si des coordonnées font partie d'un noeud du graphe
      * @param xATester

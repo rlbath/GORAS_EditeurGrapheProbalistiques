@@ -179,6 +179,7 @@ public class TraitementProbabiliste extends Traitement {
         
     }
     
+    
     /**
      *
      * @param zonePropriete

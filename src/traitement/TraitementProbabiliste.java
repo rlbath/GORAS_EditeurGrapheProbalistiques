@@ -126,12 +126,22 @@ public class TraitementProbabiliste extends Traitement {
         //multiplication de la matrice avec loi de proba
         double[] loiDeProbaFinale = new double[graphe.getNoeuds().size()];
         double valeur;
-        for (int i = 0 ; i < loiDeProba.length; i++) {
-            valeur = 0;
-            for (int j = 0 ; j < loiDeProba.length ; j++) {
-                valeur += loiDeProba[i] * nouvelleMat[j][i];
+        if (n == 1) {
+            for (int i = 0 ; i < loiDeProba.length; i++) {
+                valeur = 0;
+                for (int j = 0 ; j < loiDeProba.length ; j++) {
+                    valeur += loiDeProba[i] * nouvelleMat[j][i];
+                }
+                loiDeProbaFinale[i] = valeur;
             }
-            loiDeProbaFinale[i] = valeur;
+        } else {
+            for (int i = 0 ; i < loiDeProba.length; i++) {
+                valeur = 0;
+                for (int j = 0 ; j < loiDeProba.length ; j++) {
+                    valeur += loiDeProba[i] * mat[j][i];
+                }
+                loiDeProbaFinale[i] = valeur;
+            }
         }
         
         //passage en string pour fenetre

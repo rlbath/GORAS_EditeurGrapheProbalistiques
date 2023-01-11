@@ -417,7 +417,7 @@ public class AccueilController implements Initializable {
         
         TraitementProbabiliste traitement = new TraitementProbabiliste(graphe);
         traitement.matriceTransition();
-        traitement.loiDeProbabiliteEnNTransitions(3);
+        traitement.loiDeProbabiliteEnNTransitions(1);
      
     }
 }    

@@ -87,45 +87,38 @@ public class TraitementProbabiliste extends Traitement {
     
     
     public void loiDeProbabiliteEnNTransitions(int n) {
-        String matrice = "";
+  
         //Création de la matrice
         double[][] mat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
         for(int i = 0; i < mat.length; i++){
             mat[i] = new double[graphe.getNoeuds().size()];
         }
         
-        for (int i = 0; i<graphe.getNoeuds().size(); i++){      
+        for (int i = 0; i<graphe.getNoeuds().size(); i++){ 
+
             for (int j = 0; j<graphe.getNoeuds().size(); j++){
                 if(graphe.getLienDuGraphe(graphe.getNoeuds().get(i), graphe.getNoeuds().get(j)) != null){
                     mat[i][j] = graphe.getLienDuGraphe(graphe.getNoeuds().get(i), graphe.getNoeuds().get(j)).getPonderation();
                 }else {
-                    mat[i][j] = 0.0;
-                    
+                    mat[i][j] = 0.0;            
                 }
-                matrice += mat[i][j] + "  ";
-            }
-            matrice += "\n\n";
+            }  
         }
         
         //multiplication de la matrice
-        String matriceApresTransition  = "";
+        double[][] Mat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
+        Mat = mat;
         double[][] nouvelleMat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
         for (int t = 1 ; t < n ; t++) {
-            for (int i = 0; i < mat.length; i++) {
-                for (int j = 0 ; j < mat.length ; j++) {
+            for (int i = 0; i < Mat.length; i++) {
+                for (int j = 0 ; j < Mat.length ; j++) {
                     nouvelleMat[i][j] = 0.0;
-                    for (int x = 0 ; x < mat.length ; x++) {
-                        nouvelleMat[i][j] += mat[i][x]*mat[x][j];
-                    }
-                    if (t == n-1) {
-                            matriceApresTransition += nouvelleMat[i][j] + "  ";
+                    for (int x = 0 ; x < Mat.length ; x++) {
+                        nouvelleMat[i][j] += Mat[i][x]*Mat[x][j];
                     }
                 }
-                matriceApresTransition += "\n";
             }
-            if (t ==1) {
-                    mat = nouvelleMat;
-            }
+            Mat = nouvelleMat;
         }
         
         double[] loiEssai = new double [7];
@@ -146,23 +139,13 @@ public class TraitementProbabiliste extends Traitement {
         //multiplication de la matrice avec loi de proba
         double[] loiDeProbaFinale = new double[graphe.getNoeuds().size()];
         double valeur;
-        if (n == 1) {
-            for (int i = 0 ; i < loiDeProba.length; i++) {
-                valeur = 0;
-                for (int j = 0 ; j < loiDeProba.length ; j++) {
-                    valeur += loiDeProba[i] * nouvelleMat[j][i];
-                }
-                loiDeProbaFinale[i] = valeur;
+        for (int j = 0 ; j < loiDeProba.length ; j++) {
+            valeur = 0;
+            for (int i = 0 ; i < Mat.length ; i++) {
+                valeur += loiDeProba[j] *Mat[i][j];
             }
-        } else {
-            for (int i = 0 ; i < loiDeProba.length; i++) {
-                valeur = 0;
-                for (int j = 0 ; j < loiDeProba.length ; j++) {
-                    valeur += loiDeProba[i] * mat[j][i];
-                }
-                loiDeProbaFinale[i] = valeur;
-            }
-        }
+            loiDeProbaFinale[j] = valeur;
+        }  
         
         //passage en string pour fenetre
         String affichageLoiProba = " ";

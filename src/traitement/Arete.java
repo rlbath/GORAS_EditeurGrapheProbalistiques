@@ -12,7 +12,6 @@ import javafx.scene.shape.Line;
 public class Arete extends Lien {
     
     public Arete() {
-        
     }
     
     /**
@@ -50,7 +49,7 @@ public class Arete extends Lien {
         enveloppe.setStrokeWidth(5);
         
         //Parametre seulement lors du dev Color.RED, sinon Color.TRANSPARENT
-        enveloppe.setStroke(Color.RED);
+        enveloppe.setStroke(Color.TRANSPARENT);
         
         getGroupe().getChildren().clear();
         

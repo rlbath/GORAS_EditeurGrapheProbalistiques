@@ -79,10 +79,11 @@ public class TraitementProbabiliste extends Traitement {
     public void loiDeProbabiliteEnNTransitions(int n) {
         //Création de la matrice
         double[][] mat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
+  /* ---- A quoi sert la boucle sui suit puisque les lignes de la matrice sont déja crées juste avant ? */
         for(int i = 0; i < mat.length; i++){
             mat[i] = new double[graphe.getNoeuds().size()];
         }
-        
+  /* ---- Dans les 2 boucles qui suivent on remplit la matrice avec les valeurs des probabilités en mettant 0.0 si pas d'arc ?  */
         for (int i = 0; i<graphe.getNoeuds().size(); i++){      
             for (int j = 0; j<graphe.getNoeuds().size(); j++){
                 if(graphe.getLienDuGraphe(graphe.getNoeuds().get(i), graphe.getNoeuds().get(j)) != null){
@@ -91,14 +92,16 @@ public class TraitementProbabiliste extends Traitement {
                     mat[i][j] = 0.0;
                     
                 }
+  /* ---- Est-ce les valeurs affichées par l'instruction qui suit sont correctes ? */
                 System.out.print(mat[i][j] + "  ");
             }
             System.out.println();
             System.out.println();
         }
-        
+  
         //multiplication de la matrice
         double[][] nouvelleMat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
+ /* ---- Pour comprendre ce que vous chercher à calculer il faut me donner la formule mathématique du calcul matriciel ! */
         for (int t = 1 ; t < n-1 ; t++) {
             for (int i = 0; i < mat.length; i++) {
                 for (int j = 0 ; j < mat.length ; j++) {

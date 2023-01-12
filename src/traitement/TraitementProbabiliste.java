@@ -109,26 +109,26 @@ public class TraitementProbabiliste extends Traitement {
         double[][] Mat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
         Mat = mat;
         double[][] nouvelleMat = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
+        nouvelleMat = mat;
+        double[][] matFinale = new double [graphe.getNoeuds().size()][graphe.getNoeuds().size()];
         for (int t = 1 ; t < n ; t++) {
             for (int i = 0; i < Mat.length; i++) {
                 for (int j = 0 ; j < Mat.length ; j++) {
-                    nouvelleMat[i][j] = 0.0;
+                    matFinale[i][j] = 0.0;
                     for (int x = 0 ; x < Mat.length ; x++) {
-                        nouvelleMat[i][j] += Mat[i][x]*Mat[x][j];
+                        matFinale[i][j] += nouvelleMat[i][x]*Mat[x][j];
                     }
                 }
             }
-            Mat = nouvelleMat;
+            nouvelleMat = matFinale;
         }
         
-        double[] loiEssai = new double [7];
+        double[] loiEssai = new double [4];
         loiEssai[0] = 1.0;
         loiEssai[1] = 1.0;
         loiEssai[2] = 1.0;
         loiEssai[3] = 1.0;
-        loiEssai[4] = 1.0;
-        loiEssai[5] = 1.0;
-        loiEssai[6] = 1.0;
+
         
         //définition de la loi de probabilité initiale
         double[] loiDeProba = new double[graphe.getNoeuds().size()];
@@ -139,13 +139,17 @@ public class TraitementProbabiliste extends Traitement {
         //multiplication de la matrice avec loi de proba
         double[] loiDeProbaFinale = new double[graphe.getNoeuds().size()];
         double valeur;
-        for (int j = 0 ; j < loiDeProba.length ; j++) {
-            valeur = 0;
-            for (int i = 0 ; i < Mat.length ; i++) {
-                valeur += loiDeProba[j] *Mat[i][j];
+        if (n == 0) {
+            loiDeProbaFinale = loiDeProba;
+        } else {
+            for (int j = 0 ; j < loiDeProba.length ; j++) {
+                valeur = 0;
+                for (int i = 0 ; i < matFinale.length ; i++) {
+                    valeur += loiDeProba[j] *matFinale[i][j];
+                }
+                loiDeProbaFinale[j] = valeur;
             }
-            loiDeProbaFinale[j] = valeur;
-        }  
+        }
         
         //passage en string pour fenetre
         String affichageLoiProba = " ";

@@ -18,7 +18,7 @@ public class NoeudSimple extends Noeud {
     
     /** Compteur du nombre de noeud que contient un graphe */
     public static int cpt = 0;
-    
+
     public NoeudSimple() {
     }
     
@@ -31,7 +31,7 @@ public class NoeudSimple extends Noeud {
         super(Integer.toString(cpt+=1), coordX, coordY);
         id = cpt;
     }
-    
+
     public int getCpt() {
         return cpt;
     }

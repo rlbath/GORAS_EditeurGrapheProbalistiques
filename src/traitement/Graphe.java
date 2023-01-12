@@ -57,7 +57,7 @@ public abstract class Graphe {
     }
     
     public List<? extends Lien> getLiens() {
-        return null;
+        return liens;
     }
     
     public void setLiens(List nouveauxLiens) {
